@@ -1,24 +1,25 @@
 
-
-
-
-
-var mescouilles = document.getElementById("zoblink");
-mescouilles.addEventListener("click", maFonctionDeMerde);
-
-var zob;
-
-function maFonctionDeMerde(e)
+// For all links, have a custom click handler....
+$('a').click(function(e)
 {
     e.preventDefault();
-    console.log(e.target.id);
-    console.log(e.target.href);
-    $( "#main" ).load( e.target.href );
-
+    loadStuff(e.target.href);
     history.pushState({}, '', e.target.href);
-}
+});
 
 window.addEventListener("popstate", function(e) {
   console.log("going back !")
 }, false);
+
+function loadStuff(target)
+{
+    $.getJSON( "example.json", function( data ) {
+        console.log(data.title)
+        console.log(data.author)
+        console.log(data.numberOfFlorps)
+        console.log(data.description)
+    });
+
+    $( "#main" ).load( target );
+}
 
