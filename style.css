@@ -1,6 +1,13 @@
 header
 {
     position: fixed;
+    height: 100px;
+}
+
+#main
+{
+
+    margin-top: 100px;
 }
 
 aside
@@ -9,6 +16,7 @@ aside
     position: fixed;
     right: 0px;
     width: 200px;
+    height: 100%;
 }
 
 footer
@@ -16,5 +24,6 @@ footer
     background-color: black;
     position: fixed;
     bottom: 0px;
-    height: 200px;
+    height: 100px;
+    width: 100%;
 }
