@@ -15,12 +15,10 @@ function maFonctionDeMerde(e)
     console.log(e.target.href);
     $( "#main" ).load( e.target.href );
 
-    //history.pushState({}, '', "bar.html");
-
+    history.pushState({}, '', e.target.href);
 }
 
-
-
-
-
+window.addEventListener("popstate", function(e) {
+  console.log("going back !")
+}, false);
 
