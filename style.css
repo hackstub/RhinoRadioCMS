@@ -1,0 +1,20 @@
+header
+{
+    position: fixed;
+}
+
+aside
+{
+    background-color: black;
+    position: fixed;
+    right: 0px;
+    width: 200px;
+}
+
+footer
+{
+    background-color: black;
+    position: fixed;
+    bottom: 0px;
+    height: 200px;
+}
