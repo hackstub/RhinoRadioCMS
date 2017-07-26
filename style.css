@@ -1,17 +1,26 @@
+body
+{
+    margin: 0px;
+}
+
 header
 {
+    padding: 15px;
     position: fixed;
     height: 100px;
+    text-align: center;
 }
 
 #main
 {
+    padding: 15px;
     position: fixed;
     margin-top: 100px;
 }
 
 aside
 {
+    padding: 15px;
     background-color: black;
     position: fixed;
     right: 0px;
@@ -21,6 +30,7 @@ aside
 
 footer
 {
+    padding: 15px;
     background-color: black;
     position: fixed;
     bottom: 0px;
