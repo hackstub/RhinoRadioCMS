@@ -1,5 +1,6 @@
 from flask import Flask, render_template, url_for, jsonify
 from glob import glob
+import json
 app = Flask(__name__)
 
 #########################
@@ -10,7 +11,8 @@ app = Flask(__name__)
 def index():
     return render_template( 'index.html',
                             styles = getStyles(),
-                            scripts = getScripts() )
+                            scripts = getScripts(),
+                            blog = getBlogItems() )
 
 @app.route('/about')
 def about():
@@ -58,5 +60,7 @@ def getScripts() :
              for file in   glob("static/lib/*.js")
                          + glob("static/js/*.js") ]
 
+def getBlogItems() :
+    return  [ json.loads(open("content/blog/2017-08-06.json").read()) ]
 
 app.run()
