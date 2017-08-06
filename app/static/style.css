@@ -37,3 +37,15 @@ footer
     height: 100px;
     width: 100%;
 }
+
+#player-container
+{
+    position:absolute;
+    bottom:0;
+    width:100%;
+}
+
+.audio-player
+{
+    width: inherit;
+}
