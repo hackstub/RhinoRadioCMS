@@ -31,7 +31,7 @@ def podcasts():
 @app.route('/podcast/<name>')
 def podcast(name):
     if not request.referrer:
-        specificContent = { "function": "playPodcast", "arg": request.url }
+        specificContent = { "function": "fetchAndPlayPodcast", "arg": request.url }
         return index(specificContent=specificContent)
 
     if name == "foo":
