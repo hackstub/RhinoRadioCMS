@@ -17,10 +17,10 @@ def about():
     return 'À propos de Radio Rhino'
 
 def getStyles() :
-     return [ url_for('static', filename=file, _external=True) for file in glob.glob("static/*/*.css") ]
+     return [ url_for('', filename=file, _external=True) for file in glob.glob("/*/*.css") ]
 
 def getScripts() :
-     return [ url_for('static', filename=file, _external=True) for file in glob.glob("static/*/*.js") ]
+     return [ url_for('', filename=file, _external=True) for file in glob.glob("static/*/*.js") ]
 
 
 app.run()

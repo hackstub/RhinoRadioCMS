@@ -13,17 +13,26 @@
 
     <body>
         {% block body %}
-        {% endblock %}
+
+        <header>
+            {% include 'header.html' %}
+        </header>
+
+        <aside id="chat">
+            {% include 'chatAside.html' %}
+        </aside>
+
+        <footer>
+            {% block footer %}
+            {% endblock %}
+        </footer>
+
+        <div id="bottomPlayer">
+            {% include 'bottomPlayer.html' %}
+        </div>
+
+       {% endblock %}
     </body>
-
-    <footer>
-        {% block footer %}
-        {% endblock %}
-    </footer>
-
-    <div id="bottomPlayer">
-        {% include 'bottomPlayer.html' %}
-    </div>
 
     {% for script in scripts %}
     <script type="javascript" src={{ script }}></script>
