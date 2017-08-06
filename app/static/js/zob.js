@@ -28,9 +28,10 @@ function loadStuff(target)
 // For all podcasts
 //
 //
-$('a').click(function(e)
+$('a.podcast').click(function(e)
 {
-    console.log("nyah");
+    console.log(e);
+    console.log(e.target.href);
     e.preventDefault();
     playPodcast(e.target.href);
     history.pushState({}, '', e.target.href);
@@ -38,7 +39,8 @@ $('a').click(function(e)
 
 function playPodcast(target)
 {
-    console.log("Fetching ". target);
+    console.log("Fetching ");
+    console.log(target)
     $.getJSON(target, function( data ) {
         console.log(data.podcastUrl)
         console.log(data.title)
@@ -50,5 +52,6 @@ function playPodcast(target)
 
 $(function(){
   console.log("Init");
+  console.log($('a.podcast'))
 });
 
