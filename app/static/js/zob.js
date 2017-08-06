@@ -44,14 +44,15 @@ function playPodcast(target)
 
 function playPodcast_(data)
 {
-    console.log(data.src);
-    console.log(data.title);
-    var playerOggSrc = $('#bottomPlayer audio.audio-player source.ogg_src');
+    var player = $('#bottomPlayer audio.audio-player')[0];
+    console.log(player);
+    var playerSrc = $('#bottomPlayer audio.audio-player source.mp3_src');
     var playerTitle = $('#bottomPlayer h3.currentTrackTitle');
-    console.log(playerOggSrc);
-    console.log(playerTitle);
-    playerOggSrc.attr("src", data.src)
+    playerSrc.attr("src", data.src);
     playerTitle.html(data.title);
+    player.pause();
+    player.load();
+    player.oncanplaythrough = player.play();
 }
 
 $(function(){

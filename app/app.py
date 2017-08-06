@@ -26,8 +26,17 @@ def podcasts():
 
 @app.route('/podcast/<name>')
 def podcast(name):
-    data = { "src" : name+".mp3",
+
+    if name == "foo":
+        src = "http://podcast.radiorhino.eu/Cr%c3%a9ations/2016-05-11%20-%20Grand%20test%20(Th%c3%a9o,%20J%c3%a9r%c3%a9mie).mp3"
+    elif name == "bar":
+        src = "http://podcast.radiorhino.eu/Cr%c3%a9ations/Images%20sonores%20d'%c3%89pinal/IMAGES_SONORES_EPINAL.mp3"
+    else:
+        src = "wat"
+
+    data = { "src" : src,
              "title" : "so much "+name+" !" }
+
     response = jsonify(data)
     response.status_code = 200
     return response
