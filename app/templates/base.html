@@ -43,4 +43,8 @@
     <script type="text/javascript" src={{ script }}></script>
     {% endfor %}
 
+    {% if specificContent %}
+    <script type="text/javascript">$(function(){ {{ specificContent.function }}("{{ specificContent.arg}}") });</script>
+    {% endif %}
+
 </html>

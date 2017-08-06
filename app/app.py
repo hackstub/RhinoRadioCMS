@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, jsonify
+from flask import Flask, render_template, url_for, jsonify, request
 from glob import glob
 import json
 app = Flask(__name__)
@@ -8,11 +8,13 @@ app = Flask(__name__)
 #########################
 
 @app.route('/')
-def index():
+def index(specificContent=None):
     return render_template( 'index.html',
                             styles = getStyles(),
                             scripts = getScripts(),
-                            blog = getBlogItems() )
+                            blog = getBlogItems(),
+                            specificContent = specificContent
+                          )
 
 @app.route('/about')
 def about():
@@ -28,6 +30,9 @@ def podcasts():
 
 @app.route('/podcast/<name>')
 def podcast(name):
+    if not request.referrer:
+        specificContent = { "function": "playPodcast", "arg": request.url }
+        return index(specificContent=specificContent)
 
     if name == "foo":
         src = "http://podcast.radiorhino.eu/Cr%c3%a9ations/2016-05-11%20-%20Grand%20test%20(Th%c3%a9o,%20J%c3%a9r%c3%a9mie).mp3"
