@@ -37,9 +37,15 @@ footer
     position:fixed;
     bottom:0;
     width:100%;
+    margin-bottom:-5px;
 }
 
-.audio-player
+#bottomPlayer .currentTrackTitle
+{
+    margin: 0px;
+}
+
+#bottomPlayer .audio-player
 {
     width: inherit;
 }
