@@ -1,5 +1,5 @@
 from flask import Flask, render_template, url_for
-import glob
+from glob import glob
 app = Flask(__name__)
 
 @app.route('/')
@@ -20,12 +20,13 @@ def getStyles() :
      return [ url_for('static',
                       filename=file.replace('static/', ''),
                       _external=True)
-             for file in glob.glob("static/*/*.css") ]
+             for file in glob("static/*/*.css") ]
 
 def getScripts() :
      return [ url_for('static',
                       filename=file.replace('static/', ''),
                       _external=True)
-             for file in glob.glob("static/*/*.js") ]
+             for file in   glob("static/lib/*.js")
+                         + glob("static/js/*.js") ]
 
 app.run()
