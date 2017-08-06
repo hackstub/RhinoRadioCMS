@@ -2,16 +2,23 @@
 
 Experimentation to have a persistent player across pages
 
-## Deploy flask stuff
+## Install
 
-```
+```bash
+# On Debian/Ubuntu/Mint
+sudo apt-get install python-virtualenv
+
 virtualenv -p python3 venv
 source venv/bin/activate
 pip3 install -r requirements.txt
 ```
 
-then
+## Develop
 
+```bash
+./run_dev_server.sh
 ```
-python3 app.py
-```
+
+## Deploy
+
+Instructions coming soon :)

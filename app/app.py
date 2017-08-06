@@ -65,4 +65,9 @@ def getBlogItems() :
     # Please push the file :)
     #return  [ json.loads(open("content/blog/2017-08-06.json").read()) ]
 
-app.run()
+#########################
+#  Main                 #
+#########################
+
+if __name__ == '__main__':
+    app.run()
