@@ -47,4 +47,16 @@ function playPodcast(target)
 }
 
 
+$(function(){
+  $('#bottomPlayer').mediaelementplayer({
+    alwaysShowControls: true,
+    features: ['playpause','progress','volume'],
+    audioVolume: 'horizontal',
+    enableKeyboard: true,
+    pauseOtherPlayers: true,
+    iPadUseNativeControls: false,
+    iPhoneUseNativeControls: false,
+    AndroidUseNativeControls: false
+  });
+});
 
