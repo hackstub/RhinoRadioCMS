@@ -23,3 +23,28 @@ function loadStuff(target)
     $( "#main" ).load( target );
 }
 
+//
+//
+// For all podcasts
+//
+//
+$('a podcast').click(function(e)
+{
+    e.preventDefault();
+    loadStuff(e.target.href);
+    history.pushState({}, '', e.target.href);
+});
+
+function playPodcast(target)
+{
+    $.getJSON(target, function( data ) {
+        console.log(data.podcastUrl)
+        console.log(data.title)
+        console.log(data.author)
+        console.log(data.numberOfFlorps)
+        console.log(data.description)
+    });
+}
+
+
+
