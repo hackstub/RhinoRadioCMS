@@ -1,0 +1,30 @@
+<!doctype HTML>
+
+<html>
+    <head>
+        {% block head %}
+        <meta charset="utf-8" lang="FR/fr">
+        <meta rel="stylesheet" href="{{ stylesheet }}">
+        <title>Radio Rhino {% if title %} | {{ title }} {% endif %}</title>
+        {% endblock %}
+    </head>
+
+    <body>
+        {% block body %}
+        {% endblock %}
+    </body>
+
+    <footer>
+        {% block footer %}
+        {% endblock %}
+    </footer>
+
+    <div id="bottomPlayer">
+        {% include 'bottomPlayer.html' %}
+    </div>
+
+    {% for script in scripts %}
+    <script type="javascript" src={{ script }}></script>
+    {% endfor %}
+
+</html>
