@@ -1,6 +1,10 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, jsonify
 from glob import glob
 app = Flask(__name__)
+
+#########################
+#  Main pages           #
+#########################
 
 @app.route('/')
 def index():
@@ -8,13 +12,29 @@ def index():
                             styles = getStyles(),
                             scripts = getScripts() )
 
+@app.route('/about')
+def about():
+    return 'À propos de Radio Rhino'
+
+#########################
+#  Podcasts             #
+#########################
+
 @app.route('/podcasts/')
 def podcasts():
     return 'A list of podcasts'
 
-@app.route('/about')
-def about():
-    return 'À propos de Radio Rhino'
+@app.route('/podcast/<name>')
+def podcast(name):
+    data = { "src" : name+".mp3",
+             "title" : "so much "+name+" !" }
+    response = jsonify(data)
+    response.status_code = 200
+    return response
+
+#########################
+#  Static stuff         #
+#########################
 
 def getStyles() :
      return [ url_for('static',
@@ -28,5 +48,6 @@ def getScripts() :
                       _external=True)
              for file in   glob("static/lib/*.js")
                          + glob("static/js/*.js") ]
+
 
 app.run()

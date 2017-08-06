@@ -39,19 +39,22 @@ $('a.podcast').click(function(e)
 
 function playPodcast(target)
 {
-    console.log("Fetching ");
-    console.log(target)
-    $.getJSON(target, function( data ) {
-        console.log(data.podcastUrl)
-        console.log(data.title)
-        console.log(data.author)
-        console.log(data.numberOfFlorps)
-        console.log(data.description)
-    });
+    $.getJSON(target, playPodcast_ );
+}
+
+function playPodcast_(data)
+{
+    console.log(data.src);
+    console.log(data.title);
+    var playerOggSrc = $('#bottomPlayer audio.audio-player source.ogg_src');
+    var playerTitle = $('#bottomPlayer h3.currentTrackTitle');
+    console.log(playerOggSrc);
+    console.log(playerTitle);
+    playerOggSrc.attr("src", data.src)
+    playerTitle.html(data.title);
 }
 
 $(function(){
   console.log("Init");
-  console.log($('a.podcast'))
 });
 
