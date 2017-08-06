@@ -61,6 +61,8 @@ def getScripts() :
                          + glob("static/js/*.js") ]
 
 def getBlogItems() :
-    return  [ json.loads(open("content/blog/2017-08-06.json").read()) ]
+    return [ ]
+    # Please push the file :)
+    #return  [ json.loads(open("content/blog/2017-08-06.json").read()) ]
 
 app.run()
