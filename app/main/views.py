@@ -28,9 +28,15 @@ def about():
 
 @main.route('/maintenance')
 def maintenance():
-    return render_template( 'maintenance.html',
-                            styles = getStyles(),
-                          )
+    email = None
+#    form = SubscribeForm()
+#    if form.validate_on_submit():
+#        email=form.email.data
+#        form.name.data=''
+#    return render_template( 'maintenance.html',
+#                            styles = getStyles(),
+#                            form = form, email=email
+#                          )
 
 #########################
 #  Podcasts             #
