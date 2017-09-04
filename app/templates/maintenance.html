@@ -2,9 +2,10 @@
 
 {% block main %}
 <div id="right-panel">
-    <form class="subscribe-box">
-
-    </div>
+    <form class="subscribe-box" method="POST">
+        {{ form.email.label }} {{ form.email() }}
+        {{ form.submit }}
+    </form>
 </div>
 
 <div id="left-panel">
