@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block main %}
+<h2>Soooo many things to listen to</h2>
+<ul>
+{% for podcast in podcasts %}
+<a href="{{ podcast.link}}"><li>{{ podcast}}</li></a>
+{% endfor %}
+</ul>
+{% endblock %}
+

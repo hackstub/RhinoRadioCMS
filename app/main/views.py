@@ -1,5 +1,7 @@
 from flask import Flask, render_template, url_for, jsonify, request
+from . import main
 from glob import glob
+from config import config
 import json
 app = Flask(__name__)
 
@@ -7,7 +9,7 @@ app = Flask(__name__)
 #  Main pages           #
 #########################
 
-@app.route('/')
+@main.route('/')
 def index(specificContent=None):
     return render_template( 'index.html',
                             styles = getStyles(),
@@ -16,19 +18,25 @@ def index(specificContent=None):
                             specificContent = specificContent
                           )
 
-@app.route('/about')
+@main.route('/about')
 def about():
     return 'À propos de Radio Rhino'
+
+@main.route('/maintenance')
+def maintenance():
+    return render_template( 'maintenance.html',
+                            styles = getStyles(),
+                          )
 
 #########################
 #  Podcasts             #
 #########################
 
-@app.route('/podcasts/')
+@main.route('/podcasts/')
 def podcasts():
     return 'A list of podcasts'
 
-@app.route('/podcast/<name>')
+@main.route('/podcast/<name>')
 def podcast(name):
     if not request.referrer:
         specificContent = { "function": "fetchAndPlayPodcast", "arg": request.url }
@@ -54,25 +62,21 @@ def podcast(name):
 
 def getStyles() :
      return [ url_for('static',
-                      filename=file.replace('static/', ''),
+                      filename=file.replace('app/static/', ''),
                       _external=True)
-             for file in glob("static/*/*.css") ]
+             for file in glob("app/static/*/*.css") ]
 
 def getScripts() :
      return [ url_for('static',
-                      filename=file.replace('static/', ''),
+                      filename=file.replace('app/static/', ''),
                       _external=True)
-             for file in   glob("static/lib/*.js")
-                         + glob("static/js/*.js") ]
+             for file in   glob("app/static/lib/*.js")
+                         + glob("app/static/js/*.js") ]
 
 def getBlogItems() :
     return [ ]
-    # Please push the file :)
     #return  [ json.loads(open("content/blog/2017-08-06.json").read()) ]
 
-#########################
-#  Main                 #
-#########################
-
-if __name__ == '__main__':
-    app.run()
+# Moved to manage.py
+#if __name__ == '__main__':
+#    app.run()
