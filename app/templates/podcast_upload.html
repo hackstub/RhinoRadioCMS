@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+<style>
+#dropbox {
+    border: 2px dashed #000000;
+    padding: 20px;
+}
+
+#dropbox.active {
+    border: 4px dashed #FF0000;
+}
+
+.progress-trough {
+    border: 1px solid #000000;
+    height: 24px;
+    width: 100%;
+    position: relative;
+}
+
+.progress-bar {
+    width: 50%;
+    height: 100%;
+    background-color: #0099FF;
+}
+</style>
+
+<form id="upload-form" action="{{ url_for('main.upload') }}" method="POST" enctype="multipart/form-data">
+
+    <br>
+    <br>
+    <strong>Nom du podcast :</strong>
+    <br>
+    <input type="text" size="20" name="input1" value="uploads">
+    <br>
+    <br>
+    <strong>Auteur :</strong>
+    <br>
+    <input type="text" size="20" name="input1" value="uploads">
+    <br>
+    <br>
+    <strong>Date :</strong>
+    <br>
+    <input type="text" size="20" name="input1" value="uploads">
+    <br>
+    <br>
+    <strong>Tags / moods:</strong>
+    <br>
+    <input type="checkbox" name="checkbox" value="on"> Foo
+    <input type="checkbox" name="checkbox" value="on"> Bar
+    <input type="checkbox" name="checkbox" value="on"> Zob
+    <input type="checkbox" name="checkbox" value="on"> Derp
+    <input type="checkbox" name="checkbox" value="on"> Nyah
+    <br>
+    <br>
+    <strong>Type de podcast:</strong>
+    <br>
+    <input type="radio" name="radio" value="yes" checked>Causette 
+    <input type="radio" name="radio" value="no"> Musique
+    <br>
+    <br>
+    <strong>Description :</strong>
+    <br>
+    <textarea rows="4" cols="40" name="textarea">Text area contents.</textarea>
+    <br>
+    <br>
+    <strong>File:</strong>
+    <br>
+    <input id="file-picker" type="file" name="file" accept="audio/*">
+    <p>
+    <div id="dropbox">
+        Drag and Drop File Here
+    </div>
+    <p>
+    <br>
+    <fieldset id="progress" style="display: none">
+        <div class="progress-trough">
+            <div id="progress-bar" class="progress-bar">0%</div>
+        </div>
+    </fieldset>
+    <br>
+    <br>
+    <input type="submit" value="Upload!" id="upload-button">
+
+</form>
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
+{% endblock %}
+    
+
+{% block moarScripts %}
+<script type="text/javascript" src="{{ url_for('static', filename='js/uploader.js') }}"></script>
+{% endblock %}
