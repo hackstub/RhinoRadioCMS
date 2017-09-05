@@ -1,12 +1,15 @@
 import os
 from flask import Flask, render_template, url_for, jsonify, request, redirect
+from flask_bootstrap import Bootstrap
 from werkzeug.utils import secure_filename
 from . import main
+from .forms import SubscribeForm
 from glob import glob
 from config import config
 import json
 app = Flask(__name__)
 
+bootstrap = Bootstrap(app)
 
 
 #########################
@@ -26,17 +29,17 @@ def index(specificContent=None):
 def about():
     return 'À propos de Radio Rhino'
 
-@main.route('/maintenance')
+@main.route('/maintenance', methods=['GET', 'POST'])
 def maintenance():
     email = None
-#    form = SubscribeForm()
-#    if form.validate_on_submit():
-#        email=form.email.data
-#        form.name.data=''
-#    return render_template( 'maintenance.html',
-#                            styles = getStyles(),
-#                            form = form, email=email
-#                          )
+    form = SubscribeForm()
+    if form.validate_on_submit():
+        email=form.email.data
+        form.name.data=''
+    return render_template( 'maintenance.html',
+                            styles = getStyles(),
+                            form = form
+                          )
 
 #########################
 #  Podcasts             #

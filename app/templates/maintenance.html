@@ -1,23 +1,27 @@
 {% extends "base.html" %}
 
 {% block main %}
-<div id="right-panel">
-    <form class="subscribe-box" method="POST">
-        {{ form.email.label }} {{ form.email() }}
+<div id="left-panel">
+    <h2>Newsletter</h2>
+    <p>Suivez notre actualité</p>
+    <form method="POST">
+        {{ form.email.label }}
+        <br>
+        {{ form.email }}
         {{ form.submit }}
     </form>
 </div>
 
-<div id="left-panel">
+<div id="right-panel">
     <h3>Radio radicale pour personnes sensibles</h3>
-    <h2>Lancement le 31 septembre 2017 !</h2>
+    <h2>Lancement le 30 septembre 2017 !</h2>
     <p>Le temps est nécessaire pour faire les choses bien, et les vacances nous ont permis de nous reposer assez pour attaquer la rentrée avec encore plus d'énergie, de convictions et de désirs ambitieux. Les chantiers sont nombreux mais l'année s'annonce folle !</p>
     <h3>La plateforme de nos rêves pour repenser la radio</h3>
     <p>On vous prépare du lourd pour la future plateforme de Radio Rhino : une interface simple et efficace pour écouter des productions réalisées avec passion, diffuser vos contributions, découvrir notre travail et profiter du tout avec une liberté nouvelle.<p>
     <p>Comme toujours, on garde cet esprit qui nous rassemble : emploi critique des outils techniques à notre disposition, philosophie du partage, légereté de conception et d'utilisation et enfin transdisciplinarité à chaque étape.</p>
     <h3>Continuer à explorer les recoins du monde</h3>
     <p>Côté contenu, les esquisses discrètes de la saison 0 seront une base essentielle pour les productions à venir, dans toutes les directions. Raconter une époque en chacun de ses endroits, jouer de la fiction à chaque opportunité pour mieux s'exprimer, et s'approprier le son comme le matériau idéal d'un partage sans frontières ni autorité.</p>
-    <h3>Place à la musique !</h3>
+    <h3>Musique !</h3>
     <p>La saison précédente a surtout permis la diffusion de concerts et de DJ sets. Cette année, Radio Rhino proposera de rendre à la radio sa place de prescriptrice : des mixtapes d'artistes exclusives, des lives sauvages diffusés in situ, des DJ sets vivants à la pointe pour tous les goûts.</p>
     <h3>2018, l'année du Rhino</h3>
     <p>Bref, il va être enfin temps de pouvoir écouter Radio Rhino pendant des heures sans interruption, pour encore plus de kiff et de découvertes inédites. Présents dans tous les milieux qui se bougent et construisent les cultures populaires comme marginales, on se croisera bien assez vite. Strasbourg, big up !</p>

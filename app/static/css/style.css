@@ -6,6 +6,7 @@ body
 header
 {
     position: fixed;
+    top: 0px;
     display: flex;
     width: 80%;
     justify-content: center;
@@ -22,9 +23,11 @@ header *
 #main
 {
     padding: 15px;
-    position: fixed;
     margin-top: 100px;
-}
+    display: flex;
+} 
+
+
 
 aside
 {
@@ -32,9 +35,15 @@ aside
     padding: 15px;
     background-color: black;
     position: fixed;
+    top: 0px;
     right: 0px;
     min-width: 200px;
     height: 100%;
+}
+
+#right-panel
+{
+    width: 30em;
 }
 
 footer

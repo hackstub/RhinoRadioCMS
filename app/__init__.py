@@ -5,6 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from glob import glob
 from config import config
 
+
 mail = Mail()
 #db = SQLAlchemy()
 moment = Moment()
