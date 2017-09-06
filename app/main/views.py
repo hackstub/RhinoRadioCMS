@@ -9,8 +9,6 @@ import json
 from uuid import uuid4
 app = Flask(__name__)
 
-bootstrap = Bootstrap(app)
-
 
 #########################
 #  Main pages           #

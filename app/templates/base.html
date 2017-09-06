@@ -13,23 +13,23 @@
     <body>
         {% block body %}
 
-        <aside id="chat">
-            {% include 'chatAside.html' %}
-        </aside>
-
         <header>
             {% include 'header.html' %}
         </header>
 
         <div id="main">
-            {% block main %}
-            {% endblock %}
+            
+            <div id="mainframe">
+                {% block main %}
+                {% endblock %}
+            </div>
+    
+            <footer>
+                {% block footer %}
+                {% endblock %}
+            </footer>
+            
         </div>
-
-        <footer>
-            {% block footer %}
-            {% endblock %}
-        </footer>
 
         <div id="bottomPlayer">
             {% include 'bottomPlayer.html' %}
