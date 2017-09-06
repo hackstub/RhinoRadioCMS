@@ -27,7 +27,9 @@ def index(specificContent=None):
 
 @main.route('/about')
 def about():
-    return 'À propos de Radio Rhino'
+    return render_template( 'about.html',
+                            styles = getStyles(),
+                            scripts = getScripts(), )
 
 @main.route('/maintenance', methods=['GET', 'POST'])
 def maintenance():
@@ -163,7 +165,7 @@ def getPodcasts():
     
     bar = Podcast()
     bar.name = "bar"
-    bar.link = "link"
+    bar.link = "/podcast/bar"
     
     podcasts = [ foo, bar ]
     return podcasts

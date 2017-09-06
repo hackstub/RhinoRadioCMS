@@ -12,6 +12,14 @@ $('a.podcast').click(function(e)
     history.pushState({}, '', e.target.href);
 });
 
+$('a.intern').click(function(e)
+{
+    e.preventDefault();
+    console.log(e.currentTarget.href);
+    history.pushState({}, '', e.currentTarget.href);
+    $('#main').load(e.currentTarget.href + " #mainframe" );
+});
+
 function fetchAndPlayPodcast(target)
 {
     $.getJSON(target, function(data) {
@@ -31,5 +39,4 @@ function fetchAndPlayPodcast(target)
     player.oncanplaythrough = player.play();
 
     });
-}
-
+};
