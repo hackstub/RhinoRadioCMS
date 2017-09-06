@@ -3,6 +3,7 @@ from flask import Flask, render_template, url_for, jsonify, request, redirect, f
 from werkzeug.utils import secure_filename
 from . import main
 from .forms import SubscribeForm
+from app.models import Podcast
 from glob import glob
 from config import config
 import json
@@ -19,6 +20,7 @@ def index(specificContent=None):
     return render_template( 'index.html',
                             styles = getStyles(),
                             scripts = getScripts(),
+                            podcasts = getPodcasts(),
                             blog = getBlogItems(),
                             specificContent = specificContent
                           )
@@ -45,7 +47,7 @@ def maintenance():
 
 @main.route('/podcasts/')
 def podcasts():
-    return 'A list of podcasts'
+    return "liste des podcasts"
 
 @main.route('/podcast/<name>')
 def podcast(name):
@@ -153,6 +155,18 @@ def ajax_response(status, msg):
         status=status_code,
         msg=msg,
     ))
+
+def getPodcasts():
+    foo = Podcast()
+    foo.name = "foo"
+    foo.link = "/podcast/foo"
+    
+    bar = Podcast()
+    bar.name = "bar"
+    bar.link = "link"
+    
+    podcasts = [ foo, bar ]
+    return podcasts
 
 
 
