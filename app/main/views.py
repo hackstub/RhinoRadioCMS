@@ -162,10 +162,12 @@ def getPodcasts():
     foo = Podcast()
     foo.name = "foo"
     foo.link = "/podcast/foo"
+    foo.src = "http://podcast.radiorhino.eu/Cr%c3%a9ations/2016-05-11%20-%20Grand%20test%20(Th%c3%a9o,%20J%c3%a9r%c3%a9mie).mp3"
     
     bar = Podcast()
     bar.name = "bar"
     bar.link = "/podcast/bar"
+    bar.src = "http://podcast.radiorhino.eu/Cr%c3%a9ations/Images%20sonores%20d'%c3%89pinal/IMAGES_SONORES_EPINAL.mp3"
     
     podcasts = [ foo, bar ]
     return podcasts

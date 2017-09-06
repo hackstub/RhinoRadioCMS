@@ -1,9 +1,6 @@
 <ul>
 {% for podcast in podcasts %}
     <li><a class="podcast" href="{{ podcast.link }}">{{ podcast.name }}</a>
-        <audio class="audio-player">
-            <source class="mp3-src" src="{{ podcast.link }}">
-        </audio>
     </li>
 {% endfor %}
 </ul>

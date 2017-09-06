@@ -4,6 +4,7 @@ class Podcast():
     author = ""
     date = ""
     link = ""
+    src = ""
     
     def name():
         return name

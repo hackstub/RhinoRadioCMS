@@ -12,6 +12,7 @@ $('a.podcast').click(function(e)
     history.pushState({}, '', e.target.href);
 });
 
+// Capture all internal links
 $('a.intern').click(function(e)
 {
     e.preventDefault();
