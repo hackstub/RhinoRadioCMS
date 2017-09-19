@@ -24,12 +24,11 @@ $('a.intern').click(function(e)
 function fetchAndPlayPodcast(target)
 {
     $.getJSON(target, function(data) {
-
     // Get relevant items
     var player = $('#bottomPlayer audio.audio-player')[0];
-    var playerSrc = $('#bottomPlayer audio.audio-player source.mp3_src');
-    var playerTitle = $('#bottomPlayer h3.currentTrackTitle');
-    
+    var playerSrc = $('audio.audio-player source.mp3_src');
+    var playerTitle = $('#actual .text h3');
+
     // Update their data
     playerSrc.attr("src", data.src);
     playerTitle.html(data.title);
@@ -38,6 +37,7 @@ function fetchAndPlayPodcast(target)
     player.pause();
     player.load();
     player.oncanplaythrough = player.play();
-
+    playBtn.attributes.display.value = "none";
+    pauseBtn.attributes.display.value = "";
     });
 };

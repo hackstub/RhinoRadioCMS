@@ -1,0 +1,68 @@
+#bottomPlayer {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+#audio * {
+    box-sizing: border-box;
+}
+
+#slider {
+    border-top: 5px solid black;
+    border-bottom: 5px solid black;
+    height: 1.3em;
+}
+#track {
+    height: 100%;
+    width: 70%;
+    border-right: 5px solid black;
+}
+#track-progress {
+    width: 50%;
+    height: 100%;
+    background-color: black;
+}
+
+#controls {
+    display: flex;
+    align-items: center;
+    height: 6em;
+}
+
+.side-box {
+    display: flex;
+    width: 25%;
+    height: 100%;
+}
+#actual {
+    width: 50%;
+    border-left: 5px solid black;
+    border-right: 5px solid black;
+    display: flex;
+    height: 100%;
+}
+.button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 5em;
+    height: 100%;
+    cursor: pointer;
+}
+.text {
+    height: 100%;
+    padding: 0.85em;
+    width: calc(100% - 5em);
+}
+
+.text p {
+    font-family: Hack, monospace;
+    font-size: 0.9em;
+    margin: 0;
+}
+.text h3 {
+    font-family: Hack, monospace;
+    font-size: 1.1em;
+    font-weight: bold;
+    margin: 0;
+}
