@@ -25,7 +25,6 @@ function fetchAndPlayPodcast(target)
 {
     $.getJSON(target, function(data) {
     // Get relevant items
-    var player = $('#bottomPlayer audio')[0];
     var playerSrc = $('audio source.mp3_src');
     var playerTitle = $('#play-infos h3');
 

@@ -3,10 +3,40 @@ var playBtn = audioPlayer.querySelector('#playbtn');
 var pauseBtn = audioPlayer.querySelector('#pausebtn');
 var playpauseBtn = audioPlayer.querySelector("#play");
 var progress = audioPlayer.querySelector("#track-progress");
-var sliders = audioPlayer.querySelector("#track");
+var track = audioPlayer.querySelector("#track");
 var player = audioPlayer.querySelector('audio');
 var currentTime = audioPlayer.querySelector('#current-time');
 var totalTime = audioPlayer.querySelector('#total-time');
+
+track.addEventListener("mousedown", function(event) {
+    function mouseUp(e) {
+        rewind(e);
+        window.removeEventListener("mousemove", rewind);
+        window.removeEventListener("mouseup", mouseUp);
+    }
+
+    event.preventDefault();
+    window.addEventListener("mousemove", rewind);
+
+    window.addEventListener("mouseup", mouseUp);
+});
+
+var trackWidth = track.getBoundingClientRect().width;
+
+function rewind(e) {
+    e.preventDefault();
+    var x = e.clientX;
+    if (x >= trackWidth) {
+        player.currentTime = player.duration;
+    }
+    else if (x <= 0) {
+        player.currentTime = 0;
+    }
+    else {
+        player.currentTime = (x/trackWidth)*player.duration;
+    }
+    updateProgress();
+}
 
 playpauseBtn.addEventListener('click', togglePlay);
 player.addEventListener('timeupdate', updateProgress);
@@ -17,7 +47,7 @@ player.addEventListener('loadedmetadata', () => {
 player.addEventListener('ended', function(){
     playBtn.attributes.display.value = "";
     pauseBtn.attributes.display.value = "none";
-    player.currentTime = 0;
+    //player.currentTime = 0;
 });
 
 function updateProgress() {
