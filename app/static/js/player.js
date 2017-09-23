@@ -5,8 +5,8 @@ var playpauseBtn = audioPlayer.querySelector("#play");
 var progress = audioPlayer.querySelector("#track-progress");
 var sliders = audioPlayer.querySelector("#track");
 var player = audioPlayer.querySelector('audio');
-var currentTime = audioPlayer.querySelector('.current-time');
-var totalTime = audioPlayer.querySelector('.total-time');
+var currentTime = audioPlayer.querySelector('#current-time');
+var totalTime = audioPlayer.querySelector('#total-time');
 
 playpauseBtn.addEventListener('click', togglePlay);
 player.addEventListener('timeupdate', updateProgress);
