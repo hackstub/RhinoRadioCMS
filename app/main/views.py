@@ -3,7 +3,8 @@ from flask import Flask, render_template, url_for, jsonify, request, redirect, f
 from werkzeug.utils import secure_filename
 from . import main
 from .forms import SubscribeForm
-from app.models import Podcast
+from .. import db
+# from app.models import Podcast
 from glob import glob
 from config import config
 import json
