@@ -1,26 +1,20 @@
-<div id="slider">
-    <div id="track">
+<div id="slider-bar">
+    <div class="box-text">
+            <span id="current-time">0:00</span> /
+            <span id="total-time">0:00</span>
+    </div>
+    <div id="track" class="sliders">
         <div id="track-progress">
         </div>
     </div>
-</div>
-<div id="controls">
-    <div id="left-pan" class="side-box">
-        <div class="text">
-            <h3>précédent son</h3>
-            <p>date</p>
-        </div>
-        <div class="button">
-            <svg xmlns="http://www.w3.org/2000/svg" width="36.48" height="40" viewBox="0 0 36.48 40">
-                <g stroke="#000000" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="3">
-                    <polygon points="23.487,37.5 2.498,20 23.487,2.5"/>
-                    <polygon points="33.982,37.5 12.993,20 33.982,2.5"/>
-                    <line x1="2.498" y1="2.5" x2="2.498" y2="37.5"/>
-                </g>
-            </svg>
+    <div id="volume" class="sliders">
+        <div id="volume-active">
         </div>
     </div>
-    <div id="actual">
+</div>
+
+<div id="controls">
+    <div id="play-pan" class="pan">
         <div id="play" class="button">
             <svg xmlns="http://www.w3.org/2000/svg" width="36.48" height="40" viewBox="0 0 36.48 40">
                 <g stroke="#000000" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="3" id="playbtn" display="">
@@ -32,24 +26,24 @@
                 </g>
             </svg>
         </div>
-        <div class="text">
-            <h3>Titre</h3>
+        <div id="play-infos" class="text">
+            <h3>TITRE</h3>
             <p>date</p>
-            <p>details - durée</p>
-        </div>
-        <div class="text">
-            <p>
-                <span class="current-time">0:00</span> /
-                <span class="total-time">0:00</span>
-            </p>
-
-        </div>
-        <div class="button">
-
+            <p>infos</p>
         </div>
     </div>
-    <div id="right-pan" class="side-box">
-        <div class="button">
+
+    <div id="nextPrev-pan" class="pan">
+        <div id="previous" class="button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="36.48" height="40" viewBox="0 0 36.48 40">
+                <g stroke="#000000" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="3">
+                    <polygon points="23.487,37.5 2.498,20 23.487,2.5"/>
+                    <polygon points="33.982,37.5 12.993,20 33.982,2.5"/>
+                    <line x1="2.498" y1="2.5" x2="2.498" y2="37.5"/>
+                </g>
+            </svg>
+        </div>
+        <div id="next" class="button">
             <svg xmlns="http://www.w3.org/2000/svg" width="36.48" height="40" viewBox="0 0 36.48 40">
                 <g stroke="#000000" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="3">
                     <polygon points="12.993,2.5 33.982,20 12.993,37.5 "/>
@@ -58,14 +52,32 @@
                 </g>
             </svg>
         </div>
-        <div class="text">
-            <h3>son suivant</h3>
+        <div id="side-infos" class="text">
+            <h3>TITRE</h3>
             <p>date</p>
+            <p>infos</p>
+        </div>
+    </div>
+
+    <div id="playlist-pan" class="pan">
+        <div id="playlist" class="button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="36.48" height="40" viewBox="0 0 36.48 40">
+                <g stroke="#000000" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="3">
+                    <line x1="33.98" y1="12.994" x2="2.5" y2="12.994"/>
+    				<line x1="33.98" y1="23.488" x2="2.5" y2="23.488"/>
+    				<line x1="33.98" y1="33.982" x2="2.5" y2="33.982"/>
+    				<polygon points="2.5,2.5 15.087,12.994 2.5,23.488"/>
+                </g>
+            </svg>
+        </div>
+        <div id="playlist-infos" class="text">
+            <h3>PLAYLIST</h3>
+            <p>active :</p>
         </div>
     </div>
 </div>
 
-<audio class="audio-player">
+<audio id="audio">
     <source class="mp3_src" src="" type="audio/mp3" />
     Your browser does not support the audio element.
 </audio>
