@@ -7,6 +7,8 @@ var track = audioPlayer.querySelector("#track");
 var player = audioPlayer.querySelector('audio');
 var currentTime = audioPlayer.querySelector('#current-time');
 var totalTime = audioPlayer.querySelector('#total-time');
+var volume = document.getElementById("volume");
+var volumeProgress = document.getElementById("volume-active");
 
 track.addEventListener("mousedown", function(event) {
     function mouseUp(e) {
@@ -21,11 +23,32 @@ track.addEventListener("mousedown", function(event) {
     window.addEventListener("mouseup", mouseUp);
 });
 
+volume.addEventListener("mousedown", function(event) {
+    // FIXME same stuff, combo it !
+    function mouseUp(e) {
+        changeVolume(e);
+        window.removeEventListener("mousemove", changeVolume);
+        window.removeEventListener("mouseup", mouseUp);
+    }
+
+    event.preventDefault();
+    window.addEventListener("mousemove", changeVolume);
+
+    window.addEventListener("mouseup", mouseUp);
+});
+document.getElementById("mute").addEventListener("click", function() {
+    player.volume = 0;
+    volumeProgress.style.width = "0%";
+});
+
 var trackWidth = track.getBoundingClientRect().width;
+var volumeWidth = volume.getBoundingClientRect().width;
 
 function rewind(e) {
+    //FIXME clientX not the best idea
     e.preventDefault();
     var x = e.clientX;
+
     if (x >= trackWidth) {
         player.currentTime = player.duration;
     }
@@ -33,9 +56,27 @@ function rewind(e) {
         player.currentTime = 0;
     }
     else {
-        player.currentTime = (x/trackWidth)*player.duration;
+        player.currentTime = (x / trackWidth) * player.duration;
     }
     updateProgress();
+}
+
+function changeVolume(e) {
+    //FIXME clientX not the best idea
+    e.preventDefault();
+    var w = window.innerWidth;
+    var x = w - e.clientX;
+
+    if (x <= 0) {
+        player.volume = 1;
+    }
+    else if (x >= volumeWidth) {
+        player.volume = 0;
+    }
+    else {
+        player.volume = 1 - (x / volumeWidth);
+    }
+    volumeProgress.style.width = player.volume * 100 + "%";
 }
 
 playpauseBtn.addEventListener('click', togglePlay);

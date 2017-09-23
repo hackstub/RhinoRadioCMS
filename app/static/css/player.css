@@ -46,11 +46,18 @@
     border-top: 5px solid black;
     border-top-left-radius: 2.5px;
     border-top-right-radius: 2.5px;
-    padding: 0 0.6em;
     font-size: 0.8em;
     font-family: hack;
     display: flex;
     align-items: center;
+}
+#time {
+    padding: 0 0.6em;
+}
+#mute {
+    left: 80%;
+    padding: 0 1em;
+    cursor: pointer;
 }
 .separator {
     margin: 0 0.25em;
