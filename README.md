@@ -20,8 +20,8 @@ pip3 install -r requirements.txt
 
 # To initialize DB :
 python3 manage.py shell
-from app import db
-from app.models import *
+>>> from app import db
+>>> from app.models import *
 
 # To create tables :
 db.create_all()
