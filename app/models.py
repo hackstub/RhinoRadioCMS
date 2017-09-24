@@ -51,6 +51,15 @@ class Author(db.Model):
     status = db.Column(db.String(128))
     bio = db.Column(db.Text)
 
+class BlogPost(db.Model):
+    __tablename__ = 'blog_posts'
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(256))
+    date = db.Column(db.Date, default=datetime.utcnow)
+    content = db.Column(db.Text)
+
+# Sample code from the nice book "Flask Web Development" by Miguel Grinberg
+
 class Follow(db.Model):
     __tablename__ = 'follows'
     follower_id = db.Column(db.Integer, db.ForeignKey('users.id'),
@@ -72,13 +81,6 @@ class User(db.Model):
                                 backref=db.backref('followed', lazy='joined'),
                                 lazy='dynamic',
                                 cascade='all, delete-orphan')
-
-class BlogPost(db.Model):
-    __tablename__ = 'blog_posts'
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(256))
-    date = db.Column(db.Date, default=datetime.utcnow)
-    content = db.Column(db.Text)
 
 
 admin.add_view(ModelView(BlogPost, db.session))
