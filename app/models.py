@@ -19,11 +19,7 @@ class Podcast(db.Model):
     __tablename__ = 'podcasts'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(512), unique=True)
-    authors = db.relationship('Publication',
-                                foreign_keys=[Publication.author_id],
-                                backref=db.backref('podcasts', lazy='select'),
-                                lazy='join',
-                                cascade='all, delete-orphan')
+    authors = db.relationship('Publication', backref='podcasts', lazy='dynamic', cascade='all, delete-orphan')
     desc = db.Column(db.Text)
     label = db.Column(db.String(128))
     date = db.Column(db.Date)
@@ -43,11 +39,7 @@ class Author(db.Model):
     __tablename__ = 'authors'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128))
-    publications = db.relationship('Publication',
-                                    foreign_keys=[Publication.id],
-                                    backref=db.backref('authors', lazy='join'),
-                                    lazy='select',
-                                    cascade='all, delete-orphan')
+    publications = db.relationship('Publication', backref='authors', lazy='dynamic', cascade='all, delete-orphan')
     status = db.Column(db.String(128))
     bio = db.Column(db.Text)
 
@@ -58,31 +50,7 @@ class BlogPost(db.Model):
     date = db.Column(db.Date, default=datetime.utcnow)
     content = db.Column(db.Text)
 
-# Sample code from the nice book "Flask Web Development" by Miguel Grinberg
-
-class Follow(db.Model):
-    __tablename__ = 'follows'
-    follower_id = db.Column(db.Integer, db.ForeignKey('users.id'),
-                            primary_key=True)
-    followed_id = db.Column(db.Integer, db.ForeignKey('users.id'),
-                            primary_key=True)
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-
-class User(db.Model):
-    __tablename__ = 'users'
-    id = db.Column(db.Integer, primary_key = True)
-    followed = db.relationship('Follow',
-                               foreign_keys=[Follow.follower_id],
-                               backref=db.backref('follower', lazy='joined'),
-                               lazy='dynamic',
-                               cascade='all, delete-orphan')
-    followers = db.relationship('Follow',
-                                foreign_keys=[Follow.followed_id],
-                                backref=db.backref('followed', lazy='joined'),
-                                lazy='dynamic',
-                                cascade='all, delete-orphan')
-
 
 admin.add_view(ModelView(BlogPost, db.session))
-admin.add_view(ModelView(User, db.session))
-admin.add_view(ModelView(Follow, db.session))
+admin.add_view(ModelView(Podcast, db.session))
+admin.add_view(ModelView(Author, db.session))
