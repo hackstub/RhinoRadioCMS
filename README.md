@@ -18,6 +18,8 @@ pip3 install -r requirements.txt
 ```bash
 ./run_dev_server.sh
 
+## Database Cheatsheet
+
 # To initialize DB :
 python3 manage.py shell
 >>> from app import db
@@ -35,8 +37,9 @@ db.session.add(object)
 # To commit changes :
 db.session.commit()
 ```
+## Admin
 
-
+Admin interface on : http://domain.tld/admin
 
 ## Deploy
 
