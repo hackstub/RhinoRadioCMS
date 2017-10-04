@@ -1,7 +1,6 @@
-from .. import db, admin
+from . import db, admin
 from datetime import datetime
 from flask_admin.contrib.sqla import ModelView
-from .admin_views import *
 
 publications = db.Table('publications',
     db.Column('podcast_id', db.Integer, db.ForeignKey('podcasts.id'), primary_key=True),
@@ -72,9 +71,25 @@ class Event(db.Model):
     end = db.Column(db.DateTime)
     desc = db.Column(db.Text)
 
+class PodcastView(ModelView):
+    create_modal = True
+
+    form_choices = {
+        'mood': [
+            ('slow', 'Au pas'),
+            ('medium', 'Au trot'),
+            ('fast', 'Au galop !')
+        ]
+    }
+
+    from_ajax_refs = {
+        'authors': {
+            'fields': ['authors.name'],
+            'page_size': 10
+        }
+    }
 
 admin.add_view(ModelView(BlogPost, db.session))
-admin.add_view(ModelView(Podcast, db.session))
-# admin.add_view(PodcastView(Podcast, db.session))
+admin.add_view(PodcastView(Podcast, db.session))
 admin.add_view(ModelView(Author, db.session))
 admin.add_view(ModelView(Event, db.session))
