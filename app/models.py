@@ -2,9 +2,14 @@ from . import db, admin
 from datetime import datetime
 from flask_admin.contrib.sqla import ModelView
 
+## Database models
+
+# Taxonomy table
 publications = db.Table('publications',
     db.Column('podcast_id', db.Integer, db.ForeignKey('podcasts.id'), primary_key=True),
     db.Column('author_id', db.Integer, db.ForeignKey('authors.id'), primary_key=True))
+
+# Classes
 
 class Podcast(db.Model):
     __tablename__ = 'podcasts'
@@ -13,7 +18,7 @@ class Podcast(db.Model):
     authors = db.relationship('Author',
                 secondary='publications',
                 lazy='select',
-                backref=db.backref('podcasts', lazy='select'))
+                back_populates='podcasts')
     sections = db.relationship('Section',
                 backref = db.backref('podcast', lazy='select'),
                 lazy='select')
@@ -42,6 +47,11 @@ class Author(db.Model):
     name = db.Column(db.String(128))
     status = db.Column(db.String(128))
     bio = db.Column(db.Text)
+    podcasts = db.relationship('Podcast',
+                secondary='publications')
+
+    def __str__(self):
+        return self.name
 
 class Label(db.Model):
     __tablename__ = "labels"
@@ -71,6 +81,8 @@ class Event(db.Model):
     end = db.Column(db.DateTime)
     desc = db.Column(db.Text)
 
+# Admin views
+
 class PodcastView(ModelView):
     create_modal = True
 
@@ -82,12 +94,13 @@ class PodcastView(ModelView):
         ]
     }
 
-    from_ajax_refs = {
-        'authors': {
-            'fields': ['authors.name'],
-            'page_size': 10
-        }
+    form_ajax_refs = {
     }
+
+class SectionView(ModelView):
+    create_modal = True
+
+    columns_exclude = ['timestamp']
 
 admin.add_view(ModelView(BlogPost, db.session))
 admin.add_view(PodcastView(Podcast, db.session))
