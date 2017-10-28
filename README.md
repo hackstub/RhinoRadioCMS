@@ -43,4 +43,15 @@ Admin interface on : http://domain.tld/admin
 
 ## Deployment with Gunicorn
 
+```bash
+# Install Gunicorn
+pip3 install Gunicorn
+```
+## Doc
 
+Eeeeeeeh... Soon.
+
+```bash
+# Install Sphinx
+pip3 install Sphinx
+```

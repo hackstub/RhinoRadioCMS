@@ -8,7 +8,7 @@ from .meta import *
 from .section import *
 
 # Admin views
-''' Fixme : add localization '''
+''' Fixme : add localization (http://flask-admin.readthedocs.io/en/latest/advanced/#localization-with-flask-babelex)'''
 
 class PodcastView(ModelView):
     create_modal = True
