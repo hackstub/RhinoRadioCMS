@@ -41,6 +41,6 @@ db.session.commit()
 
 Admin interface on : http://domain.tld/admin
 
-## Deploy
+## Deployment with Gunicorn
 
-Instructions coming soon :)
+

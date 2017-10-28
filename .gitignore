@@ -4,3 +4,4 @@
 *.pyc
 app/uploads/*
 venv/*
+doc/_build/

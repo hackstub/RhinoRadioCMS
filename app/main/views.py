@@ -4,7 +4,8 @@ from werkzeug.utils import secure_filename
 from . import main
 from .forms import SubscribeForm
 from .. import db
-from app.models import Podcast
+from app.models.admin import *
+from app.models.podcast import Podcast
 from glob import glob
 from config import config
 import json
@@ -72,9 +73,7 @@ def podcast(name):
     response.status_code = 200
     return response
 
-
 ALLOWED_EXTENSIONS = set(['mp3', 'ogg'])
-UPLOAD_DIR = "app/uploads/"
 
 def allowed_file(filename):
     """
@@ -83,7 +82,6 @@ def allowed_file(filename):
     """
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
 
 @main.route("/upload", methods=["GET", "POST"])
 def upload():
@@ -164,16 +162,14 @@ def getPodcasts():
     foo.name = "foo"
     foo.link = "/podcast/foo"
     foo.src = "http://podcast.radiorhino.eu/Cr%c3%a9ations/2016-05-11%20-%20Grand%20test%20(Th%c3%a9o,%20J%c3%a9r%c3%a9mie).mp3"
-    
+
     bar = Podcast()
     bar.name = "bar"
     bar.link = "/podcast/bar"
     bar.src = "http://podcast.radiorhino.eu/Cr%c3%a9ations/Images%20sonores%20d'%c3%89pinal/IMAGES_SONORES_EPINAL.mp3"
-    
+
     podcasts = [ foo, bar ]
     return podcasts
-
-
 
 #########################
 #  Static stuff         #
@@ -194,8 +190,3 @@ def getScripts() :
 
 def getBlogItems() :
     return [ ]
-    #return  [ json.loads(open("content/blog/2017-08-06.json").read()) ]
-
-# Moved to manage.py
-#if __name__ == '__main__':
-#    app.run()
