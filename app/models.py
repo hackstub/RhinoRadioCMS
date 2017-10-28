@@ -41,6 +41,7 @@ class Section(db.Model):
     label_id = db.Column(db.Integer, db.ForeignKey('labels.id'))
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
+
 class Author(db.Model):
     __tablename__ = 'authors'
     id = db.Column(db.Integer, primary_key=True)
@@ -58,6 +59,10 @@ class Label(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128))
     desc = db.Column(db.Text)
+    podcasts = db.relationship('Podcast', backref='label', lazy=True)
+
+    def __str__(self):
+        return self.name
 
 class Tags(db.Model):
     __tablename__ = "tags"
@@ -100,9 +105,12 @@ class PodcastView(ModelView):
 class SectionView(ModelView):
     create_modal = True
 
+    
     columns_exclude = ['timestamp']
 
 admin.add_view(ModelView(BlogPost, db.session))
 admin.add_view(PodcastView(Podcast, db.session))
 admin.add_view(ModelView(Author, db.session))
 admin.add_view(ModelView(Event, db.session))
+admin.add_view(ModelView(Label, db.session))
+admin.add_view(SectionView(Section, db.session))
