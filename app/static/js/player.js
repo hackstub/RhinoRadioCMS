@@ -15,7 +15,6 @@ function Player() {
     this.previousVolume = 1;
 
     this.initListeners();
-
 }
 Player.prototype.initListeners = function() {
     var _this = this;
@@ -40,24 +39,51 @@ Player.prototype.initListeners = function() {
         window.addEventListener("mouseup", removeListeners);
     }
 
+    function getTrackValue(e) {
+        // FIXME clientX stuff not the best solution
+        var value;
+        var x = e.clientX;
+        var trackWidth = this.trackBar.getBoundingClientRect().width;
+
+        if (x >= trackWidth) this.audio.currentTime = this.audio.duration;
+        else if (x <= 0) this.audio.currentTime = 0;
+        else this.audio.currentTime = (x / trackWidth) * this.audio.duration;
+
+        this.updateTrack();
+    }
     // init track slider listener
     this.trackBar.onmousedown = function(e) {
-        sliderListerner(e, _this.updateTrack.bind(_this));
+        sliderListerner(e, getTrackValue.bind(_this));
     }
 
+    function getVolumeValue(e) {
+        // FIXME clientX stuff not the best solution
+        var value;
+        var w = window.innerWidth;
+        var x = w - e.clientX;
+        var volumeWidth = this.volumeBar.getBoundingClientRect().width;
+
+        if (x <= 0) value = 1;
+        else if (x >= volumeWidth) value = 0;
+        else value = 1 - (x / volumeWidth);
+
+        this.updateVolume(value);
+    }
     // init volume slider listener
     this.volumeBar.onmousedown = function(e) {
-        sliderListerner(e, _this.updateVolume.bind(_this));
+        sliderListerner(e, getVolumeValue.bind(_this));
     }
 
     // init mute button listener
     var mute = document.getElementById("mute");
-    mute.onclick = function() {
-        _this.mute();
-    }
+    mute.onclick = _this.mute.bind(_this);
+
+    this.audio.addEventListener('timeupdate', _this.updateTrack.bind(_this));
+    this.audio.addEventListener('ended', _this.pause.bind(_this));
 
 };
 Player.prototype.load = function(data) {
+    var _this = this;
     var source = this.audio.children[0];
     var title = document.getElementById("track-title");
 
@@ -68,10 +94,10 @@ Player.prototype.load = function(data) {
     // Reload player with the newly fetched podcast
     this.audio.pause();
     this.audio.load();
-    this.audio.oncanplaythrough = this.audio.play();
-
-    this.playBtn.attributes.display.value = "none";
-    this.pauseBtn.attributes.display.value = "";
+    this.audio.onloadedmetadata = function () {
+        _this.totalTime.textContent = _this.formatTime(_this.audio.duration);
+    };
+    this.audio.oncanplaythrough = this.play();
 };
 Player.prototype.play = function() {
     this.playBtn.attributes.display.value = "none";
@@ -95,25 +121,25 @@ Player.prototype.mute = function() {
     }
 
     this.updateVolume(newVolume);
+};
+Player.prototype.updateTrack = function(value) {
 
+    var current = this.audio.currentTime;
+    var percent = (current / this.audio.duration) * 100;
+    this.trackSlider.style.width = percent + '%';
+
+    this.currentTime.textContent = this.formatTime(current);
 };
 Player.prototype.updateVolume = function(value) {
     /* Update the volume and the graphic slider width. The parameter can be an
     integrer or an event */
 
-    if (value.target !== undefined) {
-        // if the parameter is an event, calculate the value depending on
-        // the mouse position
-        // FIXME clientX stuff not the best solution
-        var w = window.innerWidth;
-        var x = w - value.clientX;
-        var volumeWidth = this.volumeBar.getBoundingClientRect().width;
-
-        if (x <= 0) value = 1;
-        else if (x >= volumeWidth) value = 0;
-        else value = 1 - (x / volumeWidth);
-    }
-
     this.audio.volume = value;
     this.volumeSlider.style.width = value * 100 + "%";
+};
+Player.prototype.formatTime = function(time) {
+    var min = Math.floor(time / 60);
+    var sec = Math.floor(time % 60);
+
+    return min + ':' + ((sec<10) ? ('0' + sec) : sec);
 };
