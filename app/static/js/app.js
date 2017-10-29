@@ -1,3 +1,4 @@
+var player = new Player();
 
 // Even when going back in the history...
 window.addEventListener("popstate", function(e) {
@@ -24,19 +25,20 @@ $('a.intern').click(function(e)
 function fetchAndPlayPodcast(target)
 {
     $.getJSON(target, function(data) {
-    // Get relevant items
-    var playerSrc = $('audio source.mp3_src');
-    var playerTitle = $('#play-infos h3');
-
-    // Update their data
-    playerSrc.attr("src", data.src);
-    playerTitle.html(data.title);
-
-    // Reload player with the newly fetched podcast
-    player.pause();
-    player.load();
-    player.oncanplaythrough = player.play();
-    playBtn.attributes.display.value = "none";
-    pauseBtn.attributes.display.value = "";
+    player.load(data);
+    // // Get relevant items
+    // var playerSrc = $('audio source.mp3_src');
+    // var playerTitle = $('#play-infos h3');
+    //
+    // // Update their data
+    // playerSrc.attr("src", data.src);
+    // playerTitle.html(data.title);
+    //
+    // // Reload player with the newly fetched podcast
+    // player.pause();
+    // player.load();
+    // player.oncanplaythrough = player.play();
+    // playBtn.attributes.display.value = "none";
+    // pauseBtn.attributes.display.value = "";
     });
 };

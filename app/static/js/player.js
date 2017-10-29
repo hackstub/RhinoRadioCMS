@@ -1,118 +1,110 @@
-var audioPlayer = document.querySelector('#bottomPlayer');
-var playBtn = audioPlayer.querySelector('#playbtn');
-var pauseBtn = audioPlayer.querySelector('#pausebtn');
-var playpauseBtn = audioPlayer.querySelector("#play");
-var progress = audioPlayer.querySelector("#track-progress");
-var track = audioPlayer.querySelector("#track");
-var player = audioPlayer.querySelector('audio');
-var currentTime = audioPlayer.querySelector('#current-time');
-var totalTime = audioPlayer.querySelector('#total-time');
-var volume = document.getElementById("volume");
-var volumeProgress = document.getElementById("volume-active");
+function Player() {
+    this.audio         = document.getElementById("audio");
 
-track.addEventListener("mousedown", function(event) {
-    function mouseUp(e) {
-        rewind(e);
-        window.removeEventListener("mousemove", rewind);
-        window.removeEventListener("mouseup", mouseUp);
-    }
+    this.playBtn       = document.getElementById("playBtn");
+    this.pauseBtn      = document.getElementById("pauseBtn");
+    var playpauseBtn   = document.getElementById("play");
 
-    event.preventDefault();
-    window.addEventListener("mousemove", rewind);
 
-    window.addEventListener("mouseup", mouseUp);
-});
 
-volume.addEventListener("mousedown", function(event) {
-    // FIXME same stuff, combo it !
-    function mouseUp(e) {
-        changeVolume(e);
-        window.removeEventListener("mousemove", changeVolume);
-        window.removeEventListener("mouseup", mouseUp);
-    }
+    var trackProgress  = document.getElementById("track-progress");
+    var currentTime    = document.getElementById("current-time");
+    var totalTime      = document.getElementById("total-time");
 
-    event.preventDefault();
-    window.addEventListener("mousemove", changeVolume);
 
-    window.addEventListener("mouseup", mouseUp);
-});
-document.getElementById("mute").addEventListener("click", function() {
-    player.volume = 0;
-    volumeProgress.style.width = "0%";
-});
+    this.initListeners();
 
-var trackWidth = track.getBoundingClientRect().width;
-var volumeWidth = volume.getBoundingClientRect().width;
-
-function rewind(e) {
-    //FIXME clientX not the best idea
-    e.preventDefault();
-    var x = e.clientX;
-
-    if (x >= trackWidth) {
-        player.currentTime = player.duration;
-    }
-    else if (x <= 0) {
-        player.currentTime = 0;
-    }
-    else {
-        player.currentTime = (x / trackWidth) * player.duration;
-    }
-    updateProgress();
 }
+Player.prototype.initListeners = function() {
+    var _this = this;
 
-function changeVolume(e) {
-    //FIXME clientX not the best idea
-    e.preventDefault();
-    var w = window.innerWidth;
-    var x = w - e.clientX;
-
-    if (x <= 0) {
-        player.volume = 1;
+    function sliderListerner(e, action) {
+        // generic sliders mouse event listener
+        e.preventDefault();
+        action(e);
+        function removeListeners(e) {
+            action(e);
+            window.removeEventListener("mousemove", action);
+            window.removeEventListener("mouseup", removeListeners);
+        }
+        window.addEventListener("mousemove", action);
+        window.addEventListener("mouseup", removeListeners);
     }
-    else if (x >= volumeWidth) {
-        player.volume = 0;
+
+    // init track slider listener
+    var track = document.getElementById("track");
+    track.onmousedown = function(e) {
+        sliderListerner(e, _this.updateTrack);
     }
-    else {
-        player.volume = 1 - (x / volumeWidth);
+
+    // init volume slider listener
+    var volume = document.getElementById("volume");
+    volume.onmousedown = function(e) {
+        sliderListerner(e, _this.updateVolume);
     }
-    volumeProgress.style.width = player.volume * 100 + "%";
-}
 
-playpauseBtn.addEventListener('click', togglePlay);
-player.addEventListener('timeupdate', updateProgress);
-player.addEventListener('loadedmetadata', () => {
-    totalTime.textContent = formatTime(player.duration);
-});
-// player.addEventListener('canplay', makePlay);
-player.addEventListener('ended', function(){
-    playBtn.attributes.display.value = "";
-    pauseBtn.attributes.display.value = "none";
-    //player.currentTime = 0;
-});
+    // init mute button listener
+    var mute = document.getElementById("mute");
+    mute.onclick = function() {
+        _this.mute();
+    }
 
-function updateProgress() {
-    var current = player.currentTime;
-    var percent = (current / player.duration) * 100;
-    progress.style.width = percent + '%';
+};
+Player.prototype.load = function(data) {
+    var source = this.audio.children[0];
+    var title = document.getElementById("track-title");
 
-    currentTime.textContent = formatTime(current);
-}
+    // Update their data
+    source.setAttribute("src", data.src);
+    title.innerHtml = data.title;
 
-function formatTime(time) {
-    var min = Math.floor(time / 60);
-    var sec = Math.floor(time % 60);
-    return min + ':' + ((sec<10) ? ('0' + sec) : sec);
-}
+    // Reload player with the newly fetched podcast
+    this.audio.pause();
+    this.audio.load();
+    this.audio.oncanplaythrough = this.audio.play();
 
-function togglePlay() {
-    if(player.paused) {
-        playBtn.attributes.display.value = "none";
-        pauseBtn.attributes.display.value = "";
-        player.play();
+    this.playBtn.attributes.display.value = "none";
+    this.pauseBtn.attributes.display.value = "";
+};
+Player.prototype.play = function() {
+};
+Player.prototype.pause = function() {
+};
+Player.prototype.togglePlayPause = function() {
+};
+Player.prototype.mute = function() {
+    var actualVolume = this.audio.volume;
+    var newVolume;
+
+    if (actualVolume != 0) {
+        this.previousVolume = actualVolume;
+        newVolume = 0;
     } else {
-        playBtn.attributes.display.value = "";
-        pauseBtn.attributes.display.value = "none";
-        player.pause();
+        newVolume = this.previousVolume;
     }
-}
+
+    this.updateVolume(newVolume);
+
+};
+Player.prototype.updateVolume = function(value) {
+    /* Update the volume and the graphic slider width. The parameter can be an
+    integrer or an event */
+
+    var volumeProgress = document.getElementById("volume-active");
+
+    if (value.target !== undefined) {
+        // if the parameter is an event, calculate the value depending on
+        // the mouse position
+        // FIXME clientX stuff not the best solution
+        var w = window.innerWidth;
+        var x = w - value.clientX;
+        var volumeWidth = volumeBar.getBoundingClientRect().width;
+
+        if (x <= 0) value = 1;
+        else if (x >= volumeWidth) value = 0;
+        else value = 1 - (x / volumeWidth);
+    }
+
+    this.audio.volume = value;
+    volumeProgress.style.width = value * 100 + "%";
+};
