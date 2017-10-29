@@ -8,3 +8,4 @@ class BlogPost(db.Model):
     title = db.Column(db.String(256))
     date = db.Column(db.Date, default=datetime.utcnow)
     content = db.Column(db.Text)
+    label_id = db.Column(db.Integer, db.ForeignKey('labels.id'))

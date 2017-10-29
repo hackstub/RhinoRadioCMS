@@ -20,19 +20,9 @@ pip3 install -r requirements.txt
 
 ## Database Cheatsheet
 
-# To initialize DB :
-python3 manage.py shell
->>> from app import db
->>> from app.models import *
-
-# To create tables :
-db.create_all()
-
-# To drop tables :
-db.drop_all()
-
-# To add an object :
-db.session.add(object)
+# Migrating database after modifications
+python3 manage.py db migrate
+python3 manage.py db upgrade
 
 # To commit changes :
 db.session.commit()

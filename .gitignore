@@ -5,3 +5,4 @@
 app/uploads/*
 venv/*
 doc/_build/
+app/static/podcasts

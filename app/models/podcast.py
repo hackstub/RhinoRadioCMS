@@ -17,7 +17,7 @@ class Podcast(db.Model):
                 lazy='select',
                 back_populates='podcasts')
     sections = db.relationship('Section',
-                backref = db.backref('podcast', lazy='select'),
+                backref=db.backref('podcast', lazy='select'),
                 lazy='select')
     desc = db.Column(db.Text)
     label_id = db.Column(db.Integer, db.ForeignKey('labels.id'))
@@ -25,6 +25,8 @@ class Podcast(db.Model):
     mood = db.Column(db.SmallInteger)
     link = db.Column(db.String(256))
     type = db.Column(db.Boolean())
-    tags = db.Column(db.Integer, db.ForeignKey('tags.id'))
+    tags = db.relationship('Tag',
+                backref=db.backref('podcasts', lazy='select'),
+                lazy='select')
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     public = db.Column(db.Boolean())
