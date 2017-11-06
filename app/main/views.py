@@ -12,6 +12,15 @@ import json
 from uuid import uuid4
 app = Flask(__name__)
 
+from app.models.podcast import Podcast
+from app.models.contributor import *
+from app.models.blog import *
+from app.models.event import *
+from app.models.label import *
+from app.models.tag import *
+from app.models.section import *
+from app.models.page import *
+
 
 #########################
 #  Main pages           #
@@ -31,6 +40,7 @@ def index(specificContent=None):
 def about():
     return render_template( 'about.html',
                             styles = getStyles(),
+                            page = Page.query.filter_by(title='À propos').first(),
                             scripts = getScripts(), )
 
 @main.route('/maintenance', methods=['GET', 'POST'])

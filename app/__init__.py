@@ -9,13 +9,11 @@ from glob import glob
 from config import config, __APP_NAME__
 import os.path as op
 
-
 mail = Mail()
 db = SQLAlchemy()
 moment = Moment()
 admin = Admin(name = __APP_NAME__ + ' Admin', template_mode="bootstrap3")
-path = op.join(op.dirname(__file__), 'static/podcasts')
-admin.add_view(FileAdmin(path, '/static/podcasts/', name='Files'))
+base_path = op.dirname(__file__)
 
 def create_app(config_name):
     app = Flask(__name__)
