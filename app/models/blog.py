@@ -7,9 +7,9 @@ class BlogPost(db.Model):
     __tablename__ = 'blog_posts'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(256))
-    """ Title of the podcast """
-    date = db.Column(db.Date, default=datetime.utcnow)
-    """ Date of recording """
+    """ Title of the post """
+    timestamp = db.Column(db.Date, default=datetime.utcnow)
+    """ Date of creation """
     desc = db.Column(db.Text)
     """ Description """
     label_id = db.Column(db.Integer, db.ForeignKey('labels.id'))

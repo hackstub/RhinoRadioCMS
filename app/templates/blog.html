@@ -1,0 +1,10 @@
+    <div id="blog">
+        <h2>Blog</h2>
+        {% for article in blog %}
+        <article>
+            <h3>{{ article.title }} </h3>
+            <h5>{{ article.timestamp }}</h5>
+            <p>{{ article.content }}</p>
+        </article>
+        {% endfor %}
+    </div>

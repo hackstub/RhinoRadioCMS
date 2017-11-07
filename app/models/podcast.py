@@ -42,7 +42,7 @@ class Podcast(db.Model):
                 backref=db.backref('podcasts', lazy='select'),
                 lazy='select')
     """ Datetime of publication """
-    timestamp = db.Column(db.DateTime, primary_key=True, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     """ State of te publication """
     public = db.Column(db.Boolean())
 
@@ -69,3 +69,8 @@ class Podcast(db.Model):
                 type = choice([True, False]),
                 public = True
             )
+            db.session.add(p)
+        try:
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()

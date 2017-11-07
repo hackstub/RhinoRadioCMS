@@ -32,7 +32,7 @@ def index(specificContent=None):
                             styles = getStyles(),
                             scripts = getScripts(),
                             podcasts = getPodcasts(),
-                            blog = getBlogItems(),
+                            blog = getBlogPosts(),
                             specificContent = specificContent
                           )
 
@@ -63,42 +63,60 @@ def maintenance():
 def podcasts():
     return "liste des podcasts"
 
-@main.route('/podcast/<name>')
-def podcast(name):
+@main.route('/podcast/<id>')
+def podcast(id):
+    podcast = Podcast.query.filter_by(id = id).first()
     if not request.referrer:
-        specificContent = { "function": "fetchAndPlayPodcast", "arg": request.url }
+        specificContent = { "function": "fetchAndPlayPodcast", "arg": podcast.link }
         return index(specificContent=specificContent)
 
-    if name == "foo":
-        src = "http://podcast.radiorhino.eu/Cr%c3%a9ations/2016-05-11%20-%20Grand%20test%20(Th%c3%a9o,%20J%c3%a9r%c3%a9mie).mp3"
-    elif name == "bar":
-        src = "http://podcast.radiorhino.eu/Cr%c3%a9ations/Images%20sonores%20d'%c3%89pinal/IMAGES_SONORES_EPINAL.mp3"
-    else:
-        src = "wat"
-
-    data = { "src" : src,
-             "title" : "so much "+name+" !" }
-
-    response = jsonify(data)
     response.status_code = 200
     return response
+
+#########################
+#  Contributors         #
+#########################
+
+@main.route('/contributors/')
+def contributors():
+    """ Return list of all the contributors """
+    contributors = Contributor.query.order_by(name).all()
+    return contributors
+
+@main.route('/contributor/<contrib>')
+def contributor(contrib):
+    podcasts = Podcast.query.filter_by(contributor_id = Contributor.query.filter_by(name = contrib).first()).all()
+    return podcasts
+
 
 #########################
 #  Static stuff         #
 #########################
 
-def getStyles() :
+def getPodcasts(filter=None, order=None):
+    if filter and order:
+        podcasts = Podcast.query.filter_by(filter).order_by(order).all()
+    elif filter:
+        podcasts = Podcast.query.filter_by(filter).all()
+    elif order:
+        podcasts = Podcast.query.order_by(filter).all()
+    else:
+        podcasts = Podcast.query.order_by(Podcast.timestamp.desc()).all()
+    return podcasts
+
+def getStyles():
      return [ url_for('static',
                       filename=file.replace('app/static/', ''),
                       _external=True)
              for file in glob("app/static/*/*.css") ]
 
-def getScripts() :
+def getScripts():
      return [ url_for('static',
                       filename=file.replace('app/static/', ''),
                       _external=True)
              for file in   glob("app/static/lib/*.js")
                          + glob("app/static/js/*.js") ]
 
-def getBlogItems() :
-    return [ ]
+def getBlogPosts():
+    blogPosts = BlogPost.query.order_by(BlogPost.timestamp.desc())
+    return blogPosts

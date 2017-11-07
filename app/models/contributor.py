@@ -26,7 +26,7 @@ class Contributor(db.Model):
                 name = forgery_py.name.full_name(),
                 status = forgery_py.lorem_ipsum.word(),
                 bio = forgery_py.lorem_ipsum.sentence(),
-                email = forgery_py.internet.e-mail())
+                email = forgery_py.internet.email_address())
             db.session.add(c)
         try:
             db.session.commit()
