@@ -6,6 +6,7 @@ class Contributor(db.Model):
     name = db.Column(db.String(128))
     status = db.Column(db.String(128))
     bio = db.Column(db.Text)
+    email = db.Column(db.String(256))
     podcasts = db.relationship('Podcast',
                 secondary='publications')
 
@@ -24,7 +25,8 @@ class Contributor(db.Model):
             c = Contributor(
                 name = forgery_py.name.full_name(),
                 status = forgery_py.lorem_ipsum.word(),
-                bio = forgery_py.lorem_ipsum.sentence())
+                bio = forgery_py.lorem_ipsum.sentence(),
+                email = forgery_py.internet.e-mail())
             db.session.add(c)
         try:
             db.session.commit()
