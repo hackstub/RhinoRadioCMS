@@ -1,5 +1,7 @@
 from .. import db
 from datetime import datetime
+from geoalchemy2 import Geometry
+from flask_admin.contrib.geoa import ModelView
 from .contributor import Contributor
 from .section import Section
 from .label import *
@@ -14,37 +16,41 @@ publications = db.Table('publications',
 class Podcast(db.Model):
     __tablename__ = 'podcasts'
     id = db.Column(db.Integer, primary_key=True)
-    """ Title of the podcast """
     title = db.Column(db.String(256))
-    """ Contibutors authoring the podcast """
+    """ Title of the podcast """
     contributors = db.relationship('Contributor',
                 secondary='publications',
                 lazy='select',
                 back_populates='podcasts')
-    """ Sections of the podcast """
+    """ Contibutors authoring the podcast """
     sections = db.relationship('Section',
                 backref=db.backref('podcast', lazy='select'),
                 lazy='select')
-    """ Description of the podcast """
+    """ Sections of the podcast """
     desc = db.Column(db.Text)
-    """ Label of the podcast """
+    """ Description of the podcast """
     label_id = db.Column(db.Integer, db.ForeignKey('labels.id'))
-    """ Date of publication """
+    """ Label of the podcast """
     date = db.Column(db.Date, default=datetime.utcnow)
-    """ Mood of the podcast """
+    """ Date of publication """
     mood = db.Column(db.SmallInteger)
-    """ Link to the audio file """
+    """ Mood of the podcast """
     link = db.Column(db.String(256))
+    """ Link to the audio file """
+    type = db.Column(db.String(128))
     """ Type : musical or non-musical """
-    type = db.Column(db.Boolean())
-    """ Tags of the podcasts """
     tags = db.relationship('Tag',
                 backref=db.backref('podcasts', lazy='select'),
                 lazy='select')
-    """ Datetime of publication """
+    """ Tags of the podcasts """
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-    """ State of te publication """
+    """ Datetime of publication """
     public = db.Column(db.Boolean())
+    """ State of te publication """
+#    place = db.Column(Geometry('POINT'))
+#    """ Place of recording/playing """
+#    itinerary = db.Column(Geometry('LINESTRING'))
+#    """ Itinerary of recording/playing """
 
     @staticmethod
     def fake_feed(count=100):

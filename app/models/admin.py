@@ -15,6 +15,9 @@ from .tag import *
 from .section import *
 from .page import *
 
+#####################
+#  Admin views      #
+#####################
 
 podcastPath = op.join(base_path, 'static/podcasts/')
 
@@ -41,6 +44,10 @@ class FileAdminField(FileAdminWidget):
     widget = FileAdminWidget(base_path=podcastPath, url='/static/podcasts/', name='Files')
 '''
 
+#############################
+#  Custom generic views     #
+#############################
+
 class CKTextAreaWidget(TextArea):
     def __call__(self, field, **kwargs):
         if kwargs.get('class'):
@@ -55,23 +62,18 @@ class CKTextAreaField(TextAreaField):
 class ModalView(ModelView):
     create_modal = True
 
-class PageView(ModelView):
+class FullTextView(ModelView):
     extra_js = ['//cdn.ckeditor.com/4.6.0/standard/ckeditor.js']
     form_overrides = {
         'desc': CKTextAreaField
     }
 
+#####################
+#  Custom Views     #
+#####################
 
-class PodcastView(PageView):
-    form_columns = ('title',
-        'label',
-        'contributors',
-        'desc',
-        'mood',
-        'type',
-        'tags',
-        'link'
-        )
+class PodcastView(FullTextView):
+    form_excluded_columns = ['timestamp']
     form_choices = {
         'mood': [
             ('slow', 'Au pas'),
@@ -89,7 +91,10 @@ class PodcastView(PageView):
         type='Musical',
         desc='Description',
         mood='Ambiance',
-        link='Lien'
+        link='Lien',
+        sections = 'Extraits',
+        place = 'Lieu',
+        itinerary = 'Itinéraire'
         )
     form_args = {
         'type': {
@@ -99,17 +104,49 @@ class PodcastView(PageView):
 
     inline_models = (Tag, Section, )
 
-class SectionView(PageView):
+class SectionView(FullTextView):
     form_excluded_columns = ['timestamp']
+
+class EventView(ModalView):
+    column_labels = dict(
+        title = 'Titre',
+        place = 'Lieu',
+        begin = 'Début',
+        end = 'Fin',
+        desc = 'Description',
+        label_id = 'Label'
+    )
 
 class ContributorView(ModalView):
     form_excluded_columns = ['podcasts']
+    column_labels = dict(
+        name = 'Nom',
+        status = 'Statut',
+    )
 
 class LabelView(ModalView):
-    form_excluded_columns = ['podcasts', 'sections']
+    form_excluded_columns = [
+        'podcasts',
+        'sections',
+        'blogPosts',
+        'pages',
+        'events']
 
-class BlogView(PageView):
+class BlogView(FullTextView):
     form_excluded_columns = ['timestamp']
+    column_labels = dict(
+        title = 'Titre',
+        desc = 'Contenu',
+        label_id = 'Label',
+        contributor_id = 'Auteur'
+    )
+
+class PageAdminView(FullTextView):
+    column_labels = dict(
+        parent_page_id='Parent',
+        title='Titre',
+        desc='Contenu'
+    )
 
 admin.add_view(PodcastView(Podcast, db.session))
 admin.add_view(FileAdmin(podcastPath, '/static/podcasts/', name='Anciens podcasts'))
@@ -117,4 +154,4 @@ admin.add_view(BlogView(BlogPost, db.session))
 admin.add_view(ContributorView(Contributor, db.session))
 admin.add_view(ModelView(Event, db.session))
 admin.add_view(LabelView(Label, db.session))
-admin.add_view(PageView(Page, db.session))
+admin.add_view(PageAdminView(Page, db.session))

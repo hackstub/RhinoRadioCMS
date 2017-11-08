@@ -39,7 +39,7 @@ pip3 install Gunicorn
 ```
 ## Doc
 
-Eeeeeeeh... Soon.
+Eeeeeeeh... Soon™.
 
 ```bash
 # Install Sphinx

@@ -7,6 +7,11 @@ class Page(db.Model):
     title = db.Column(db.String(256))
     desc = db.Column(db.Text)
     label_id = db.Column(db.Integer, db.ForeignKey('labels.id'))
+    parent_page_id = db.relationship('Page')
+    children = db.Column(db.Integer, db.ForeignKey('pages.id'))
+
+    def __str__(self):
+        return self.title
 
     @staticmethod
     def fake_feed(count=10):
