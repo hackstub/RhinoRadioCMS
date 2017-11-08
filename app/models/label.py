@@ -1,4 +1,9 @@
 from .. import db
+import enum
+
+class LabelType(enum.Enum):
+    COLLECTIVE = "Collectif"
+    SHOW = "Émission"
 
 class Label(db.Model):
     """ Collectives and broadcasts """
@@ -10,6 +15,11 @@ class Label(db.Model):
     podcasts = db.relationship('Podcast', backref='label', lazy=True)
     sections = db.relationship('Section', backref='label', lazy=True)
     blogPosts = db.relationship('BlogPost', backref ='label', lazy=True)
+    pages = db.relationship('Page', backref='label', lazy=True)
+    events = db.relationship('Event', backref='label', lazy=True)
+    parent_label_id = db.relationship('Label')
+    children = db.Column(db.Integer, db.ForeignKey('labels.id'))
+    type = db.Column(db.Enum(LabelType))
 
     def __str__(self):
         return self.name

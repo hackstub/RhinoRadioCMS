@@ -1,15 +1,18 @@
 import os
 from flask import Flask, render_template, url_for, jsonify, request, redirect, flash
 from werkzeug.utils import secure_filename
+from glob import glob
+from config import config
+import json
+from uuid import uuid4
+from datetime import date
+
 from . import main
 from .forms import SubscribeForm
 from .. import db
 from app.models.admin import *
 from app.models.podcast import Podcast
-from glob import glob
-from config import config
-import json
-from uuid import uuid4
+
 app = Flask(__name__)
 
 from app.models.podcast import Podcast
@@ -28,13 +31,12 @@ from app.models.page import *
 
 @main.route('/')
 def index(specificContent=None):
-    podcasts = Podcast.query.order_by(Podcast.timestamp.desc()).all_or_404()
     return render_template( 'index.html',
                             styles = getStyles(),
-                            podcasts = podcasts,
                             scripts = getScripts(),
                             podcasts = getPodcasts(),
                             blog = getBlogPosts(),
+                            events = getEvents(),
                             specificContent = specificContent
                           )
 
@@ -42,7 +44,6 @@ def index(specificContent=None):
 def about():
     return render_template( 'about.html',
                             styles = getStyles(),
-                            scripts = getScripts())
                             page = Page.query.filter_by(title='À propos').first_or_404(),
                             scripts = getScripts(), )
 
@@ -96,15 +97,11 @@ def contributor(contrib):
 #  Static stuff         #
 #########################
 
-def getPodcasts(filter=None, order=None):
-    if filter and order:
-        podcasts = Podcast.query.filter_by(filter).order_by(order).all()
-    elif filter:
-        podcasts = Podcast.query.filter_by(filter).all()
-    elif order:
-        podcasts = Podcast.query.order_by(filter).all()
-    else:
-        podcasts = Podcast.query.order_by(Podcast.timestamp.desc()).all()
+def getPodcasts(filter='', order="", number=10):
+    podcasts = Podcast.query.\
+        filter(filter).\
+        order_by(Podcast.timestamp.desc(), order).\
+        paginate(per_page=10).items
     return podcasts
 
 def getStyles():
@@ -123,3 +120,7 @@ def getScripts():
 def getBlogPosts():
     blogPosts = BlogPost.query.order_by(BlogPost.timestamp.desc())
     return blogPosts
+
+def getEvents():
+    events = Event.query.filter(Event.begin >= date.today()).order_by(Event.begin.desc())
+    return events
