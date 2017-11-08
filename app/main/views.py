@@ -19,19 +19,22 @@ app = Flask(__name__)
 
 @main.route('/')
 def index(specificContent=None):
+    podcasts = Podcast.query.order_by(Podcast.timestamp.desc()).all()
     return render_template( 'index.html',
                             styles = getStyles(),
+                            podcasts = podcasts,
                             scripts = getScripts(),
-                            podcasts = getPodcasts(),
                             blog = getBlogItems(),
                             specificContent = specificContent
                           )
 
 @main.route('/about')
 def about():
+    aboutPage = Page.query.filter_by(title="À propos").first_or_404()
     return render_template( 'about.html',
                             styles = getStyles(),
-                            scripts = getScripts(), )
+                            page = page,
+                            scripts = getScripts())
 
 @main.route('/maintenance', methods=['GET', 'POST'])
 def maintenance():

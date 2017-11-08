@@ -9,3 +9,4 @@ class Event(db.Model):
     begin = db.Column(db.DateTime)
     end = db.Column(db.DateTime)
     desc = db.Column(db.Text)
+    label_id = db.Column(db.Integer, db.ForeignKey('labels.id'))
