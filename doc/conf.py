@@ -53,7 +53,7 @@ master_doc = 'index'
 # General information about the project.
 project = 'Rhino CMS'
 copyright = '2017, Hackstub'
-author = 'Hackstub'
+contributor = 'Hackstub'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -142,7 +142,7 @@ latex_elements = {
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title,
-#  author, documentclass [howto, manual, or own class]).
+#  contributor, documentclass [howto, manual, or own class]).
 latex_documents = [
     (master_doc, 'RhinoCMS.tex', 'Rhino CMS Documentation',
      'Hackstub', 'manual'),
@@ -152,21 +152,21 @@ latex_documents = [
 # -- Options for manual page output ---------------------------------------
 
 # One entry per manual page. List of tuples
-# (source start file, name, description, authors, manual section).
+# (source start file, name, description, contributors, manual section).
 man_pages = [
     (master_doc, 'rhinocms', 'Rhino CMS Documentation',
-     [author], 1)
+     [contributor], 1)
 ]
 
 
 # -- Options for Texinfo output -------------------------------------------
 
 # Grouping the document tree into Texinfo files. List of tuples
-# (source start file, target name, title, author,
+# (source start file, target name, title, contributor,
 #  dir menu entry, description, category)
 texinfo_documents = [
     (master_doc, 'RhinoCMS', 'Rhino CMS Documentation',
-     author, 'RhinoCMS', 'One line description of project.',
+     contributor, 'RhinoCMS', 'One line description of project.',
      'Miscellaneous'),
 ]
 

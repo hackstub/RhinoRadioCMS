@@ -1,21 +1,12 @@
 from .. import db
 
-from datetime import datetime
-
-class BlogPost(db.Model):
-    """ Blog posts """
-    __tablename__ = 'blog_posts'
+class Page(db.Model):
+    """ Pages """
+    __tablename__ = 'pages'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(256))
-    """ Title of the post """
-    timestamp = db.Column(db.Date, default=datetime.utcnow)
-    """ Date of creation """
     desc = db.Column(db.Text)
-    """ Description """
     label_id = db.Column(db.Integer, db.ForeignKey('labels.id'))
-    """ Label """
-    contributor_id = db.Column(db.Integer, db.ForeignKey('contributors.id'))
-    """ Contributor """
 
     @staticmethod
     def fake_feed(count=10):
@@ -25,14 +16,18 @@ class BlogPost(db.Model):
         import forgery_py
 
         seed()
+        about = Page(
+            title = "À propos",
+            desc = forgery_py.lorem_ipsum.paragraphs(quantity=10)
+        )
+        db.session.add(about)
         for i in range(count):
-            bp = BlogPost(
+            p = Page(
                 title = forgery_py.lorem_ipsum.title(),
-                desc = forgery_py.lorem_ipsum.paragraph(),
+                desc = forgery_py.lorem_ipsum.paragraphs(quantity=9),
                 label_id = randint(0, 10),
-                contributor_id = randint(0, 10)
             )
-            db.session.add(bp)
+            db.session.add(p)
         try:
             db.session.commit()
         except IntegrityError:

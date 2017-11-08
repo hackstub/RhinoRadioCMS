@@ -12,6 +12,15 @@ import json
 from uuid import uuid4
 app = Flask(__name__)
 
+from app.models.podcast import Podcast
+from app.models.contributor import *
+from app.models.blog import *
+from app.models.event import *
+from app.models.label import *
+from app.models.tag import *
+from app.models.section import *
+from app.models.page import *
+
 
 #########################
 #  Main pages           #
@@ -19,22 +28,23 @@ app = Flask(__name__)
 
 @main.route('/')
 def index(specificContent=None):
-    podcasts = Podcast.query.order_by(Podcast.timestamp.desc()).all()
+    podcasts = Podcast.query.order_by(Podcast.timestamp.desc()).all_or_404()
     return render_template( 'index.html',
                             styles = getStyles(),
                             podcasts = podcasts,
                             scripts = getScripts(),
-                            blog = getBlogItems(),
+                            podcasts = getPodcasts(),
+                            blog = getBlogPosts(),
                             specificContent = specificContent
                           )
 
 @main.route('/about')
 def about():
-    aboutPage = Page.query.filter_by(title="À propos").first_or_404()
     return render_template( 'about.html',
                             styles = getStyles(),
-                            page = page,
                             scripts = getScripts())
+                            page = Page.query.filter_by(title='À propos').first_or_404(),
+                            scripts = getScripts(), )
 
 @main.route('/maintenance', methods=['GET', 'POST'])
 def maintenance():
@@ -56,140 +66,60 @@ def maintenance():
 def podcasts():
     return "liste des podcasts"
 
-@main.route('/podcast/<name>')
-def podcast(name):
+@main.route('/podcast/<id>')
+def podcast(id):
+    podcast = Podcast.query.filter_by(id = id).first()
     if not request.referrer:
-        specificContent = { "function": "fetchAndPlayPodcast", "arg": request.url }
+        specificContent = { "function": "fetchAndPlayPodcast", "arg": podcast.link }
         return index(specificContent=specificContent)
 
-    if name == "foo":
-        src = "http://podcast.radiorhino.eu/Cr%c3%a9ations/2016-05-11%20-%20Grand%20test%20(Th%c3%a9o,%20J%c3%a9r%c3%a9mie).mp3"
-    elif name == "bar":
-        src = "http://podcast.radiorhino.eu/Cr%c3%a9ations/Images%20sonores%20d'%c3%89pinal/IMAGES_SONORES_EPINAL.mp3"
-    else:
-        src = "wat"
-
-    data = { "src" : src,
-             "title" : "so much "+name+" !" }
-
-    response = jsonify(data)
     response.status_code = 200
     return response
 
-ALLOWED_EXTENSIONS = set(['mp3', 'ogg'])
+#########################
+#  Contributors         #
+#########################
 
-def allowed_file(filename):
-    """
-    Check that the file is allowed to be uplad (i.e. that the extension
-    is allowed)
-    """
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+@main.route('/contributors/')
+def contributors():
+    """ Return list of all the contributors """
+    contributors = Contributor.query.order_by(name).all()
+    return contributors
 
-@main.route("/upload", methods=["GET", "POST"])
-def upload():
-    """
-    Handle an incoming upload.
-    """
-    if request.method == "GET":
-        return render_template("podcast_upload.html",
-                                        styles = getStyles(),
-                                        scripts = getScripts(),
-                              )
-    elif request.method == "POST":
-        """Handle the upload of a file."""
-        form = request.form
-
-        # Create a unique "session ID" for this particular batch of uploads.
-        upload_key = str(uuid4())
-
-        # Is the upload using Ajax, or a direct POST by the form?
-        is_ajax = False
-        if form.get("__ajax", None) == "true":
-            is_ajax = True
-
-        # Target folder for these uploads.
-        target = "{dir}/{key}".format(dir=UPLOAD_DIR, key=upload_key)
-        try:
-            os.mkdir(target)
-        except:
-            if is_ajax:
-                return ajax_response(False, "Couldn't create upload directory: {}".format(target))
-            else:
-                return "Couldn't create upload directory: {}".format(target)
-
-        print("=== Form Data ===")
-        for key, value in form.items():
-            print(key, "=>", value)
-
-        if 'filzobe' not in request.files.keys():
-            flash('No file part')
-            print("No file given")
-            print(request.url)
-            return redirect(request.url)
-
-        # check if the post request has the file par
-        file = request.files['file']
-        # if user does not select file, browser also
-        # submit a empty part without filename
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
-
-        if not file or not allowed_file(file.filename):
-            flash('Bad file or type ?')
-            return redirect(request.url)
-
-        filename = secure_filename(file.filename)
-        destination = "/".join([target, filename])
-        print("Accept incoming file:", filename)
-        print("Save it to:", destination)
-        file.save(destination)
-
-        if is_ajax:
-            return ajax_response(True, upload_key)
-        else:
-            return redirect(url_for("main.index"))
-    else:
-        return "Wut?"
-
-def ajax_response(status, msg):
-    status_code = "ok" if status else "error"
-    return json.dumps(dict(
-        status=status_code,
-        msg=msg,
-    ))
-
-def getPodcasts():
-    foo = Podcast()
-    foo.name = "foo"
-    foo.link = "/podcast/foo"
-    foo.src = "http://podcast.radiorhino.eu/Cr%c3%a9ations/2016-05-11%20-%20Grand%20test%20(Th%c3%a9o,%20J%c3%a9r%c3%a9mie).mp3"
-
-    bar = Podcast()
-    bar.name = "bar"
-    bar.link = "/podcast/bar"
-    bar.src = "http://podcast.radiorhino.eu/Cr%c3%a9ations/Images%20sonores%20d'%c3%89pinal/IMAGES_SONORES_EPINAL.mp3"
-
-    podcasts = [ foo, bar ]
+@main.route('/contributor/<contrib>')
+def contributor(contrib):
+    podcasts = Podcast.query.filter_by(contributor_id = Contributor.query.filter_by(name = contrib).first()).all()
     return podcasts
+
 
 #########################
 #  Static stuff         #
 #########################
 
-def getStyles() :
+def getPodcasts(filter=None, order=None):
+    if filter and order:
+        podcasts = Podcast.query.filter_by(filter).order_by(order).all()
+    elif filter:
+        podcasts = Podcast.query.filter_by(filter).all()
+    elif order:
+        podcasts = Podcast.query.order_by(filter).all()
+    else:
+        podcasts = Podcast.query.order_by(Podcast.timestamp.desc()).all()
+    return podcasts
+
+def getStyles():
      return [ url_for('static',
                       filename=file.replace('app/static/', ''),
                       _external=True)
              for file in glob("app/static/*/*.css") ]
 
-def getScripts() :
+def getScripts():
      return [ url_for('static',
                       filename=file.replace('app/static/', ''),
                       _external=True)
              for file in   glob("app/static/lib/*.js")
                          + glob("app/static/js/*.js") ]
 
-def getBlogItems() :
-    return [ ]
+def getBlogPosts():
+    blogPosts = BlogPost.query.order_by(BlogPost.timestamp.desc())
+    return blogPosts
