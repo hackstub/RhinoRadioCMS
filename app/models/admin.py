@@ -81,10 +81,10 @@ class PodcastView(FullTextView):
             ('medium', 'Au trot'),
             ('fast', 'Au galop !')
         ],
-#        'type': [
-#            (True, 'Oui'),
-#            (False, 'Non')
-#        ]
+        'type': [
+            (True, 'Oui'),
+            (False, 'Non')
+        ]
     }
     column_labels = dict(
         title='Titre',
@@ -148,8 +148,7 @@ class PageAdminView(FullTextView):
         desc='Contenu'
     )
 
-admin.add_view(ModelView(Podcast, db.session, category='Points'))
-#admin.add_view(PodcastView(Podcast, db.session))
+admin.add_view(PodcastView(Podcast, db.session))
 admin.add_view(FileAdmin(podcastPath, '/static/podcasts/', name='Anciens podcasts'))
 admin.add_view(BlogView(BlogPost, db.session))
 admin.add_view(ContributorView(Contributor, db.session))
