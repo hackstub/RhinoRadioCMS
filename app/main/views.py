@@ -88,21 +88,32 @@ def contributor(contrib):
     podcasts = Podcast.query.filter_by(contributor_id = Contributor.query.filter_by(name = contrib).first()).all()
     return podcasts
 
-
 #########################
-#  Static stuff         #
+#  Get elements         #
 #########################
 
-def getPodcasts(filter=None, order=None):
+def getPodcasts(filter="", order=""):
+    filter += ", Podcast.published=1"
     if filter and order:
         podcasts = Podcast.query.filter_by(filter).order_by(order).all()
-    elif filter:
-        podcasts = Podcast.query.filter_by(filter).all()
     elif order:
         podcasts = Podcast.query.order_by(filter).all()
     else:
         podcasts = Podcast.query.order_by(Podcast.timestamp.desc()).all()
     return podcasts
+
+def getBlogPosts():
+    blogPosts = BlogPost.query.order_by(BlogPost.timestamp.desc()).all()
+    return blogPosts
+
+def getEvents():
+    events = Event.query.order_by(Event.begin.desc()).all()
+    return events
+
+#########################
+#  Static stuff         #
+#########################
+
 
 def getStyles():
      return [ url_for('static',
@@ -116,7 +127,3 @@ def getScripts():
                       _external=True)
              for file in   glob("app/static/lib/*.js")
                          + glob("app/static/js/*.js") ]
-
-def getBlogPosts():
-    blogPosts = BlogPost.query.order_by(BlogPost.timestamp.desc())
-    return blogPosts

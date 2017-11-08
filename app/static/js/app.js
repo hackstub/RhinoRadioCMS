@@ -24,7 +24,7 @@ $('a.intern').click(function(e)
 
 function fetchAndPlayPodcast(target)
 {
-    $.getJSON(target, function(data) {
+    $.getJSON(target, function(podcast) {
         player.load(data);
     });
 };
