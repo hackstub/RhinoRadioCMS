@@ -96,22 +96,11 @@ def contributor(contrib):
 #  Get elements         #
 #########################
 
-<<<<<<< HEAD
-def getPodcasts(filter="", order=""):
-    filter += ", Podcast.published=1"
-    if filter and order:
-        podcasts = Podcast.query.filter_by(filter).order_by(order).all()
-    elif order:
-        podcasts = Podcast.query.order_by(filter).all()
-    else:
-        podcasts = Podcast.query.order_by(Podcast.timestamp.desc()).all()
-=======
 def getPodcasts(filter='', order="", number=10):
     podcasts = Podcast.query.\
         filter(filter).\
         order_by(Podcast.timestamp.desc(), order).\
         paginate(per_page=10).items
->>>>>>> c2731f7d3a4070c92a1e3786c2c7deb81f20ed25
     return podcasts
 
 def getBlogPosts():
@@ -139,8 +128,6 @@ def getScripts():
                       _external=True)
              for file in   glob("app/static/lib/*.js")
                          + glob("app/static/js/*.js") ]
-<<<<<<< HEAD
-=======
 
 def getBlogPosts():
     blogPosts = BlogPost.query.order_by(BlogPost.timestamp.desc())
@@ -149,4 +136,3 @@ def getBlogPosts():
 def getEvents():
     events = Event.query.filter(Event.begin >= date.today()).order_by(Event.begin.desc())
     return events
->>>>>>> c2731f7d3a4070c92a1e3786c2c7deb81f20ed25
