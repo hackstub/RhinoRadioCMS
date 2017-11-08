@@ -11,7 +11,6 @@ class Label(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128))
     desc = db.Column(db.Text)
-    #label_id = db.relationship('Label', backref='label', lazy=True)
     podcasts = db.relationship('Podcast', backref='label', lazy=True)
     sections = db.relationship('Section', backref='label', lazy=True)
     blogPosts = db.relationship('BlogPost', backref ='label', lazy=True)

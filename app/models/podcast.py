@@ -1,7 +1,6 @@
 from .. import db
 from datetime import datetime
 from geoalchemy2 import Geometry
-from flask_admin.contrib.geoa import ModelView
 from .contributor import Contributor
 from .section import Section
 from .label import *
@@ -33,7 +32,7 @@ class Podcast(db.Model):
     """ Label of the podcast """
     date = db.Column(db.Date, default=datetime.utcnow)
     """ Date of publication """
-    mood = db.Column(db.SmallInteger)
+    mood = db.Column(db.String(128))
     """ Mood of the podcast """
     link = db.Column(db.String(256))
     """ Link to the audio file """
@@ -47,10 +46,10 @@ class Podcast(db.Model):
     """ Datetime of publication """
     public = db.Column(db.Boolean())
     """ State of te publication """
-#    place = db.Column(Geometry('POINT'))
-#    """ Place of recording/playing """
-#    itinerary = db.Column(Geometry('LINESTRING'))
-#    """ Itinerary of recording/playing """
+    place = db.Column(Geometry(geometry_type='POINT', srid=0))
+    """ Place of recording/playing """
+    itinerary = db.Column(Geometry(geometry_type='LINESTRING', srid=0))
+    """ Itinerary of recording/playing """
 
     @staticmethod
     def fake_feed(count=100):

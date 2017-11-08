@@ -11,6 +11,21 @@ sudo apt-get install python-virtualenv
 virtualenv -p python3 venv
 source venv/bin/activate
 pip3 install -r requirements.txt
+# PostgreSQL
+systemctl start postgresql
+# GIS (geographic db)
+sudo apt install postgis
+# if needed :
+#createlang plpgsql gis
+sudo su postgres
+psql
+>>> CREATE DATABASE rhino;
+>>> \c rhino;
+>>> CREATE EXTENSION postgis;
+>>> GRANT ALL ON DATABASE rhino TO "user";
+#>>> GRANT ALL ON spatial_ref_sys TO "user";
+#>>> GRANT ALL ON geometry_columns TO "user";
+>>> \q
 ```
 
 ## Develop
