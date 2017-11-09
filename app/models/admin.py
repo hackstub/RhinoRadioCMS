@@ -1,6 +1,7 @@
-from flask_admin.contrib.sqla import ModelView
 from flask_admin.contrib.fileadmin import FileAdmin
 from flask_admin.form.upload import FileUploadInput
+from flask_admin.contrib.geoa import ModelView
+from geoalchemy2.types import Geometry
 from wtforms import TextAreaField
 from wtforms.widgets import TextArea
 from .. import db, admin, base_path
@@ -80,15 +81,14 @@ class PodcastView(FullTextView):
             ('medium', 'Au trot'),
             ('fast', 'Au galop !')
         ],
-#        'type': [
-#            (True, 'Oui'),
-#            (False, 'Non')
-#        ]
+        'type': [
+            (True, 'Oui'),
+            (False, 'Non')
+        ]
     }
     column_labels = dict(
         title='Titre',
         contributors='Auteurs',
-        type='Musical',
         desc='Description',
         mood='Ambiance',
         link='Lien',

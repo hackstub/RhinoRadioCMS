@@ -1,6 +1,6 @@
-# Sandbox Rhino Player
+# Rhino Radio CMS
 
-Experimentation to have a persistent player across pages
+Experimental webradio CMS based on Flask micro-framework designed for [Radio Rhino](http://radiorhino.eu)
 
 ## Install
 
@@ -11,21 +11,29 @@ sudo apt-get install python-virtualenv
 virtualenv -p python3 venv
 source venv/bin/activate
 pip3 install -r requirements.txt
+# PostgreSQL and GIS (geographic db)
+sudo apt install postgis
+# PostgreSQL
+systemctl start postgresql
+# if needed :
+#createlang plpgsql gis
+sudo su postgres
+psql
+>>> CREATE DATABASE rhino;
+>>> \c rhino;
+>>> CREATE EXTENSION postgis;
+>>> GRANT ALL ON DATABASE rhino TO "user";
+>>> \q
 ```
 
 ## Develop
 
 ```bash
 ./run_dev_server.sh
-
-## Database Cheatsheet
-
-# Migrating database after modifications
-python3 manage.py db migrate
-python3 manage.py db upgrade
-
-# To commit changes :
-db.session.commit()
+# (Re-)initialize database
+python3 manage.py nuke
+# Feed database with random placeholder values
+python3 manage.py lorem
 ```
 ## Admin
 
@@ -37,6 +45,8 @@ Admin interface on : http://domain.tld/admin
 # Install Gunicorn
 pip3 install Gunicorn
 ```
+More to come.
+
 ## Doc
 
 Eeeeeeeh... Soon™.

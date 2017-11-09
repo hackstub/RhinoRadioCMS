@@ -93,6 +93,30 @@ def contributor(contrib):
     return podcasts
 
 #########################
+#  Collectives          #
+#########################
+
+@main.route('/collectives')
+def collectives():
+    """ Return list of all the collectives """
+    collectives = Label.query.filter(Label.type=="COLLECTIVE").all_or_404()
+    return collectives
+
+@main.route('/collective/<coll>')
+def collective(coll):
+    """ Return home template for collective coll """
+    label_id = Label.query.filter(Label.name==coll).first()
+    return render_template( 'index.html',
+                            styles = getStyles(),
+                            scripts = getScripts(),
+                            podcasts = getPodcasts(
+                                filter='Podcast.label_id=label_id'),
+                            blog = getBlogPosts(),
+                            events = getEvents(),
+                            specificContent = specificContent
+                          )
+
+#########################
 #  Get elements         #
 #########################
 
@@ -100,7 +124,7 @@ def getPodcasts(filter='', order="", number=10):
     podcasts = Podcast.query.\
         filter(filter).\
         order_by(Podcast.timestamp.desc(), order).\
-        paginate(per_page=10).items
+        paginate(per_page=number).items
     return podcasts
 
 def getBlogPosts():
@@ -129,8 +153,11 @@ def getScripts():
              for file in   glob("app/static/lib/*.js")
                          + glob("app/static/js/*.js") ]
 
-def getBlogPosts():
-    blogPosts = BlogPost.query.order_by(BlogPost.timestamp.desc())
+def getBlogPosts(filter='', order='', number=3):
+    blogPosts = BlogPost.query.\
+        filter(filter).\
+        order_by(BlogPost.timestamp.desc()).\
+        paginate(per_page=number).items
     return blogPosts
 
 def getEvents():

@@ -48,8 +48,11 @@ class NukeCommand(Command):
 
     def run(self):
         self.db.drop_all()
+        print("Tables dropped\n")
         self.db.create_all()
+        print("Tables created\n")
         self.db.session.commit()
+        print("Session committed\n")
 
 class LoremCommand(Command):
     """Feed database with placeholders"""
