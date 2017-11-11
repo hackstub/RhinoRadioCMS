@@ -20,8 +20,7 @@
         <div id="main">
 
             <div id="mainframe">
-                {% block main %}
-                {% endblock %}
+                {% include 'index.html' %}
             </div>
 
             <footer>
@@ -44,8 +43,10 @@
     {% block moarScripts %}
     {% endblock %}
 
-    {% if specificContent %}
-    <script type="text/javascript">$(function(){ {{ specificContent.function }}("{{ specificContent.arg}}") });</script>
+    {% if content %}
+    <script type="text/javascript">
+        (function(){ loadContent('{{ content }}'); })()
+    </script>
     {% endif %}
 
 </html>

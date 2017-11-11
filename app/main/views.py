@@ -1,6 +1,14 @@
 import os
-from flask import Flask, render_template, url_for, jsonify, request, redirect, flash
+from flask import (Flask,
+                   render_template,
+                   render_template_string,
+                   url_for,
+                   jsonify,
+                   request,
+                   redirect,
+                   flash)
 from werkzeug.utils import secure_filename
+from functools import wraps
 from glob import glob
 from config import config
 import json
@@ -25,27 +33,53 @@ from app.models.section import *
 from app.models.page import *
 
 
+
+
+def content(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not request.referrer:
+            return base(content=request.path)
+        data = f(*args, **kwargs)
+
+        # Data should be a list [ ] with 2 elements :
+        # - name of a js function
+        # - data for the js function
+        assert isinstance(data, list)
+        assert len(data) == 2
+        assert isinstance(data[0], str)
+        assert isinstance(data[1], dict)
+
+        response = jsonify(data)
+        response.status_code = 200
+        return response
+
+    return decorated_function
+
+
+
 #########################
 #  Main pages           #
 #########################
 
 @main.route('/')
-def index(specificContent=None):
-    return render_template( 'index.html',
+def base(content=None):
+    return render_template( 'base.html',
                             styles = getStyles(),
                             scripts = getScripts(),
                             podcasts = getPodcasts(),
                             blog = getBlogPosts(),
                             events = getEvents(),
-                            specificContent = specificContent
+                            content = content
                           )
 
+
 @main.route('/about')
+@content
 def about():
-    return render_template( 'about.html',
-                            styles = getStyles(),
-                            page = Page.query.filter_by(title='À propos').first_or_404(),
-                            scripts = getScripts(), )
+
+    return [ 'displayMain', { "content": render_template_string("about.html") } ]
+
 
 @main.route('/maintenance', methods=['GET', 'POST'])
 def maintenance():
@@ -67,15 +101,16 @@ def maintenance():
 def podcasts():
     return "liste des podcasts"
 
+
 @main.route('/podcast/<id>')
+@content
 def podcast(id):
     podcast = Podcast.query.filter_by(id = id).first()
-    if not request.referrer:
-        specificContent = { "function": "fetchAndPlayPodcast", "arg": podcast.link }
-        return index(specificContent=specificContent)
 
-    response.status_code = 200
-    return response
+    return [ "player.load.bind(player)",
+             { "link" : podcast.link,
+               "title" : podcast.title } ]
+
 
 #########################
 #  Contributors         #
@@ -143,12 +178,14 @@ def getEvents():
 def getStyles():
      return [ url_for('static',
                       filename=file.replace('app/static/', ''),
+                      #_scheme='https',
                       _external=True)
              for file in glob("app/static/*/*.css") ]
 
 def getScripts():
      return [ url_for('static',
                       filename=file.replace('app/static/', ''),
+                      #_scheme='https',
                       _external=True)
              for file in   glob("app/static/lib/*.js")
                          + glob("app/static/js/*.js") ]

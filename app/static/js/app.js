@@ -1,18 +1,19 @@
 var player = new Player();
 
-// Even when going back in the history...
+// Event when going back in the history...
 window.addEventListener("popstate", function(e) {
   console.log("going back !")
 }, false);
 
-// Capture 'clock' for all podcast
-$('a.podcast').click(function(e)
+// Capture 'click' for all content links
+$('a.contentLink').click(function(e)
 {
     e.preventDefault();
-    fetchAndPlayPodcast(e.target.href);
     history.pushState({}, '', e.target.href);
+    loadContent(e.target.href);
 });
 
+/*
 // Capture all internal links
 $('a.intern').click(function(e)
 {
@@ -21,10 +22,15 @@ $('a.intern').click(function(e)
     history.pushState({}, '', e.currentTarget.href);
     $('#main').load(e.currentTarget.href + " #mainframe" );
 });
+*/
 
-function fetchAndPlayPodcast(target)
+function loadContent(target)
 {
-    $.getJSON(target, function(podcast) {
-        player.load(data);
+    $.getJSON(target, function(response_data) {
+        var f = eval(response_data[0]);
+        var data = response_data[1];
+        f(data);
     });
 };
+
+
