@@ -30,7 +30,7 @@ class Page(db.Model):
             p = Page(
                 title = forgery_py.lorem_ipsum.title(),
                 desc = forgery_py.lorem_ipsum.paragraphs(quantity=9),
-                label_id = randint(1, 2)
+                label_id = i+1
             )
             db.session.add(p)
         try:

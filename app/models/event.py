@@ -33,7 +33,8 @@ class Event(db.Model):
                 place = forgery_py.address.street_address(),
                 begin = forgery_py.date.date(),
                 end = forgery_py.date.date(),
-                desc = forgery_py.lorem_ipsum.paragraph()
+                desc = forgery_py.lorem_ipsum.paragraph(),
+                label_id = i+1
             )
             db.session.add(e)
         try:

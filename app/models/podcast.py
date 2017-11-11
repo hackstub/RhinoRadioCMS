@@ -63,7 +63,7 @@ class Podcast(db.Model):
             p = Podcast(
                 title = forgery_py.lorem_ipsum.title(),
                 desc = forgery_py.lorem_ipsum.paragraph(),
-                label_id = randint(1, 2),
+                label_id = randint(1, 11),
                 mood = choice(['slow', 'medium', 'fast']),
                 link = choice([
                     'http://podcast.radiorhino.eu/Émissions/Cachemire%20Darbuqqa/Cachemire%20épisode%201.mp3',
