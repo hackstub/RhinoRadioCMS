@@ -1,87 +1,89 @@
-<div id="slider-bar">
-    <div id="time" class="box-text">
-        <span id="current-time">0:00</span>
-        <span class="separator">/</span>
-        <span id="total-time">0:00</span>
-    </div>
-    <div id="track" class="sliders">
-        <div id="track-progress">
+<div id="player">
+    <div id="slider-bar">
+        <div id="time" class="box-text">
+            <span id="current-time">0:00</span>
+            <span class="separator">/</span>
+            <span id="total-time">0:00</span>
+        </div>
+        <div id="track" class="sliders">
+            <div id="track-progress">
+            </div>
+        </div>
+        <div id="mute" class="box-text">
+            <span>mute</span>
+        </div>
+        <div id="volume" class="sliders">
+            <div id="volume-active">
+            </div>
         </div>
     </div>
-    <div id="mute" class="box-text">
-        <span>mute</span>
-    </div>
-    <div id="volume" class="sliders">
-        <div id="volume-active">
+
+    <div id="controls">
+        <div id="play-pan" class="pan">
+            <div id="play" class="button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="36.48" height="40" viewBox="0 0 36.48 40">
+                    <g stroke="#000000" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="3" id="playBtn" display="">
+                        <polygon points="7.745,2.5 28.735,20 7.745,37.5"/>
+                    </g>
+                    <g stroke="#000000" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="3" id="pauseBtn" display="none">
+                        <line x1="12.993" y1="2.5" x2="12.993" y2="37.5"/>
+                        <line x1="23.487" y1="2.5" x2="23.487" y2="37.5"/>
+                    </g>
+                </svg>
+            </div>
+            <div id="play-infos" class="text">
+                <h3 id="track-title">TITRE</h3>
+                <p>date</p>
+                <p>infos</p>
+            </div>
+        </div>
+
+        <div id="nextPrev-pan" class="pan">
+            <div id="previous" class="button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="36.48" height="40" viewBox="0 0 36.48 40">
+                    <g stroke="#000000" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="3">
+                        <polygon points="23.487,37.5 2.498,20 23.487,2.5"/>
+                        <polygon points="33.982,37.5 12.993,20 33.982,2.5"/>
+                        <line x1="2.498" y1="2.5" x2="2.498" y2="37.5"/>
+                    </g>
+                </svg>
+            </div>
+            <div id="next" class="button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="36.48" height="40" viewBox="0 0 36.48 40">
+                    <g stroke="#000000" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="3">
+                        <polygon points="12.993,2.5 33.982,20 12.993,37.5 "/>
+                        <polygon points="2.498,2.5 23.487,20 2.498,37.5 "/>
+                        <line x1="33.982" y1="37.5" x2="33.982" y2="2.5"/>
+                    </g>
+                </svg>
+            </div>
+            <div id="side-infos" class="text">
+                <h3>TITRE</h3>
+                <p>date</p>
+                <p>infos</p>
+            </div>
+        </div>
+
+        <div id="playlist-pan" class="pan">
+            <div id="playlist" class="button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="36.48" height="40" viewBox="0 0 36.48 40">
+                    <g stroke="#000000" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="3">
+                        <line x1="33.98" y1="12.994" x2="2.5" y2="12.994"/>
+        				<line x1="33.98" y1="23.488" x2="2.5" y2="23.488"/>
+        				<line x1="33.98" y1="33.982" x2="2.5" y2="33.982"/>
+        				<polygon points="2.5,2.5 15.087,12.994 2.5,23.488"/>
+                    </g>
+                </svg>
+            </div>
+            <div id="playlist-infos" class="text">
+                <h3>PLAYLIST</h3>
+                <p>active :</p>
+            </div>
         </div>
     </div>
+
+    <audio id="audio">
+        <source class="mp3_src" src="" type="audio/mp3" />
+        Your browser does not support the audio element.
+    </audio>
 </div>
-
-<div id="controls">
-    <div id="play-pan" class="pan">
-        <div id="play" class="button">
-            <svg xmlns="http://www.w3.org/2000/svg" width="36.48" height="40" viewBox="0 0 36.48 40">
-                <g stroke="#000000" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="3" id="playBtn" display="">
-                    <polygon points="7.745,2.5 28.735,20 7.745,37.5"/>
-                </g>
-                <g stroke="#000000" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="3" id="pauseBtn" display="none">
-                    <line x1="12.993" y1="2.5" x2="12.993" y2="37.5"/>
-                    <line x1="23.487" y1="2.5" x2="23.487" y2="37.5"/>
-                </g>
-            </svg>
-        </div>
-        <div id="play-infos" class="text">
-            <h3>TITRE</h3>
-            <p>date</p>
-            <p>infos</p>
-        </div>
-    </div>
-
-    <div id="nextPrev-pan" class="pan">
-        <div id="previous" class="button">
-            <svg xmlns="http://www.w3.org/2000/svg" width="36.48" height="40" viewBox="0 0 36.48 40">
-                <g stroke="#000000" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="3">
-                    <polygon points="23.487,37.5 2.498,20 23.487,2.5"/>
-                    <polygon points="33.982,37.5 12.993,20 33.982,2.5"/>
-                    <line x1="2.498" y1="2.5" x2="2.498" y2="37.5"/>
-                </g>
-            </svg>
-        </div>
-        <div id="next" class="button">
-            <svg xmlns="http://www.w3.org/2000/svg" width="36.48" height="40" viewBox="0 0 36.48 40">
-                <g stroke="#000000" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="3">
-                    <polygon points="12.993,2.5 33.982,20 12.993,37.5 "/>
-                    <polygon points="2.498,2.5 23.487,20 2.498,37.5 "/>
-                    <line x1="33.982" y1="37.5" x2="33.982" y2="2.5"/>
-                </g>
-            </svg>
-        </div>
-        <div id="side-infos" class="text">
-            <h3 id="track-title">TITRE</h3>
-            <p>date</p>
-            <p>infos</p>
-        </div>
-    </div>
-
-    <div id="playlist-pan" class="pan">
-        <div id="playlist" class="button">
-            <svg xmlns="http://www.w3.org/2000/svg" width="36.48" height="40" viewBox="0 0 36.48 40">
-                <g stroke="#000000" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="3">
-                    <line x1="33.98" y1="12.994" x2="2.5" y2="12.994"/>
-    				<line x1="33.98" y1="23.488" x2="2.5" y2="23.488"/>
-    				<line x1="33.98" y1="33.982" x2="2.5" y2="33.982"/>
-    				<polygon points="2.5,2.5 15.087,12.994 2.5,23.488"/>
-                </g>
-            </svg>
-        </div>
-        <div id="playlist-infos" class="text">
-            <h3>PLAYLIST</h3>
-            <p>active :</p>
-        </div>
-    </div>
-</div>
-
-<audio id="audio">
-    <source class="mp3_src" src="" type="audio/mp3" />
-    Your browser does not support the audio element.
-</audio>

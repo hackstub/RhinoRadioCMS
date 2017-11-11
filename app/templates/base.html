@@ -13,36 +13,19 @@
     <body>
         {% block body %}
 
-        <header>
-            {% include 'header.html' %}
-        </header>
+        {% include 'menu.html' %}
 
-        <div id="main">
+        <main>
+        </main>
 
-            <div id="mainframe">
-                {% block main %}
-                {% endblock %}
-            </div>
+        {% include 'player.html' %}
 
-            <footer>
-                {% block footer %}
-                {% endblock %}
-            </footer>
-
-        </div>
-
-        <div id="player">
-            {% include 'player.html' %}
-        </div>
-
-       {% endblock %}
+        {% endblock %}
     </body>
 
     {% for script in scripts %}
     <script type="text/javascript" src={{ script }}></script>
     {% endfor %}
-    {% block moarScripts %}
-    {% endblock %}
 
     {% if specificContent %}
     <script type="text/javascript">$(function(){ {{ specificContent.function }}("{{ specificContent.arg}}") });</script>
