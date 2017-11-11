@@ -13,6 +13,14 @@ class Contributor(db.Model):
     def __str__(self):
         return self.name
 
+    def list(filter='', order=''):
+        """ List all contributors """
+        contribs = Contributor.query.\
+            filter(filter).\
+            order_by(Contributor.name.desc(), order).\
+            all()
+        return contribs
+
     @staticmethod
     def fake_feed(count=10):
         """ Randomly feeds the database """

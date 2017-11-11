@@ -17,6 +17,13 @@ class BlogPost(db.Model):
     contributor_id = db.Column(db.Integer, db.ForeignKey('contributors.id'))
     """ Contributor """
 
+    def list(filter='', order='', number=3):
+        blogPosts = BlogPost.query.\
+            filter(filter).\
+            order_by(BlogPost.timestamp.desc()).\
+            paginate(per_page=number).items
+        return blogPosts
+
     @staticmethod
     def fake_feed(count=10):
         """ Randomly feeds the database """

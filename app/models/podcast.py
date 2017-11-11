@@ -51,8 +51,16 @@ class Podcast(db.Model):
     itinerary = db.Column(Geometry(geometry_type='LINESTRING', srid=0))
     """ Itinerary of recording/playing """
 
+    def list(filter='', order='', number=10):
+        podcasts = Podcast.query.\
+            filter(filter).\
+            order_by(Podcast.timestamp.desc(), order).\
+            paginate(per_page=number).items
+        return podcasts
+
+
     @staticmethod
-    def fake_feed(count=100):
+    def fake_feed(count=10):
         """ Randomly feed the database """
         from sqlalchemy.exc import IntegrityError
         from random import seed, randint, choice

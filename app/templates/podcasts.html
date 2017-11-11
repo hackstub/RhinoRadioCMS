@@ -1,6 +1,7 @@
 <ul>
-{% for podcast in podcasts %}
+    <h2>Derniers podcasts</h2>
+    {% for podcast in podcasts %}
     <li><a class="podcast" href="{{ podcast.link }}">{{ podcast.title }}</a>
     </li>
-{% endfor %}
+    {% endfor %}
 </ul>
