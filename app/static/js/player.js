@@ -88,7 +88,7 @@ Player.prototype.load = function(data) {
     var title = document.getElementById("track-title");
 
     // Update their data
-    source.setAttribute("src", data.src);
+    source.setAttribute("src", data.link);
     title.innerHtml = data.title;
 
     // Reload player with the newly fetched podcast
