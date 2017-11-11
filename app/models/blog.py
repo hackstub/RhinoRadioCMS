@@ -29,8 +29,8 @@ class BlogPost(db.Model):
             bp = BlogPost(
                 title = forgery_py.lorem_ipsum.title(),
                 desc = forgery_py.lorem_ipsum.paragraph(),
-                label_id = randint(0, 10),
-                contributor_id = randint(0, 10)
+                label_id = randint(1, 2),
+                contributor_id = randint(1, 2)
             )
             db.session.add(bp)
         try:
