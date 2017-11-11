@@ -19,6 +19,13 @@ class Event(db.Model):
     label_id = db.Column(db.Integer, db.ForeignKey('labels.id'))
     """ Label of the event """
 
+    def list(filter='', order='', number=3):
+        events = Event.query.filter(\
+            Event.begin >= datetime.today()).\
+            order_by(Event.begin.desc()).\
+            paginate(per_page=number).items
+        return events
+
     @staticmethod
     def fake_feed(count=10):
         """ Randomly feeds the database """
