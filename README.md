@@ -1,6 +1,6 @@
 # Rhino Radio CMS
 
-Experimental webradio CMS based on Flask micro-framework designed for [Radio Rhino](http://radiorhino.eu)
+Experimental webradio CMS based on Flask micro-framework designed for [Radio Rhino](http://radiorhino.eu).
 
 ## Install
 

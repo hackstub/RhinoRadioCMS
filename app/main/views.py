@@ -67,9 +67,9 @@ def base(content=None):
     return render_template( 'base.html',
                             styles = getStyles(),
                             scripts = getScripts(),
-                            podcasts = getPodcasts(),
-                            blog = getBlogPosts(),
-                            events = getEvents(),
+                            podcasts = Podcast.list(),
+                            blogPosts = BlogPost.list(),
+                            events = Event.list(),
                             content = content
                           )
 
@@ -99,7 +99,7 @@ def maintenance():
 
 @main.route('/podcasts/')
 def podcasts():
-    return "liste des podcasts"
+    return Podcast.list()
 
 
 @main.route('/podcast/<id>')
@@ -119,8 +119,12 @@ def podcast(id):
 @main.route('/contributors/')
 def contributors():
     """ Return list of all the contributors """
-    contributors = Contributor.query.order_by(name).all()
-    return contributors
+    contribs = Contributor.list()
+    return render_template( 'index.html',
+                            styles = getStyles(),
+                            scripts = getScripts(),
+                            contribs = contribs
+                          )
 
 @main.route('/contributor/<contrib>')
 def contributor(contrib):
@@ -152,28 +156,8 @@ def collective(coll):
                           )
 
 #########################
-#  Get elements         #
-#########################
-
-def getPodcasts(filter='', order="", number=10):
-    podcasts = Podcast.query.\
-        filter(filter).\
-        order_by(Podcast.timestamp.desc(), order).\
-        paginate(per_page=number).items
-    return podcasts
-
-def getBlogPosts():
-    blogPosts = BlogPost.query.order_by(BlogPost.timestamp.desc()).all()
-    return blogPosts
-
-def getEvents():
-    events = Event.query.order_by(Event.begin.desc()).all()
-    return events
-
-#########################
 #  Static stuff         #
 #########################
-
 
 def getStyles():
      return [ url_for('static',
@@ -189,14 +173,3 @@ def getScripts():
                       _external=True)
              for file in   glob("app/static/lib/*.js")
                          + glob("app/static/js/*.js") ]
-
-def getBlogPosts(filter='', order='', number=3):
-    blogPosts = BlogPost.query.\
-        filter(filter).\
-        order_by(BlogPost.timestamp.desc()).\
-        paginate(per_page=number).items
-    return blogPosts
-
-def getEvents():
-    events = Event.query.filter(Event.begin >= date.today()).order_by(Event.begin.desc())
-    return events

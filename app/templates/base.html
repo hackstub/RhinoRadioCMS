@@ -13,35 +13,18 @@
     <body>
         {% block body %}
 
-        <header>
-            {% include 'header.html' %}
-        </header>
+        {% include 'menu.html' %}
 
-        <div id="main">
+        <main>
+            {% include 'index.html' %}
+        </main>
 
-            <div id="mainframe">
-                {% include 'index.html' %}
-            </div>
-
-            <footer>
-                {% block footer %}
-                {% endblock %}
-            </footer>
-
-        </div>
-
-        <div id="player">
-            {% include 'player.html' %}
-        </div>
-
-       {% endblock %}
+        {% endblock %}
     </body>
 
     {% for script in scripts %}
     <script type="text/javascript" src={{ script }}></script>
     {% endfor %}
-    {% block moarScripts %}
-    {% endblock %}
 
     {% if content %}
     <script type="text/javascript">

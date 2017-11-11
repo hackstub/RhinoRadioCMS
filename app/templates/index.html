@@ -1,11 +1,12 @@
-<div id="lastAdded">
-    <h2>Derniers podcasts</h2>
+<section id="left-panel">
     {% include "podcasts.html" %}
-</div>
+</section>
 
-<div id="rightPanel">
-
+<section id="right-panel">
+{% if blogPosts %}
     {% include "blog.html" %}
+{% endif %}
+{% if events %}
     {% include "agenda.html" %}
-
-</div>
+{% endif %}
+</section>
