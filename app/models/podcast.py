@@ -21,7 +21,7 @@ podcasts_authors = db.Table('podcasts_authors',
 """ Podcasts class and table, extending Channel class """
 class Podcast(db.Model):
     __tablename__ = 'podcasts'
-    podcast_id = db.Column('id', db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(256))
     """ Title of the podcast """
     contributors = db.relationship('Contributor',
