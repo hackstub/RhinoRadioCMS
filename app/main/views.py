@@ -33,11 +33,31 @@ from app.models.section import *
 from app.models.page import *
 
 
+#########################
+#  Main pages           #
+#########################
 
+@main.route('/')
+def base(content=None):
+    return render_template( 'base.html',
+                            styles = getStyles(),
+                            scripts = getScripts(),
+                            podcasts = Podcast.list(),
+                            blogPosts = BlogPost.list(),
+                            events = Event.list(),
+                            content = content
+                          )
+
+####################################
+#  Wrapper for invidicual content  #
+####################################
 
 def content(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
+        # We make sure to come from an 'already loaded site' ...
+        # Otherwise, redirect to index and immediately load the requested
+        # content
         if not request.referrer:
             return base(content=request.path)
         data = f(*args, **kwargs)
@@ -56,23 +76,9 @@ def content(f):
 
     return decorated_function
 
-
-
 #########################
-#  Main pages           #
+#  About                #
 #########################
-
-@main.route('/')
-def base(content=None):
-    return render_template( 'base.html',
-                            styles = getStyles(),
-                            scripts = getScripts(),
-                            podcasts = Podcast.list(),
-                            blogPosts = BlogPost.list(),
-                            events = Event.list(),
-                            content = content
-                          )
-
 
 @main.route('/about')
 @content
@@ -81,28 +87,38 @@ def about():
     page = Page.query.filter_by(title='À propos').first_or_404()
 
     return [ 'displayMain',
-           { "content": render_template("about.html", page=page) } ]
+           { "content": render_template("about.html",
+                                        page=page) } ]
 
+@main.route('/blogs/')
+@content
+def blogs():
+    return [ 'displayMain',
+             { "content": render_template("notimplemented.html") } ]
 
-@main.route('/maintenance', methods=['GET', 'POST'])
-def maintenance():
-    email = None
-    form = SubscribeForm()
-    if form.validate_on_submit():
-        email=form.email.data
-        form.name.data=''
-    return render_template( 'maintenance.html',
-                            styles = getStyles(),
-                            form = form
-                          )
+@main.route('/agendas/')
+@content
+def agenda():
+    return [ 'displayMain',
+             { "content": render_template("notimplemented.html") } ]
+
+@main.route('/contribute/')
+@content
+def contribute():
+    return [ 'displayMain',
+             { "content": render_template("notimplemented.html") } ]
 
 #########################
 #  Podcasts             #
 #########################
 
 @main.route('/podcasts/')
+@content
 def podcasts():
-    return Podcast.list()
+    podcasts = Podcast.list()
+    return [ 'displayMain',
+             { "content": render_template("notimplemented.html",
+                                          podcasts=podcasts) } ]
 
 
 @main.route('/podcast/<id>')
@@ -120,43 +136,46 @@ def podcast(id):
 #########################
 
 @main.route('/contributors/')
+@content
 def contributors():
     """ Return list of all the contributors """
     contribs = Contributor.list()
-    return render_template( 'index.html',
-                            styles = getStyles(),
-                            scripts = getScripts(),
-                            contribs = contribs
-                          )
+    return [ 'displayMain',
+             { "content": render_template("notimplemented.html",
+                                          contributors=contribs) }]
+
 
 @main.route('/contributor/<contrib>')
+@content
 def contributor(contrib):
     podcasts = Podcast.query.filter_by(contributor_id = Contributor.query.filter_by(name = contrib).first()).all()
-    return podcasts
+    return [ 'displayMain',
+             { "content": render_template("notimplemented.html",
+                                          podcasts=podcasts) }]
+
 
 #########################
 #  Collectives          #
 #########################
 
 @main.route('/collectives')
+@content
 def collectives():
     """ Return list of all the collectives """
     collectives = Label.query.filter(Label.type=="COLLECTIVE").all_or_404()
-    return collectives
+    return [ 'displayMain',
+             { "content": render_template("notimplemented.html",
+                                          collectives=collectives) }]
 
 @main.route('/collective/<coll>')
+@content
 def collective(coll):
     """ Return home template for collective coll """
     label_id = Label.query.filter(Label.name==coll).first()
-    return render_template( 'index.html',
-                            styles = getStyles(),
-                            scripts = getScripts(),
-                            podcasts = getPodcasts(
-                                filter='Podcast.label_id=label_id'),
-                            blog = getBlogPosts(),
-                            events = getEvents(),
-                            specificContent = specificContent
-                          )
+    podcasts = getPodcasts(filter='Podcast.label_id=label_id'),
+    return [ 'displayMain',
+             { "content": render_template("notimplemented.html",
+                                          podcasts=podcasts) }]
 
 #########################
 #  Static stuff         #
