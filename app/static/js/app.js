@@ -24,6 +24,11 @@ function displayMain(data)
     document.getElementsByTagName("main")[0].innerHTML = data["content"];
 }
 
+$.ajaxSetup({
+  headers : {
+    'X-Rhino-Base-Loaded' : 'yes'
+  }
+});
 function loadContent(target)
 {
     $.getJSON(target, function(response_data) {

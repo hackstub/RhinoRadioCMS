@@ -44,7 +44,7 @@ def content(f):
         # We make sure to come from an 'already loaded site' ...
         # Otherwise, load the base then immediately load the requested
         # content
-        if not request.referrer:
+        if not 'X-Rhino-Base-Loaded' in request.headers:
             return render_template( 'base.html',
                                     styles = getStyles(),
                                     scripts = getScripts(),
