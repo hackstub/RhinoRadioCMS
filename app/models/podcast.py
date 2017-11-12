@@ -36,7 +36,7 @@ class Podcast(db.Model):
     """ Mood of the podcast """
     link = db.Column(db.String(256))
     """ Link to the audio file """
-    type = db.Column(db.String(128))
+    music = db.Column(db.Boolean())
     """ Type : musical or non-musical """
     tags = db.relationship('Tag',
                 backref=db.backref('podcasts', lazy='select'),
@@ -44,12 +44,8 @@ class Podcast(db.Model):
     """ Tags of the podcasts """
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     """ Datetime of publication """
-    public = db.Column(db.Boolean())
-    """ State of te publication """
     place = db.Column(Geometry(geometry_type='POINT', srid=0))
     """ Place of recording/playing """
-    itinerary = db.Column(Geometry(geometry_type='LINESTRING', srid=0))
-    """ Itinerary of recording/playing """
 
     def list(filter='', order='', number=10):
         podcasts = Podcast.query.\
@@ -57,7 +53,6 @@ class Podcast(db.Model):
             order_by(Podcast.timestamp.desc(), order).\
             paginate(per_page=number).items
         return podcasts
-
 
     @staticmethod
     def fake_feed(count=10):
@@ -79,8 +74,7 @@ class Podcast(db.Model):
                     'http://podcast.radiorhino.eu/Émissions/Cachemire%20Darbuqqa/Cachemire%20épisode%205.mp3',
                     'http://podcast.radiorhino.eu/Émissions/Cachemire%20Darbuqqa/Cachmire%20épisode%206-1.mp3',
                     'http://podcast.radiorhino.eu/Émissions/Cachemire%20Darbuqqa/cachemire%20darbuqqa%2012-1%20fausse%20stéréo.mp3']),
-                type = choice([True, False]),
-                public = True
+                music = choice([True, False])
             )
             db.session.add(p)
         try:

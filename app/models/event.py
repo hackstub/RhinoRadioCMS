@@ -18,6 +18,8 @@ class Event(db.Model):
     """ Description of the event """
     label_id = db.Column(db.Integer, db.ForeignKey('labels.id'))
     """ Label of the event """
+    live_show = db.Column(db.Boolean())
+    """ Live broadcast schedule ? """
 
     def list(filter='', order='', number=3):
         events = Event.query.filter(\

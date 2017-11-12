@@ -148,11 +148,10 @@ def contributors():
 @main.route('/contributor/<contrib>')
 @content
 def contributor(contrib):
-    podcasts = Podcast.query.filter_by(contributor_id = Contributor.query.filter_by(name = contrib).first()).all()
+    podcasts = Podcast.list(filter = contrib + "in Podcast.contributors")
     return [ 'displayMain',
              { "content": render_template("notimplemented.html",
                                           podcasts=podcasts) }]
-
 
 #########################
 #  Collectives          #
@@ -170,7 +169,7 @@ def collectives():
 @main.route('/collective/<coll>')
 @content
 def collective(coll):
-    """ Return home template for collective coll """
+    """ Return podcasts from collective coll """
     label_id = Label.query.filter(Label.name==coll).first()
     podcasts = getPodcasts(filter='Podcast.label_id=label_id'),
     return [ 'displayMain',

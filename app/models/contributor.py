@@ -8,7 +8,10 @@ class Contributor(db.Model):
     bio = db.Column(db.Text)
     email = db.Column(db.String(256))
     podcasts = db.relationship('Podcast',
-                secondary='publications')
+                secondary = 'publications')
+    sections = db.relationship('Section',
+                backref = db.backref('contributor', lazy='select'),
+                lazy = 'select')
 
     def __str__(self):
         return self.name
