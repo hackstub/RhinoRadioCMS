@@ -1,3 +1,7 @@
+/* TODO
+mixin flex
+
+*/
 * {
   margin: 0;
   padding: 0;
@@ -6,6 +10,43 @@
 html {
   font-family: hack, monospace;
   font-size: 0.8em; }
+
+body {
+  height: 100%;
+  display: flex;
+  height: calc(100% - 7.5em);
+  margin-bottom: 7.5em; }
+
+nav {
+  height: 100%;
+  width: 20%;
+  padding-left: 3em; }
+  nav #logo {
+    display: block;
+    margin: 4em 0em; }
+    nav #logo svg {
+      max-width: 100%; }
+  nav div:last-child {
+    margin-top: 4em; }
+
+main {
+  display: flex;
+  width: 100%; }
+
+section {
+  width: 50%;
+  padding: 5em 3em 3em 3em; }
+  section h2 {
+    margin-bottom: 0.7em;
+    padding: 0em 0.5em;
+    color: white;
+    background-color: black; }
+  section article div ~ div {
+    margin-top: 0.8em; }
+  section article:last-child {
+    margin-top: 3em; }
+  section:last-child {
+    margin-right: 3em; }
 
 /* FONTS */
 /* Pixelpath - https://autre.space/ */

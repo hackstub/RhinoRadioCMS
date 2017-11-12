@@ -1,8 +1,10 @@
 <article id="agenda">
     <h2>Agenda</h2>
     {% for event in events %}
+    <div>
         <h3>{{ event.title }}</h3>
         <h4>Du {{ event.begin }} au {{ event.end }}</h4>
         {{ event.desc }}
+    </div>
     {% endfor %}
 </article>

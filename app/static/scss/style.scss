@@ -11,6 +11,63 @@ html {
     font-size: $font-text-size;
 }
 
+body {
+    height: 100%;
+    display: flex;
+    height: calc(100% - 7.5em);
+    margin-bottom: 7.5em;
+}
+
+nav {
+    height: 100%;
+    width: 20%;
+    padding-left: 3em;
+
+    #logo {
+        display: block;
+        margin: 4em 0em;
+
+        svg {
+            max-width: 100%;
+        }
+    }
+
+    div:last-child {
+        margin-top: 4em;
+    }
+}
+
+main {
+    display: flex;
+    width: 100%;
+}
+
+section {
+    width: 50%;
+    padding: 5em 3em 3em 3em;
+
+    h2 {
+        margin-bottom: 0.7em;
+        padding: 0em 0.5em;
+        color: $white;
+        background-color: $black;
+    }
+
+    article {
+        div ~ div {
+            margin-top: 0.8em;
+        }
+
+        &:last-child {
+            margin-top: 3em;
+        }
+    }
+
+    &:last-child {
+        margin-right: 3em;
+    }
+}
+
 
 
 @import 'fonts';
