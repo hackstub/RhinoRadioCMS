@@ -1,22 +1,25 @@
+# "Standard libs" imports
 import os
+import json
+from glob import glob
+from config import config
+from uuid import uuid4
+from datetime import date
+
+# Flask stuff
 from flask import (Flask,
                    render_template,
-                   render_template_string,
                    url_for,
                    jsonify,
                    request,
                    redirect,
                    flash)
 from werkzeug.utils import secure_filename
-from functools import wraps
-from glob import glob
-from config import config
-import json
-from uuid import uuid4
-from datetime import date
 
+# Specific app stuff
 from . import main
 from .forms import SubscribeForm
+from .partial_content import partial_content_decorator
 from .. import db
 from app.models.admin import *
 from app.models.podcast import Podcast
@@ -33,49 +36,24 @@ from app.models.section import *
 from app.models.page import *
 
 
-
-####################################
-#  Wrapper for invidicual content  #
-####################################
-
-def content(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        # We make sure to come from an 'already loaded site' ...
-        # Otherwise, load the base then immediately load the requested
-        # content
-        if not 'X-Rhino-Base-Loaded' in request.headers:
-            return render_template( 'base.html',
-                                    styles = getStyles(),
-                                    scripts = getScripts(),
-                                    content = request.path,
-                                    podcasts = Podcast.list(),
-                                    blogPosts = BlogPost.list(),
-                                    events = Event.list()
-                                  )
-        data = f(*args, **kwargs)
-
-        # Data should be a list [ ] with 2 elements :
-        # - name of a js function
-        # - data for the js function
-        assert isinstance(data, list)
-        assert len(data) == 2
-        assert isinstance(data[0], str)
-        assert isinstance(data[1], dict)
-
-        response = jsonify(data)
-        response.status_code = 200
-        return response
-
-    return decorated_function
-
-
 #########################
 #  Main pages           #
 #########################
 
+def base():
+    return render_template( 'base.html',
+                            styles = getStyles(),
+                            scripts = getScripts(),
+                            podcasts = Podcast.list(),
+                            blogPosts = BlogPost.list(),
+                            events = Event.list(),
+                            content = request.path
+                          )
+
+partial_content = partial_content_decorator(base)
+
 @main.route('/')
-@content
+@partial_content
 def index():
     return [ 'displayMain',
            { "content": render_template("index.html",
@@ -89,7 +67,7 @@ def index():
 #########################
 
 @main.route('/about')
-@content
+@partial_content
 def about():
 
     page = Page.query.filter_by(title='À propos').first_or_404()
@@ -99,19 +77,19 @@ def about():
                                         page=page) } ]
 
 @main.route('/blogs/')
-@content
+@partial_content
 def blogs():
     return [ 'displayMain',
              { "content": render_template("notimplemented.html") } ]
 
 @main.route('/agendas/')
-@content
+@partial_content
 def agenda():
     return [ 'displayMain',
              { "content": render_template("notimplemented.html") } ]
 
 @main.route('/contribute/')
-@content
+@partial_content
 def contribute():
     return [ 'displayMain',
              { "content": render_template("notimplemented.html") } ]
@@ -121,7 +99,7 @@ def contribute():
 #########################
 
 @main.route('/podcasts/')
-@content
+@partial_content
 def podcasts():
     podcasts = Podcast.list()
     return [ 'displayMain',
@@ -130,7 +108,7 @@ def podcasts():
 
 
 @main.route('/podcast/<id>')
-@content
+@partial_content
 def podcast(id):
     podcast = Podcast.query.filter_by(id = id).first()
 
@@ -144,7 +122,7 @@ def podcast(id):
 #########################
 
 @main.route('/contributors/')
-@content
+@partial_content
 def contributors():
     """ Return list of all the contributors """
     contribs = Contributor.list()
@@ -154,7 +132,7 @@ def contributors():
 
 
 @main.route('/contributor/<contrib>')
-@content
+@partial_content
 def contributor(contrib):
     podcasts = Podcast.list(filter = contrib + "in Podcast.contributors")
 #    podcasts = Podcast.query.filter_by(contributor_id = Contributor.query.filter_by(name = contrib).first()).all()
@@ -168,7 +146,7 @@ def contributor(contrib):
 #########################
 
 @main.route('/collectives')
-@content
+@partial_content
 def collectives():
     """ Return list of all the collectives """
     collectives = Channel.query.filter(Channel.type=="COLLECTIVE").all_or_404()
@@ -177,7 +155,7 @@ def collectives():
                                           collectives=collectives) }]
 
 @main.route('/collective/<coll>')
-@content
+@partial_content
 def collective(coll):
     """ Return home template for collective coll """
     channel_id = Channel.query.filter(Channel.name==coll).first()
