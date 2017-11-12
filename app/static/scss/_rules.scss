@@ -1,0 +1,15 @@
+$font-text : hack, monospace;
+$font-title: pixelpath;
+$font-text-size: 0.8em;
+
+$white: white;
+$black: black;
+$main-color: springgreen;
+
+$border: 5px solid black;
+$player-height: 6em;
+
+@mixin center-x() {
+    display: flex;
+    justify-content: center;
+}

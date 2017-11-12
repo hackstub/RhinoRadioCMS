@@ -1,0 +1,119 @@
+@import 'rules';
+
+#player {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    background-color: $white;
+}
+
+
+#slider-bar {
+    width: 100%;
+    display: flex;
+    height: 1.5em;
+    border-bottom: $border;
+}
+
+.sliders {
+    border-top: $border;
+    height: 100%;
+
+    div {
+        height: 100%;
+        background-color: $main-color;
+        width: 0%;
+    }
+}
+
+.box-text {
+    position: absolute;
+    top: -1.8em;
+    height: 1.8em;
+    background-color: $black;
+    color: $white;
+    border-top: $border;
+    border-top-left-radius: 2.5px;
+    border-top-right-radius: 2.5px;
+    display: flex;
+    align-items: center;
+
+    .separator {
+        margin: 0 0.25em;
+    }
+}
+
+#time {
+    padding: 0 0.6em;
+}
+
+#track {
+    width: 78%;
+    margin-right: 2%;
+    border-right: $border;
+}
+
+#mute {
+    left: 80%;
+    padding: 0 1em;
+    cursor: pointer;
+}
+
+#volume {
+    width: 20%;
+    border-left: $border;
+}
+
+
+#controls {
+    display: flex;
+    height: $player-height;
+}
+
+.pan {
+    height: 100%;
+    display: flex;
+
+    div {
+        display: flex;
+        justify-content: center;
+    }
+
+    .button {
+        align-items: center;
+        width: $player-height;
+        cursor: pointer;
+    }
+
+    .text {
+        flex-direction: column;
+
+        h3 {
+            font-family: $font-title;
+            font-size: 2em;
+        }
+    }
+}
+
+#play-pan {
+    width: 40%;
+    border-right: $border;
+}
+
+#nextPrev-pan {
+    width: 40%;
+}
+
+#playlist-pan {
+    width: 20%;
+    border-left: $border;
+}
+
+#next {
+    box-sizing: content-box;
+    border-left: $border;
+    border-right: $border;
+}
+#side-infos {
+    margin-left: 1.5em;
+}

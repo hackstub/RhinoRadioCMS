@@ -1,0 +1,16 @@
+@import 'rules';
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-family: $font-text;
+    font-size: $font-text-size;
+}
+
+
+
+@import 'fonts';

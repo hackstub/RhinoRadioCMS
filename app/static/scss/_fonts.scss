@@ -1,8 +1,41 @@
 /* FONTS */
 
+/* Pixelpath - https://autre.space/ */
 @font-face {
   font-family: 'pixelpath';
   src: url('../fonts/pxph/pixelpath-regular-webfont.woff') format('woff'), url('../fonts/pxph/pixelpath-regular-webfont.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
+}
+
+
+/* Hack v2.020 - https://sourcefoundry.org/hack/
+ * Licenses - Fonts: Hack Open Font License + Bitstream Vera license,
+ * CSS: MIT License */
+@font-face {
+  font-family: 'Hack';
+  src: url('../fonts/hack/hack-regular-webfont.woff2?v=2.020') format('woff2'), url('../fonts/hack/hack-regular-webfont.woff?v=2.020') format('woff'), url('../fonts/hack/hack-regular-webfont.ttf?v=2.020') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Hack';
+  src: url('../fonts/hack/hack-bold-webfont.woff2?v=2.020') format('woff2'), url('../fonts/hack/hack-bold-webfont.woff?v=2.020') format('woff'), url('../fonts/hack/hack-bold-webfont.ttf?v=2.020') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Hack';
+  src: url('../fonts/hack/hack-italic-webfont.woff2?v=2.020') format('woff2'), url('../fonts/hack/hack-italic-webfont.woff?v=2.020') format('woff'), url('../fonts/hack/hack-italic-webfont.ttf?v=2.020') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Hack';
+  src: url('../fonts/hack/hack-bolditalic-webfont.woff2?v=2.020') format('woff2'), url('../fonts/hack/hack-bolditalic-webfont.woff?v=2.020') format('woff'), url('../fonts/hack/hack-bolditalic-webfont.ttf?v=2.020') format('truetype');
+  font-weight: 700;
+  font-style: italic;
 }

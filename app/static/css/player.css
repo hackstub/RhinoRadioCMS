@@ -1,114 +1,91 @@
 #player {
-    position: fixed;
-    width: 100%;
-    bottom: 0;
-    background-color: white;
-}
-#player * {
-    box-sizing: border-box;
-}
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  background-color: white; }
 
 #slider-bar {
-    width: 100%;
-    display: flex;
-    height: 1.05em;
-    border-bottom: 5px solid black;
-}
-#controls {
-    display: flex;
-    height: 5em;
-}
+  width: 100%;
+  display: flex;
+  height: 1.5em;
+  border-bottom: 5px solid black; }
 
 .sliders {
-    border-top: 5px solid black;
-    height: 100%;
-}
-.sliders div {
+  border-top: 5px solid black;
+  height: 100%; }
+  .sliders div {
     height: 100%;
     background-color: springgreen;
-    width: 50%;
-}
+    width: 0%; }
+
+.box-text {
+  position: absolute;
+  top: -1.8em;
+  height: 1.8em;
+  background-color: black;
+  color: white;
+  border-top: 5px solid black;
+  border-top-left-radius: 2.5px;
+  border-top-right-radius: 2.5px;
+  display: flex;
+  align-items: center; }
+  .box-text .separator {
+    margin: 0 0.25em; }
+
+#time {
+  padding: 0 0.6em; }
 
 #track {
-    width: 78%;
-    margin-right: 2%;
-    border-right: 5px solid black;
-}
-#volume {
-    width: 20%;
-    border-left: 5px solid black;
-}
-.box-text {
-    position: absolute;
-    top: -1.8em;
-    height: 1.8em;
-    background-color: black;
-    color: white;
-    border-top: 5px solid black;
-    border-top-left-radius: 2.5px;
-    border-top-right-radius: 2.5px;
-    font-size: 0.8em;
-    font-family: hack;
-    display: flex;
-    align-items: center;
-}
-#time {
-    padding: 0 0.6em;
-}
+  width: 78%;
+  margin-right: 2%;
+  border-right: 5px solid black; }
+
 #mute {
-    left: 80%;
-    padding: 0 1em;
-    cursor: pointer;
-}
-.separator {
-    margin: 0 0.25em;
-}
+  left: 80%;
+  padding: 0 1em;
+  cursor: pointer; }
+
+#volume {
+  width: 20%;
+  border-left: 5px solid black; }
+
+#controls {
+  display: flex;
+  height: 6em; }
 
 .pan {
-    height: 100%;
+  height: 100%;
+  display: flex; }
+  .pan div {
     display: flex;
-}
+    justify-content: center; }
+  .pan .button {
+    align-items: center;
+    width: 6em;
+    cursor: pointer; }
+  .pan .text {
+    flex-direction: column; }
+    .pan .text h3 {
+      font-family: pixelpath;
+      font-size: 2em; }
 
 #play-pan {
-    width: 40%;
-    border-right: 5px solid black;
-}
+  width: 40%;
+  border-right: 5px solid black; }
+
 #nextPrev-pan {
-    width: 40%;
-}
+  width: 40%; }
+
 #playlist-pan {
-    width: 20%;
-    border-left: 5px solid black;
-}
-
-.pan div {
-    display: flex;
-    justify-content: center;
-}
-
-.button {
-    align-items: center;
-    width: 5em;
-    cursor: pointer;
-}
-.text {
-    flex-direction: column;
-}
-.text h3 {
-    font-family: pixelpath;
-    font-size: 27px;
-}
-.text p {
-    font-family: hack;
-    font-size: 0.8em;
-}
-
+  width: 20%;
+  border-left: 5px solid black; }
 
 #next {
-    box-sizing: content-box;
-    border-left: 5px solid black;
-    border-right: 5px solid black;
-}
+  box-sizing: content-box;
+  border-left: 5px solid black;
+  border-right: 5px solid black; }
+
 #side-infos {
-    margin-left: 1em;
-}
+  margin-left: 1.5em; }
+
+/*# sourceMappingURL=player.css.map */
