@@ -9,20 +9,14 @@ window.addEventListener("popstate", function(e) {
 $('a.contentLink').click(function(e)
 {
     e.preventDefault();
-    history.pushState({}, '', e.target.href);
-    loadContent(e.target.href);
+    history.pushState({}, '', e.currentTarget.href);
+    loadContent(e.currentTarget.href);
 });
 
-/*
-// Capture all internal links
-$('a.intern').click(function(e)
+function displayMain(data)
 {
-    e.preventDefault();
-    console.log(e.currentTarget.href);
-    history.pushState({}, '', e.currentTarget.href);
-    $('#main').load(e.currentTarget.href + " #mainframe" );
-});
-*/
+    document.getElementsByTagName("main")[0].innerHTML = data["content"];
+}
 
 function loadContent(target)
 {

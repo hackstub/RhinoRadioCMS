@@ -78,7 +78,10 @@ def base(content=None):
 @content
 def about():
 
-    return [ 'displayMain', { "content": render_template_string("about.html") } ]
+    page = Page.query.filter_by(title='À propos').first_or_404()
+
+    return [ 'displayMain',
+           { "content": render_template("about.html", page=page) } ]
 
 
 @main.route('/maintenance', methods=['GET', 'POST'])
