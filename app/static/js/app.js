@@ -6,12 +6,18 @@ window.addEventListener("popstate", function(e) {
 }, false);
 
 // Capture 'click' for all content links
-$('a.contentLink').click(function(e)
+function captureContentLinks()
 {
-    e.preventDefault();
-    history.pushState({}, '', e.currentTarget.href);
-    loadContent(e.currentTarget.href);
-});
+    $('a.contentLink').unbind("click");
+    $('a.contentLink').click(function(e)
+    {
+        e.preventDefault();
+        history.pushState({}, '', e.currentTarget.href);
+        loadContent(e.currentTarget.href);
+    });
+}
+
+captureContentLinks();
 
 function displayMain(data)
 {
@@ -24,6 +30,8 @@ function loadContent(target)
         var f = eval(response_data[0]);
         var data = response_data[1];
         f(data);
+        // Recapture content links (some might have been deleted/added)
+        captureContentLinks();
     });
 };
 
