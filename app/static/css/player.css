@@ -1,5 +1,6 @@
 /* TODO
 mixin flex
+mixin selection
 
 */
 #player {
@@ -11,16 +12,23 @@ mixin flex
 #slider-bar {
   width: 100%;
   display: flex;
-  height: 1.5em;
-  border-bottom: 5px solid black; }
+  height: 1.2em;
+  border-bottom: 5px solid black;
+  box-sizing: content-box; }
 
 .sliders {
   border-top: 5px solid black;
-  height: 100%; }
+  height: 100%;
+  background-color: black; }
   .sliders div {
     height: 100%;
+    width: 0%;
     background-color: springgreen;
-    width: 0%; }
+    position: relative; }
+  .sliders #track-loading {
+    background-color: white; }
+  .sliders #track-progress {
+    margin-top: calc(-1.2em + 5px); }
 
 .box-text {
   position: absolute;
@@ -52,6 +60,9 @@ mixin flex
 #volume {
   width: 20%;
   border-left: 5px solid black; }
+
+#volume-active {
+  width: 100%; }
 
 #controls {
   display: flex;

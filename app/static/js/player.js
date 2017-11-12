@@ -9,6 +9,7 @@ function Player() {
 
     this.trackBar = document.getElementById("track");
     this.trackSlider  = document.getElementById("track-progress");
+    this.buffered = 0;
 
     this.volumeBar = document.getElementById("volume");
     this.volumeSlider = document.getElementById("volume-active");
@@ -78,6 +79,7 @@ Player.prototype.initListeners = function() {
     var mute = document.getElementById("mute");
     mute.onclick = _this.mute.bind(_this);
 
+    //this.audio.addEventListener('progress', _this.updateLoading.bind(_this));
     this.audio.addEventListener('timeupdate', _this.updateTrack.bind(_this));
     this.audio.addEventListener('ended', _this.pause.bind(_this));
 
@@ -89,15 +91,17 @@ Player.prototype.load = function(data) {
 
     // Update their data
     source.setAttribute("src", data.link);
-    title.innerHtml = data.title;
+    title.textContent = data.title;
 
     // Reload player with the newly fetched podcast
     this.audio.pause();
     this.audio.load();
+    this.buffered = 0;
     this.audio.onloadedmetadata = function () {
         _this.totalTime.textContent = _this.formatTime(_this.audio.duration);
     };
     this.audio.oncanplaythrough = this.play();
+
 };
 Player.prototype.play = function() {
     this.playBtn.attributes.display.value = "none";
@@ -122,6 +126,18 @@ Player.prototype.mute = function() {
 
     this.updateVolume(newVolume);
 };
+Player.prototype.updateLoading = function() {
+    var length = this.audio.buffered.length;
+    if (length > 0) {
+        var buffered = this.audio.buffered.end(length-1);
+        if (buffered > this.buffered) {
+            this.buffered = buffered;
+            var loading = document.getElementById("track-loading");
+            var percent = (buffered / this.audio.duration) * 100;
+            loading.style.width = percent + '%';
+        }
+    }
+};
 Player.prototype.updateTrack = function(value) {
 
     var current = this.audio.currentTime;
@@ -129,6 +145,7 @@ Player.prototype.updateTrack = function(value) {
     this.trackSlider.style.width = percent + '%';
 
     this.currentTime.textContent = this.formatTime(current);
+    this.updateLoading();
 };
 Player.prototype.updateVolume = function(value) {
     /* Update the volume and the graphic slider width. The parameter can be an
