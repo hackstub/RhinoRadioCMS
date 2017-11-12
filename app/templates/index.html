@@ -1,19 +1,12 @@
-{% extends "base.html" %}
-
-{% block main %}
-
-<div id="lastAdded">
+<section id="left-panel">
     {% include "podcasts.html" %}
-</div>
+</section>
 
-<div id="rightPanel">
-
-    {% if blogPosts %}
-      {% include "blog.html" %}
-    {% endif %}
-    {% if events %}
-      {% include "agenda.html" %}
-    {% endif %}
-
-</div>
-{% endblock %}
+<section id="right-panel">
+{% if blogPosts %}
+    {% include "blog.html" %}
+{% endif %}
+{% if events %}
+    {% include "agenda.html" %}
+{% endif %}
+</section>

@@ -10,13 +10,18 @@ sudo apt-get install python-virtualenv
 
 virtualenv -p python3 venv
 source venv/bin/activate
-pip3 install -r requirements.txt
+
 # PostgreSQL and GIS (geographic db)
-sudo apt install postgis
-# PostgreSQL
+sudo apt install python3-dev postgresql-9.4 postgresql-server-dev-9.4 postgis
+
+pip3 install -r requirements.txt
+
+# Start PostgreSQL
 systemctl start postgresql
+
 # if needed :
 #createlang plpgsql gis
+
 sudo su postgres
 psql
 >>> CREATE DATABASE rhino;
@@ -24,17 +29,32 @@ psql
 >>> CREATE EXTENSION postgis;
 >>> GRANT ALL ON DATABASE rhino TO "user";
 >>> \q
+
+# Path a few stuff..
+mkdir app/static/podcasts
+
+# Replace 'xrange' by 'range' in lorem_ipsum :
+vim venv/lib/python*/site-packages/forgery_py/forgery/lorem_ipsum.py
+
+```
+
+## Init the base
+
+```
+# (Re-)initialize database
+python3 manage.py nuke
+
+# Feed database with random placeholder values
+python3 manage.py lorem
 ```
 
 ## Develop
 
 ```bash
-./run_dev_server.sh
-# (Re-)initialize database
-python3 manage.py nuke
-# Feed database with random placeholder values
-python3 manage.py lorem
+# Run dev server
+python3 manage.py runserver
 ```
+
 ## Admin
 
 Admin interface on : http://domain.tld/admin

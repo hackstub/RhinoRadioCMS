@@ -1,6 +1,14 @@
 import os
-from flask import Flask, render_template, url_for, jsonify, request, redirect, flash
+from flask import (Flask,
+                   render_template,
+                   render_template_string,
+                   url_for,
+                   jsonify,
+                   request,
+                   redirect,
+                   flash)
 from werkzeug.utils import secure_filename
+from functools import wraps
 from glob import glob
 from config import config
 import json
@@ -30,94 +38,143 @@ from app.models.page import *
 #########################
 
 @main.route('/')
-def index(specificContent=None):
-    return render_template( 'index.html',
+def base(content=None):
+    return render_template( 'base.html',
                             styles = getStyles(),
                             scripts = getScripts(),
                             podcasts = Podcast.list(),
                             blogPosts = BlogPost.list(),
                             events = Event.list(),
-                            specificContent = specificContent
+                            content = content
                           )
+
+####################################
+#  Wrapper for invidicual content  #
+####################################
+
+def content(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        # We make sure to come from an 'already loaded site' ...
+        # Otherwise, redirect to index and immediately load the requested
+        # content
+        if not request.referrer:
+            return base(content=request.path)
+        data = f(*args, **kwargs)
+
+        # Data should be a list [ ] with 2 elements :
+        # - name of a js function
+        # - data for the js function
+        assert isinstance(data, list)
+        assert len(data) == 2
+        assert isinstance(data[0], str)
+        assert isinstance(data[1], dict)
+
+        response = jsonify(data)
+        response.status_code = 200
+        return response
+
+    return decorated_function
+
+#########################
+#  About                #
+#########################
 
 @main.route('/about')
+@content
 def about():
-    return render_template( 'about.html',
-                            styles = getStyles(),
-                            page = Page.query.filter_by(title='À propos').first_or_404(),
-                            scripts = getScripts(), )
 
-@main.route('/maintenance', methods=['GET', 'POST'])
-def maintenance():
-    email = None
-    form = SubscribeForm()
-    if form.validate_on_submit():
-        email=form.email.data
-        form.name.data=''
-    return render_template( 'maintenance.html',
-                            styles = getStyles(),
-                            form = form
-                          )
+    page = Page.query.filter_by(title='À propos').first_or_404()
+
+    return [ 'displayMain',
+           { "content": render_template("about.html",
+                                        page=page) } ]
+
+@main.route('/blogs/')
+@content
+def blogs():
+    return [ 'displayMain',
+             { "content": render_template("notimplemented.html") } ]
+
+@main.route('/agendas/')
+@content
+def agenda():
+    return [ 'displayMain',
+             { "content": render_template("notimplemented.html") } ]
+
+@main.route('/contribute/')
+@content
+def contribute():
+    return [ 'displayMain',
+             { "content": render_template("notimplemented.html") } ]
 
 #########################
 #  Podcasts             #
 #########################
 
 @main.route('/podcasts/')
+@content
 def podcasts():
-    return Podcast.list()
+    podcasts = Podcast.list()
+    return [ 'displayMain',
+             { "content": render_template("notimplemented.html",
+                                          podcasts=podcasts) } ]
 
-@main.route('/podcasts/<id>')
+
+@main.route('/podcast/<id>')
+@content
 def podcast(id):
     podcast = Podcast.query.filter_by(id = id).first()
-    if not request.referrer:
-        specificContent = { "function": "fetchAndPlayPodcast", "arg": podcast.link }
-        return index(specificContent=specificContent)
 
-    response.status_code = 200
-    return response
+    return [ "player.load.bind(player)",
+             { "link" : podcast.link,
+               "title" : podcast.title } ]
+
 
 #########################
 #  Contributors         #
 #########################
 
 @main.route('/contributors/')
+@content
 def contributors():
     """ Return list of all the contributors """
     contribs = Contributor.list()
-    return render_template( 'index.html',
-                            styles = getStyles(),
-                            scripts = getScripts(),
-                            contribs = contribs
-                          )
+    return [ 'displayMain',
+             { "content": render_template("notimplemented.html",
+                                          contributors=contribs) }]
 
-@main.route('/contributors/<contrib>')
+
+@main.route('/contributor/<contrib>')
+@content
 def contributor(contrib):
-    return Podcast.list(filter = contrib + "in Podcast.contributors")
+    podcasts = Podcast.list(filter = contrib + "in Podcast.contributors")
+    return [ 'displayMain',
+             { "content": render_template("notimplemented.html",
+                                          podcasts=podcasts) }]
 
 #########################
 #  Collectives          #
 #########################
 
 @main.route('/collectives')
+@content
 def collectives():
     """ Return list of all the collectives """
     collectives = Label.query.filter(Label.type=="COLLECTIVE").all_or_404()
-    return collectives
+    return [ 'displayMain',
+             { "content": render_template("notimplemented.html",
+                                          collectives=collectives) }]
 
-@main.route('/collectives/<coll>')
+@main.route('/collective/<coll>')
+@content
 def collective(coll):
-    """ Return home template for collective coll """
+    """ Return podcasts from collective coll """
     label_id = Label.query.filter(Label.name==coll).first()
-    return render_template( 'index.html',
-                            styles = getStyles(),
-                            scripts = getScripts(),
-                            podcasts = getPodcasts(
-                                filter='Podcast.label_id=label_id'),
-                            blog = getBlogPosts(),
-                            events = getEvents(),
-                            specificContent = specificContent
-                          )
+    podcasts = getPodcasts(filter='Podcast.label_id=label_id'),
+    return [ 'displayMain',
+             { "content": render_template("notimplemented.html",
+                                          podcasts=podcasts) }]
 
 #########################
 #  Static stuff         #
@@ -126,12 +183,14 @@ def collective(coll):
 def getStyles():
      return [ url_for('static',
                       filename=file.replace('app/static/', ''),
+                      #_scheme='https',
                       _external=True)
              for file in glob("app/static/*/*.css") ]
 
 def getScripts():
      return [ url_for('static',
                       filename=file.replace('app/static/', ''),
+                      #_scheme='https',
                       _external=True)
              for file in   glob("app/static/lib/*.js")
                          + glob("app/static/js/*.js") ]
