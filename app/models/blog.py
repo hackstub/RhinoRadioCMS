@@ -12,8 +12,8 @@ class BlogPost(db.Model):
     """ Date of creation """
     desc = db.Column(db.Text)
     """ Description """
-    label_id = db.Column(db.Integer, db.ForeignKey('labels.id'))
-    """ Label """
+    channel_id = db.Column(db.Integer, db.ForeignKey('channels.id'))
+    """ Channel """
     contributor_id = db.Column(db.Integer, db.ForeignKey('contributors.id'))
     """ Contributor """
 
@@ -36,7 +36,7 @@ class BlogPost(db.Model):
             bp = BlogPost(
                 title = forgery_py.lorem_ipsum.title(),
                 desc = forgery_py.lorem_ipsum.paragraph(),
-                label_id = i+1,
+                channel_id = i+1,
                 contributor_id = i+1
             )
             db.session.add(bp)

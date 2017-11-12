@@ -89,7 +89,8 @@ Player.prototype.load = function(data) {
 
     // Update their data
     source.setAttribute("src", data.link);
-    title.innerHtml = data.title;
+    console.log(data.title);
+    title.textContent = data.title;
 
     // Reload player with the newly fetched podcast
     this.audio.pause();

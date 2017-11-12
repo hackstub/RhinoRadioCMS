@@ -10,6 +10,7 @@ class Tag(db.Model):
     """ Podcast """
     section_id = db.Column(db.Integer, db.ForeignKey('sections.id'))
     """ Section """
+    channel_id = db.Column(db.Integer, db.ForeignKey('channels.id'))
 
     @staticmethod
     def fake_feed(count=10):

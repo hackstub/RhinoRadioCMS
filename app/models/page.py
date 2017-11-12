@@ -6,7 +6,7 @@ class Page(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(256))
     desc = db.Column(db.Text)
-    label_id = db.Column(db.Integer, db.ForeignKey('labels.id'))
+    channel_id = db.Column(db.Integer, db.ForeignKey('channels.id'))
     parent_page_id = db.relationship('Page')
     children = db.Column(db.Integer, db.ForeignKey('pages.id'))
 
@@ -30,7 +30,7 @@ class Page(db.Model):
             p = Page(
                 title = forgery_py.lorem_ipsum.title(),
                 desc = forgery_py.lorem_ipsum.paragraphs(quantity=9),
-                label_id = i+1
+                channel_id = i+1
             )
             db.session.add(p)
         try:

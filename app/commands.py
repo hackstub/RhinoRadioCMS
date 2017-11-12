@@ -4,13 +4,12 @@ from flask import url_for
 from flask_script import Command
 from . import db
 
-from app.models.podcast import Podcast
+from app.models.podcast import Podcast, Section
 from app.models.contributor import *
 from app.models.blog import *
 from app.models.event import *
-from app.models.label import *
+from app.models.channel import *
 from app.models.tag import *
-from app.models.section import *
 from app.models.page import *
 
 
@@ -65,7 +64,7 @@ class LoremCommand(Command):
             BlogPost.fake_feed()
             Contributor.fake_feed()
             Event.fake_feed()
-            Label.fake_feed()
+            Channel.fake_feed()
             Podcast.fake_feed()
             Section.fake_feed()
             Tag.fake_feed()

@@ -27,7 +27,7 @@ from app.models.podcast import Podcast
 from app.models.contributor import *
 from app.models.blog import *
 from app.models.event import *
-from app.models.label import *
+from app.models.channel import *
 from app.models.tag import *
 from app.models.section import *
 from app.models.page import *
@@ -149,9 +149,11 @@ def contributors():
 @content
 def contributor(contrib):
     podcasts = Podcast.list(filter = contrib + "in Podcast.contributors")
+#    podcasts = Podcast.query.filter_by(contributor_id = Contributor.query.filter_by(name = contrib).first()).all()
     return [ 'displayMain',
              { "content": render_template("notimplemented.html",
                                           podcasts=podcasts) }]
+
 
 #########################
 #  Collectives          #
@@ -161,7 +163,7 @@ def contributor(contrib):
 @content
 def collectives():
     """ Return list of all the collectives """
-    collectives = Label.query.filter(Label.type=="COLLECTIVE").all_or_404()
+    collectives = Channel.query.filter(Channel.type=="COLLECTIVE").all_or_404()
     return [ 'displayMain',
              { "content": render_template("notimplemented.html",
                                           collectives=collectives) }]
@@ -169,9 +171,9 @@ def collectives():
 @main.route('/collective/<coll>')
 @content
 def collective(coll):
-    """ Return podcasts from collective coll """
-    label_id = Label.query.filter(Label.name==coll).first()
-    podcasts = getPodcasts(filter='Podcast.label_id=label_id'),
+    """ Return home template for collective coll """
+    channel_id = Channel.query.filter(Channel.name==coll).first()
+    podcasts = getPodcasts(filter='Podcast.channel_id=channel_id'),
     return [ 'displayMain',
              { "content": render_template("notimplemented.html",
                                           podcasts=podcasts) }]

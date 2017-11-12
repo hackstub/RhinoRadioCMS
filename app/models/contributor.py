@@ -1,5 +1,8 @@
 from .. import db
 
+from .channel import *
+from .section import *
+
 class Contributor(db.Model):
     __tablename__ = 'contributors'
     id = db.Column(db.Integer, primary_key=True)
@@ -8,10 +11,18 @@ class Contributor(db.Model):
     bio = db.Column(db.Text)
     email = db.Column(db.String(256))
     podcasts = db.relationship('Podcast',
-                secondary = 'publications')
+                secondary = 'podcasts_authors',
+                lazy = 'select',
+                back_populates = 'contributors')
     sections = db.relationship('Section',
-                backref = db.backref('contributor', lazy='select'),
-                lazy = 'select')
+                secondary = 'sections_authors',
+                lazy = 'select',
+                back_populates = 'contributors')
+    website = db.Column(db.String(256))
+    channels = db.relationship('Channel',
+                secondary = 'channels_authors',
+                lazy = 'select',
+                back_populates = 'contributors')
 
     def __str__(self):
         return self.name
@@ -37,7 +48,9 @@ class Contributor(db.Model):
                 name = forgery_py.name.full_name(),
                 status = forgery_py.lorem_ipsum.word(),
                 bio = forgery_py.lorem_ipsum.sentence(),
-                email = forgery_py.internet.email_address())
+                email = forgery_py.internet.email_address(),
+                website = forgery_py.internet.domain_name()
+                )
             db.session.add(c)
         try:
             db.session.commit()
