@@ -33,20 +33,6 @@ from app.models.section import *
 from app.models.page import *
 
 
-#########################
-#  Main pages           #
-#########################
-
-@main.route('/')
-def base(content=None):
-    return render_template( 'base.html',
-                            styles = getStyles(),
-                            scripts = getScripts(),
-                            podcasts = Podcast.list(),
-                            blogPosts = BlogPost.list(),
-                            events = Event.list(),
-                            content = content
-                          )
 
 ####################################
 #  Wrapper for invidicual content  #
@@ -56,10 +42,17 @@ def content(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         # We make sure to come from an 'already loaded site' ...
-        # Otherwise, redirect to index and immediately load the requested
+        # Otherwise, load the base then immediately load the requested
         # content
-        if not request.referrer:
-            return base(content=request.path)
+        if not 'X-Rhino-Base-Loaded' in request.headers:
+            return render_template( 'base.html',
+                                    styles = getStyles(),
+                                    scripts = getScripts(),
+                                    content = request.path,
+                                    podcasts = Podcast.list(),
+                                    blogPosts = BlogPost.list(),
+                                    events = Event.list()
+                                  )
         data = f(*args, **kwargs)
 
         # Data should be a list [ ] with 2 elements :
@@ -75,6 +68,21 @@ def content(f):
         return response
 
     return decorated_function
+
+
+#########################
+#  Main pages           #
+#########################
+
+@main.route('/')
+@content
+def index():
+    return [ 'displayMain',
+           { "content": render_template("index.html",
+                                        podcasts = Podcast.list(),
+                                        blogPosts = BlogPost.list(),
+                                        events = Event.list()) } ]
+
 
 #########################
 #  About                #
