@@ -1,4 +1,5 @@
 from .. import db
+from geoalchemy2 import Geometry
 from datetime import datetime
 
 class Section(db.Model):
@@ -20,7 +21,15 @@ class Section(db.Model):
     end = db.Column(db.Time)
     """ Ending of the section """
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-    """ Date and time of creation """
+    """ Date and time of creatiomirrors security debiann """
+    mood = db.Column(db.String(128))
+    """ Mood of the section """
+    tags = db.relationship('Tag',
+                backref=db.backref('sections', lazy='select'),
+                lazy='select')
+    """ Tags of the section """
+    place = db.Column(Geometry(geometry_type='POINT', srid=0))
+    """ Place of recording/playing """
 
     @staticmethod
     def fake_feed(count=10):
@@ -33,7 +42,8 @@ class Section(db.Model):
         for i in range(count):
             s = Section(
                 title = forgery_py.lorem_ipsum.title(),
-                desc = forgery_py.lorem_ipsum.paragraph()
+                desc = forgery_py.lorem_ipsum.paragraph(),
+                contributor_id = randint(1, 11)
             )
             db.session.add(s)
         try:

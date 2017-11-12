@@ -23,6 +23,16 @@ class Label(db.Model):
     def __str__(self):
         return self.name
 
+    def list(type = ''):
+        if not type == '':
+            items = Label.query.\
+                filter(Label.type == type).\
+                order_by(Label.name).all()
+        else:
+            items = Label.query.\
+                order_by(Label.name).all()
+        return items
+
     @staticmethod
     def fake_feed(count=10):
         from sqlalchemy.exc import IntegrityError

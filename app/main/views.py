@@ -67,7 +67,7 @@ def maintenance():
 def podcasts():
     return Podcast.list()
 
-@main.route('/podcast/<id>')
+@main.route('/podcasts/<id>')
 def podcast(id):
     podcast = Podcast.query.filter_by(id = id).first()
     if not request.referrer:
@@ -91,10 +91,9 @@ def contributors():
                             contribs = contribs
                           )
 
-@main.route('/contributor/<contrib>')
+@main.route('/contributors/<contrib>')
 def contributor(contrib):
-    podcasts = Podcast.query.filter_by(contributor_id = Contributor.query.filter_by(name = contrib).first()).all()
-    return podcasts
+    return Podcast.list(filter = contrib + "in Podcast.contributors")
 
 #########################
 #  Collectives          #
@@ -106,7 +105,7 @@ def collectives():
     collectives = Label.query.filter(Label.type=="COLLECTIVE").all_or_404()
     return collectives
 
-@main.route('/collective/<coll>')
+@main.route('/collectives/<coll>')
 def collective(coll):
     """ Return home template for collective coll """
     label_id = Label.query.filter(Label.name==coll).first()

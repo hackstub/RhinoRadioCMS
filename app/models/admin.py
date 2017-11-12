@@ -81,17 +81,18 @@ class PodcastView(FullTextView):
             ('medium', 'Au trot'),
             ('fast', 'Au galop !')
         ],
-        'type': [
+        'music': [
             (True, 'Oui'),
             (False, 'Non')
         ]
     }
     column_labels = dict(
-        title='Titre',
-        contributors='Auteurs',
-        desc='Description',
-        mood='Ambiance',
-        link='Lien',
+        title = 'Titre',
+        contributors = 'Auteurs',
+        desc = 'Description',
+        mood = 'Ambiance',
+        music = 'Musique',
+        link = 'Lien',
         sections = 'Extraits',
         place = 'Lieu',
         itinerary = 'Itinéraire'
@@ -106,6 +107,11 @@ class PodcastView(FullTextView):
 
 class SectionView(FullTextView):
     form_excluded_columns = ['timestamp']
+    column_labels = dict(
+        title = 'Titre',
+        desc = 'Description',
+        contributor_id = 'Auteur'
+    )
 
 class EventView(ModalView):
     column_labels = dict(
@@ -114,14 +120,15 @@ class EventView(ModalView):
         begin = 'Début',
         end = 'Fin',
         desc = 'Description',
-        label_id = 'Label'
+        label_id = 'Label',
+        live_show = 'Direct'
     )
 
 class ContributorView(ModalView):
     form_excluded_columns = ['podcasts']
     column_labels = dict(
         name = 'Nom',
-        status = 'Statut',
+        status = 'Statut'
     )
 
 class LabelView(ModalView):
