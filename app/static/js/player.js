@@ -105,10 +105,6 @@ Player.prototype.load = function(data) {
 
     // Update their data
     source.setAttribute("src", data.link);
-<<<<<<< HEAD
-    console.log(data.title);
-=======
->>>>>>> c21ed28a107dff45f83ae2d13a26e0564dc6306d
     title.textContent = data.title;
 
     // Reload player with the newly fetched podcast
