@@ -10,7 +10,7 @@ from flask import (Flask,
 from werkzeug.utils import secure_filename
 from functools import wraps
 from glob import glob
-from config import config
+from config import config, LIQUIDSOAP_TOKEN
 import json
 from uuid import uuid4
 from datetime import date
@@ -189,6 +189,17 @@ def collective(coll):
 #########################
 #  Static stuff         #
 #########################
+
+@main.route('/on_air', methods=['POST'])
+def on_air():
+    error = None
+    if request.args.get('token') != LIQUIDSOAP_TOKEN:
+        error = 'Invalid token !'
+    else:
+        return live(stream = request.args.get('stream'))
+
+def live(stream):
+    pass
 
 def getStyles():
      return [ url_for('static',

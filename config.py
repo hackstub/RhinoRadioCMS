@@ -2,6 +2,7 @@ import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 __APP_NAME__ = "Rhino Radio CMS"
+LIQUIDSOAP_TOKEN = os.environ.get('LIQUIDSOAP_TOKEN') or 'hijackmyradio'
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'hackme'
@@ -20,7 +21,7 @@ class DevelopmentConfig(Config):
     # SQLite :
     #SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or 'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
     # PostgreSQL :
-    SQLALCHEMY_DATABASE_URI = os. environ.get('DEV_DATABASE_URL') or 'postgresql://localhost/rhino'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or 'postgresql://localhost/rhino'
 
 class TestingConfig(Config):
     TESTING = True
