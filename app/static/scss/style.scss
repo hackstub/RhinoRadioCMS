@@ -22,6 +22,7 @@ nav {
     height: 100%;
     width: 20%;
     padding-left: 3em;
+    margin-bottom: 3em;
 
     #logo {
         display: block;
@@ -34,6 +35,17 @@ nav {
 
     div:last-child {
         margin-top: 4em;
+    }
+
+    a {
+        display: block;
+        margin-bottom: 0.3em;
+
+        &:hover {
+            .main-color {
+                stroke: black;
+            }
+        }
     }
 }
 
@@ -68,6 +80,34 @@ section {
     }
 }
 
+a {
+    outline: 0;
+}
+
+/* SVGS */
+.line {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+.main-width {
+    stroke-width: 5;
+    stroke-miterlimit: 5;
+}
+.aux-width {
+    stroke-width: 3;
+    stroke-miterlimit: 3;
+}
+.black {
+    stroke: $black;
+}
+.main-color {
+    stroke: $main-color;
+}
+.circle {
+    fill: $black;
+    stroke: none;
+}
 
 
 @import 'fonts';

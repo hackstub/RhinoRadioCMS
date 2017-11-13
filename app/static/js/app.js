@@ -1,53 +1,56 @@
-var player = new Player();
 
-// Event when going back in the history...
+// ###########################################################################
+// #  Partial content loading / management                                   #
+// ###########################################################################
+
+// When going back in the history, reload the content that was there
 window.addEventListener("popstate", function(e) {
     loadContent(e.target.location.pathname);
 }, false);
 
 // Capture 'click' for all content links
 function captureContentLinks() {
+    // Getting the class name 'contentLink' is specific to Radio Rhino
+    // Could be factorized in the future ;)
     var links = document.getElementsByClassName("contentLink");
     var linksLen = links.length;
 
-    function pushAndLoad(e) {
+    function load(e) {
         e.preventDefault();
-        var href = e.currentTarget.href;
-        history.pushState({}, '', href);
-        loadContent(href);
+        loadContent(e.currentTarget.href);
     }
 
     for (var i = 0; i < linksLen; i++) {
         if (links[i].onclick === null) {
-            links[i].onclick = pushAndLoad;
+            links[i].onclick = load;
         }
     }
 }
 
-captureContentLinks();
-
-function displayMain(data) {
-    document.getElementsByTagName("main")[0].innerHTML = data["content"];
-}
-
 function loadContent(target) {
-    getJSON(target, function(response_data) {
-        var f = eval(response_data[0]);
-        var data = response_data[1];
-        f(data);
-        // Recapture content links (some might have been deleted/added)
-        captureContentLinks();
-    });
-};
-
-function getJSON(target, callback) {
     var req = new XMLHttpRequest();
     req.open('GET', target, true);
-    req.setRequestHeader('X-Rhino-Base-Loaded', 'yes');
+    req.setRequestHeader('X-Partial-Content', 'yes');
     req.overrideMimeType("application/json");
     req.onload = function() {
         if (req.status >= 200 && req.status < 400) {
-            callback(JSON.parse(req.responseText));
+            // Parse the response
+            var response_data = JSON.parse(req.responseText);
+
+            // Load the content we got, using the function specified by the server
+            var f = eval(response_data[0]);
+            var data = response_data[1];
+            f(data);
+            
+            // Push this content in the history
+            // N.B : in the future, we might want to have a mechanism to do this only 
+            // for specific contents...
+            if (window.location.pathname != target) {
+                history.pushState({}, '', target);
+            }
+
+            // Recapture content links (some might have been deleted/added)
+            captureContentLinks();
         }
     };
 
@@ -57,3 +60,19 @@ function getJSON(target, callback) {
 
     req.send();
 }
+
+// ###########################################################################
+// #  Partial content management specific to Radio Rhino                     #
+// ###########################################################################
+
+function displayMain(data) {
+    document.getElementsByTagName("main")[0].innerHTML = data["content"];
+}
+
+// ###########################################################################
+// #  Init a few things when loading the document                            #
+// ###########################################################################
+
+var player = new Player();
+
+captureContentLinks();
