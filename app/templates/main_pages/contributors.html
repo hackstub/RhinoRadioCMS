@@ -1,8 +1,21 @@
 <section id="left-panel">
 <h2>Contributeurs</h2>
-
+{% for contributor in contributors %}
+    <p><a class="contentLink"
+       href="{{ url_for('main.contributor', contrib=contributor.id) }}">
+       {{ contributor.name }}
+   </a></p>
+{% endfor %}
 </section>
 
 <section id="right-panel">
 <h2>Collectifs</h2>
+{% for collective in collectives %}
+<div class="collective">
+    <a class="contentLink"
+       href="{{ url_for('main.collective', coll=collective.id) }}">
+       {{ collective.name }}
+    </a>
+</div>
+{% endfor %}
 </section>
