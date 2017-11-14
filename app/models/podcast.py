@@ -64,11 +64,12 @@ class Podcast(db.Model):
         return self.title
 
     def list(filter='', order='', number=10):
-        podcasts = Podcast.query.filter(filter).join(Channel, Channel.id==Podcast.channel_id).order_by(
+        podcasts = Podcast.query.filter(filter).join(
+            Channel, Channel.id==Podcast.channel_id
+        ).order_by(
             Podcast.timestamp.desc(),
             order
         ).paginate(per_page=number).items
-        print(podcasts[0].channel)
         return podcasts
 
     @staticmethod

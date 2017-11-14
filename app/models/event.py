@@ -1,6 +1,7 @@
 from .. import db
 from datetime import datetime
 from .podcast import Podcast
+from .channel import Channel
 from sqlalchemy.orm import validates
 
 class Event(db.Model):
@@ -45,10 +46,9 @@ class Event(db.Model):
                 return self
 
     def list(filter='', order='', number=3):
-        events = Event.query.filter(\
-            Event.begin >= datetime.today()).\
-            order_by(Event.begin.desc()).\
-            paginate(per_page=number).items
+        events = Event.query.filter(Event.begin >= datetime.today()) \
+            .order_by(Event.begin.desc())                            \
+            .paginate(per_page=number).items
         return events
 
     def create_rel_podcast(self):

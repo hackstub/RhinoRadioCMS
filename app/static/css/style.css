@@ -10,7 +10,8 @@ mixin selection
 
 html {
   font-family: hack, monospace;
-  font-size: 0.8em; }
+  font-size: 0.8em;
+  background-color: white; }
 
 body {
   height: 100%;
@@ -18,11 +19,17 @@ body {
   height: calc(100% - 7.5em);
   margin-bottom: 7.5em; }
 
+p, h1, h2, h3, h4, h5, h6 {
+  color: black; }
+
 nav {
   height: 100%;
   width: 20%;
   padding-left: 3em;
-  margin-bottom: 3em; }
+  margin-bottom: 3em;
+  position: sticky;
+  position: webkit-sticky;
+  top: 0; }
   nav #logo {
     display: block;
     margin: 4em 0em; }
@@ -32,16 +39,19 @@ nav {
     margin-top: 4em; }
   nav a {
     display: block;
-    margin-bottom: 0.3em; }
+    margin-bottom: 0.3em;
+    max-width: 200px; }
     nav a:hover .main-color {
       stroke: black; }
 
 main {
   display: flex;
   width: 100%; }
+  main a:hover {
+    background-color: springgreen;
+    border-bottom: none; }
 
 section {
-  width: 50%;
   padding: 5em 3em 3em 3em; }
   section h2 {
     margin-bottom: 0.7em;
@@ -53,10 +63,15 @@ section {
   section article:last-child {
     margin-top: 3em; }
   section:last-child {
-    margin-right: 3em; }
+    margin-right: 3em;
+    min-width: 30%;
+    max-width: 40%; }
 
 a {
   outline: 0; }
+
+#left-panel {
+  width: 100%; }
 
 /* SVGS */
 .line {
@@ -81,6 +96,9 @@ a {
 .circle {
   fill: black;
   stroke: none; }
+
+.list-elem {
+  margin-top: 2em; }
 
 /* FONTS */
 /* Pixelpath - https://autre.space/ */

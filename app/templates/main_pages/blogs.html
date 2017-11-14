@@ -1,6 +1,22 @@
 <section id="left-panel">
 <h2>Blog</h2>
+{% for post in blog_posts %}
+<div class="list-elem">
+    <h3>{{ post.title }}</h3>
+    <p>CHANNEL : <a class="contentLink" href="{{ url_for('main.collective', coll=post.channel.id) }}">
+        {{ post.channel.name }}
+    </a></p>
+    {% if post.contributor %}
+    <p>CONTRIBUTOR : <a class="contentLink"
+        href="{{ url_for('main.contributor', contrib=post.contributor.id) }}">
+        {{ post.contributor.name }}
+    </a></p>
+    {% endif %}
 
+    <p>{{ post.timestamp }}</p>
+    <p>{{ post.desc }}</p>
+</div>
+{% endfor %}
 </section>
 
 <section id="right-panel">

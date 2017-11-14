@@ -1,4 +1,6 @@
 from .. import db
+from .channel import Channel
+from .contributor import Contributor
 
 from datetime import datetime
 
@@ -24,10 +26,11 @@ class BlogPost(db.Model):
         return self.title
 
     def list(filter='', order='', number=3):
-        blogPosts = BlogPost.query.\
-            filter(filter).\
-            order_by(BlogPost.timestamp.desc()).\
-            paginate(per_page=number).items
+        blogPosts = BlogPost.query.filter(filter)                       \
+            .join(Channel, Channel.id==BlogPost.channel_id)             \
+            .join(Contributor, Contributor.id==BlogPost.contributor_id) \
+            .order_by(BlogPost.timestamp.desc())                        \
+            .paginate(per_page=number).items
         return blogPosts
 
     @staticmethod

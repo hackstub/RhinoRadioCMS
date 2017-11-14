@@ -81,22 +81,21 @@ def about():
 def blogs():
     return [ 'displayMain',
              { "content": render_template("main_pages/blogs.html",
-                                          blogPosts = BlogPost.list()) } ]
+                                          blog_posts = BlogPost.list(number=10) )} ]
 
 @main.route('/agendas/')
 @partial_content
 def agenda():
     return [ 'displayMain',
              { "content": render_template("main_pages/agendas.html",
-                                          events = Event.list()) } ]
+                                          events = Event.list(number=10)) } ]
 
 @main.route('/contribute/')
 @partial_content
 def contribute():
     # create a real "contribute" page
-    page = Page.query.filter_by(
-        title='Ipsum dui aliquet ligula?').first_or_404()
-
+    page = Page.query.all()[2]
+    print("COUCOUCOU",page)
     return [ 'displayMain',
              { "content": render_template("main_pages/contribute.html",
                                           page=page) } ]
