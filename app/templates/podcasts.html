@@ -1,8 +1,33 @@
-<ul>
-    <h2>Derniers podcasts</h2>
-    {% for podcast in podcasts %}
-    <li>
-        <a class="contentLink" href="{{ url_for('main.podcast', id=podcast.id) }}">{{ podcast.title }}</a>
-    </li>
-    {% endfor %}
-</ul>
+<section id="left-panel">
+<h2>Podcasts</h2>
+{% for podcast in podcasts %}
+<div class="podcast">
+    <a class="contentLink" href="{{ url_for('main.podcast', id=podcast.id) }}">
+        {{ podcast.title }}
+    </a>
+    <a class="contentLink" href="{{ url_for('main.collective', coll=podcast.channel.id) }}">
+        {{ podcast.channel.name }}
+    </a>
+    <p>
+        {% for contributor in podcast.contributors %}
+        <a class="contentLink" href="{{ url_for('main.contributor', contrib=contributor.id) }}">
+            {{ contributor.name }}
+        </a>
+        {% if not loop.last %}, {% endif %}
+        {% endfor %}
+    </p>
+    <p>{{ podcast.sections }}</p>
+    <p>{{ podcast.date }}</p>
+    <p>{{ podcast.link }}</p>
+    <p>{{ podcast.timestamp }}</p>
+    <p>{{ podcast.location }}</p>
+    <p>{{ podcast.license }}</p>
+    <p>{{ podcast.tags }}</p>
+    {{ podcast.desc|safe }}
+</div>
+{% endfor %}
+</section>
+
+<section id="right-panel">
+<h2>Selection</h2>
+</section>

@@ -3,6 +3,6 @@
     {% for event in events %}
         <h3>{{ event.title }}</h3>
         <h4>Du {{ event.begin }} au {{ event.end }}</h4>
-        {{ event.desc }}
+        <p>{{ event.desc }}</p>
     {% endfor %}
 </article>

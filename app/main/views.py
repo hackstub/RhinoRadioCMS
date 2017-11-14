@@ -101,10 +101,9 @@ def contribute():
 @main.route('/podcasts/')
 @partial_content
 def podcasts():
-    podcasts = Podcast.list()
     return [ 'displayMain',
-             { "content": render_template("notimplemented.html",
-                                          podcasts=podcasts) } ]
+             { "content": render_template("podcasts.html",
+                                          podcasts = Podcast.list()) } ]
 
 
 @main.route('/podcast/<id>')
@@ -134,11 +133,10 @@ def contributors():
 @main.route('/contributor/<contrib>')
 @partial_content
 def contributor(contrib):
-    podcasts = Podcast.list(filter = contrib + "in Podcast.contributors")
-#    podcasts = Podcast.query.filter_by(contributor_id = Contributor.query.filter_by(name = contrib).first()).all()
+    #podcasts = Podcast.list(filter = contrib + "in Podcast.contributors")
+    #podcasts = Podcast.query.filter_by(contributor_id = Contributor.query.filter_by(name = contrib).first()).all()
     return [ 'displayMain',
-             { "content": render_template("notimplemented.html",
-                                          podcasts=podcasts) }]
+             { "content": render_template("notimplemented.html") }]
 
 
 #########################

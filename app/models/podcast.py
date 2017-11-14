@@ -4,8 +4,7 @@ from geoalchemy2 import Geometry
 from .contributor import Contributor
 from .channel import Channel
 from .section import Section
-from . import *
-from .tag import *
+from .tag import Tag
 
 """ Taxonomy table """
 podcasts_authors = db.Table('podcasts_authors',
@@ -18,49 +17,58 @@ podcasts_authors = db.Table('podcasts_authors',
         db.ForeignKey('contributors.id'),
         primary_key=True))
 
-""" Podcasts class and table, extending Channel class """
+
 class Podcast(db.Model):
+    """ Podcasts class and table, extending Channel class """
     __tablename__ = 'podcasts'
+
     id = db.Column(db.Integer, primary_key=True)
+    # Title of the podcast
     title = db.Column(db.String(256))
-    """ Title of the podcast """
+    # Contibutors authoring the podcast
     contributors = db.relationship('Contributor',
                 secondary='podcasts_authors',
                 lazy='select',
                 back_populates='podcasts')
-    """ Contibutors authoring the podcast """
+    # Sections of the podcast
     sections = db.relationship('Section',
                 backref=db.backref('podcast', lazy='select'),
                 lazy='select')
-    """ Sections of the podcast """
+    # Mood of the podcast
     mood = db.Column(db.String(128))
-    """ Mood of the podcast """
+    # Musical or non-musical
     music = db.Column(db.Boolean())
-    """ Musical or non-musical """
+    # Channel of the podcast
+    channels = db.relationship('Channel',
+                back_populates='podcasts',
+                lazy='select')
+    # Channel id of the podcast
     channel_id = db.Column(db.Integer, db.ForeignKey('channels.id'))
-    """ Channel of the podcast """
+    # Date of recording
     date = db.Column(db.Date, default=datetime.utcnow)
-    """ Date of recording """
+    # Link to the audio file
     link = db.Column(db.String(256))
-    """ Link to the audio file """
+    # Datetime of publication
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-    """ Datetime of publication """
+    # Place of recording/playing
     location = db.Column(Geometry(geometry_type='POINT', srid=0))
-    """ Place of recording/playing """
+    # License of the podcast
     license = db.Column('license', db.String(256))
-    """ License of the podcast """
+    # Tags of the podcasts
     tags = db.relationship('Tag',
                 backref=db.backref('podcasts', lazy='select'),
                 lazy='select')
-    """ Tags of the podcasts """
+    # Description of the channel
     desc = db.Column(db.Text)
-    """ Description of the channel """
+
+    def __repr__(self):
+        return '<PODCAST %r>' % self.title
 
     def list(filter='', order='', number=10):
-        podcasts = Podcast.query.\
-            filter(filter).\
-            order_by(Podcast.timestamp.desc(), order).\
-            paginate(per_page=number).items
+        podcasts = Podcast.query.filter(filter).order_by(
+            Podcast.timestamp.desc(),
+            order
+        ).paginate(per_page=number).items
         return podcasts
 
     @staticmethod
