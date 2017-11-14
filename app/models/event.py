@@ -24,6 +24,12 @@ class Event(db.Model):
     podcast_id = db.Column(db.Integer, db.ForeignKey('podcasts.id'))
     """ Podcast id (self-generated if live_show is true) """
 
+    def __repr__(self):
+        return '<EVENT %r>' % self.title
+
+    def __str__(self):
+        return self.title
+
     def __init__(self, **kwargs):
         if self.live_show == True:
             create_rel_podcast(self)

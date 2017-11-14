@@ -24,6 +24,9 @@ class Contributor(db.Model):
                 lazy = 'select',
                 back_populates = 'contributors')
 
+    def __repr__(self):
+        return '<CONTRIBUTOR %r>' % self.name
+
     def __str__(self):
         return self.name
 

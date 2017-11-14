@@ -17,6 +17,12 @@ class BlogPost(db.Model):
     contributor_id = db.Column(db.Integer, db.ForeignKey('contributors.id'))
     """ Contributor """
 
+    def __repr__(self):
+        return '<BLOGPOST %r>' % self.title
+
+    def __str__(self):
+        return self.title
+
     def list(filter='', order='', number=3):
         blogPosts = BlogPost.query.\
             filter(filter).\

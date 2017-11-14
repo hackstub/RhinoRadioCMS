@@ -44,6 +44,9 @@ class Channel(db.Model):
     license = db.Column(db.String(256))
     """ License of the show """
 
+    def __repr__(self):
+        return '<CHANNEL %r>' % self.name
+
     def __str__(self):
         return self.name
 

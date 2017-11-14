@@ -38,10 +38,6 @@ class Podcast(db.Model):
     mood = db.Column(db.String(128))
     # Musical or non-musical
     music = db.Column(db.Boolean())
-    # Channel of the podcast
-    channels = db.relationship('Channel',
-                back_populates='podcasts',
-                lazy='select')
     # Channel id of the podcast
     channel_id = db.Column(db.Integer, db.ForeignKey('channels.id'))
     # Date of recording
@@ -64,11 +60,15 @@ class Podcast(db.Model):
     def __repr__(self):
         return '<PODCAST %r>' % self.title
 
+    def __str__(self):
+        return self.title
+
     def list(filter='', order='', number=10):
-        podcasts = Podcast.query.filter(filter).order_by(
+        podcasts = Podcast.query.filter(filter).join(Channel, Channel.id==Podcast.channel_id).order_by(
             Podcast.timestamp.desc(),
             order
         ).paginate(per_page=number).items
+        print(podcasts[0].channel)
         return podcasts
 
     @staticmethod
