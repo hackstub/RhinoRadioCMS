@@ -13,7 +13,7 @@ class Tag(db.Model):
     channel_id = db.Column(db.Integer, db.ForeignKey('channels.id'))
 
     def __repr__(self):
-        return '<TAG %r>' % self.title
+        return '<TAG %r>' % self.name
 
     def __str__(self):
         return self.name
