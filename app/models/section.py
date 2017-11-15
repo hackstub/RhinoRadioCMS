@@ -48,6 +48,12 @@ class Section(db.Model):
     #location = db.Column(Geometry(geometry_type='POINT', srid=0))
     #""" Place of recording/playing """
 
+    def __repr__(self):
+        return '<SECTION %r>' % self.title
+
+    def __str__(self):
+        return self.title
+
     @staticmethod
     def fake_feed(count=10):
         """ Randomly feeds the database """

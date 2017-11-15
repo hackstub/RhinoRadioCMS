@@ -10,6 +10,9 @@ class Page(db.Model):
     parent_page_id = db.relationship('Page')
     children = db.Column(db.Integer, db.ForeignKey('pages.id'))
 
+    def __repr__(self):
+        return '<PAGE %r>' % self.title
+
     def __str__(self):
         return self.title
 

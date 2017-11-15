@@ -1,0 +1,53 @@
+<section id="left-panel">
+<h2>Podcasts</h2>
+{% for podcast in podcasts %}
+<div class="list-elem">
+    <a class="source-link" href="{{ podcast.link }}">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 36.48 40">
+            <g class="line main-width black">
+                <polygon points="7.745,2.5 28.735,20 7.745,37.5"/>
+            </g>
+        </svg></a>
+
+    <a class="contentLink"
+       href="{{ url_for('main.podcast', id=podcast.id) }}">{{- podcast.title }}
+    </a>
+
+    <p><a class="contentLink" href="{{ url_for('main.collective', coll=podcast.channel.id) }}">
+        {{ podcast.channel.name }}
+    </a></p>
+
+    <p>
+        {% for contributor in podcast.contributors -%}
+        <a class="contentLink" href="{{ url_for('main.contributor', contrib=contributor.id) }}">{{ contributor.name }}</a>
+        {%- if not loop.last %}, {% endif -%}
+        {%- endfor %}
+    </p>
+
+    {% if podcast.sections|length > 0 %}
+    <ul>
+        {% for section in podcast.sections %}
+        <li>{{ section.title }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <!-- <p>{{ podcast.date }}</p> -->
+    <p>{{ podcast.timestamp }}</p>
+
+    {% if podcast.license %}
+    <p>LICENCE : {{ podcast.license }}</p>
+    {% endif %}
+
+    {% if podcast.tags|length > 0 %}
+    <p>TAGS : {{ podcast.tags|join(', ', attribute='name') }}</p>
+    {% endif %}
+
+    {{ podcast.desc|safe }}
+</div>
+{% endfor %}
+</section>
+
+<section id="right-panel">
+<h2>Selection</h2>
+</section>

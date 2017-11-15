@@ -72,26 +72,32 @@ def about():
     page = Page.query.filter_by(title='À propos').first_or_404()
 
     return [ 'displayMain',
-           { "content": render_template("about.html",
+           { "content": render_template("main_pages/about.html",
                                         page=page) } ]
 
 @main.route('/blogs/')
 @partial_content
 def blogs():
     return [ 'displayMain',
-             { "content": render_template("notimplemented.html") } ]
+             { "content": render_template("main_pages/blogs.html",
+                                          blog_posts = BlogPost.list(number=10) )} ]
 
 @main.route('/agendas/')
 @partial_content
 def agenda():
     return [ 'displayMain',
-             { "content": render_template("notimplemented.html") } ]
+             { "content": render_template("main_pages/agendas.html",
+                                          events = Event.list(number=10)) } ]
 
 @main.route('/contribute/')
 @partial_content
 def contribute():
+    # create a real "contribute" page
+    page = Page.query.all()[2]
+    print("COUCOUCOU",page)
     return [ 'displayMain',
-             { "content": render_template("notimplemented.html") } ]
+             { "content": render_template("main_pages/contribute.html",
+                                          page=page) } ]
 
 #########################
 #  Podcasts             #
@@ -100,10 +106,9 @@ def contribute():
 @main.route('/podcasts/')
 @partial_content
 def podcasts():
-    podcasts = Podcast.list()
     return [ 'displayMain',
-             { "content": render_template("notimplemented.html",
-                                          podcasts=podcasts) } ]
+             { "content": render_template("main_pages/podcasts.html",
+                                          podcasts = Podcast.list()) } ]
 
 
 @main.route('/podcast/<id>')
@@ -123,21 +128,20 @@ def podcast(id):
 @main.route('/contributors/')
 @partial_content
 def contributors():
-    """ Return list of all the contributors """
-    contribs = Contributor.list()
+    collectives = Channel.query.filter(Channel.type=="collective").all()
     return [ 'displayMain',
-             { "content": render_template("notimplemented.html",
-                                          contributors=contribs) }]
+             { "content": render_template("main_pages/contributors.html",
+                                          contributors=Contributor.list(),
+                                          collectives=collectives) }]
 
 
 @main.route('/contributor/<contrib>')
 @partial_content
 def contributor(contrib):
-    podcasts = Podcast.list(filter = contrib + "in Podcast.contributors")
-#    podcasts = Podcast.query.filter_by(contributor_id = Contributor.query.filter_by(name = contrib).first()).all()
+    #podcasts = Podcast.list(filter = contrib + "in Podcast.contributors")
+    #podcasts = Podcast.query.filter_by(contributor_id = Contributor.query.filter_by(name = contrib).first()).all()
     return [ 'displayMain',
-             { "content": render_template("notimplemented.html",
-                                          podcasts=podcasts) }]
+             { "content": render_template("notimplemented.html") }]
 
 
 #########################
@@ -183,12 +187,11 @@ def getStyles():
                       filename=file.replace('app/static/', ''),
                       #_scheme='https',
                       _external=True)
-             for file in glob("app/static/*/*.css") ]
+             for file in glob("app/static/css/*.css") ]
 
 def getScripts():
      return [ url_for('static',
                       filename=file.replace('app/static/', ''),
                       #_scheme='https',
                       _external=True)
-             for file in   glob("app/static/lib/*.js")
-                         + glob("app/static/js/*.js") ]
+             for file in glob("app/static/js/*.js") ]

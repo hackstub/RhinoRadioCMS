@@ -43,6 +43,11 @@ class Channel(db.Model):
     """ Night show ? """
     license = db.Column(db.String(256))
     """ License of the show """
+    # type of the channel (collective or channel (maybe later documentary, ...))
+    type = db.Column(db.String(256))
+
+    def __repr__(self):
+        return '<CHANNEL %r>' % self.name
 
     def __str__(self):
         return self.name
@@ -60,14 +65,15 @@ class Channel(db.Model):
     @staticmethod
     def fake_feed(count=10):
         from sqlalchemy.exc import IntegrityError
-        from random import seed
+        from random import seed, choice
         import forgery_py
 
         seed()
         for i in range(count):
             l = Channel(
-                name = forgery_py.lorem_ipsum.title(),
-                desc = forgery_py.lorem_ipsum.paragraph()
+                name=forgery_py.lorem_ipsum.title(),
+                desc=forgery_py.lorem_ipsum.paragraph(),
+                type=choice(["collective", "channel"])
             )
             db.session.add(l)
         try:

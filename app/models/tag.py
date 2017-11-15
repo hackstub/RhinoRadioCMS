@@ -12,6 +12,12 @@ class Tag(db.Model):
     """ Section """
     channel_id = db.Column(db.Integer, db.ForeignKey('channels.id'))
 
+    def __repr__(self):
+        return '<TAG %r>' % self.name
+
+    def __str__(self):
+        return self.name
+
     @staticmethod
     def fake_feed(count=10):
         """ Randomly feeds the database """
