@@ -7,13 +7,14 @@ from wtforms.widgets import TextArea
 from .. import db, admin, base_path
 import os.path as op
 
-from .podcast import *
-from .contributor import *
-from .blog import *
-from .event import *
-from .channel import *
-from .tag import *
-from .page import *
+from .podcast import Podcast
+from .section import Section
+from .contributor import Contributor
+from .blog import BlogPost
+from .event import Event
+from .channel import Channel
+from .tag import Tag
+from .page import Page
 
 #####################
 #  Admin views      #
@@ -85,6 +86,7 @@ class PodcastView(FullTextView):
             (False, 'Non')
         ]
     }
+    column_exclude_list = ('location')
     column_labels = dict(
         title = 'Titre',
         contributors = 'Auteurs',
@@ -95,7 +97,7 @@ class PodcastView(FullTextView):
         sections = 'Extraits',
         place = 'Lieu',
         itinerary = 'Itinéraire',
-        channels = 'Chaîne'
+        channel = 'Chaîne'
         )
     form_args = {
         'type': {

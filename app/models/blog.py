@@ -1,8 +1,8 @@
-from .. import db
-from .channel import Channel
-from .contributor import Contributor
-
 from datetime import datetime
+
+from .. import db
+from .relationships import blog_posts_authors
+
 
 class BlogPost(db.Model):
     """ Blog posts """
@@ -16,7 +16,10 @@ class BlogPost(db.Model):
     """ Description """
     channel_id = db.Column(db.Integer, db.ForeignKey('channels.id'))
     """ Channel """
-    contributor_id = db.Column(db.Integer, db.ForeignKey('contributors.id'))
+    contributors = db.relationship('Contributor',
+                secondary='blog_posts_authors',
+                lazy='select',
+                back_populates='blog_posts')
     """ Contributor """
 
     def __repr__(self):
@@ -26,9 +29,10 @@ class BlogPost(db.Model):
         return self.title
 
     def list(filter='', order='', number=3):
+        from .channel import Channel
+
         blogPosts = BlogPost.query.filter(filter)                       \
             .join(Channel, Channel.id==BlogPost.channel_id)             \
-            .join(Contributor, Contributor.id==BlogPost.contributor_id) \
             .order_by(BlogPost.timestamp.desc())                        \
             .paginate(per_page=number).items
         return blogPosts
@@ -46,7 +50,6 @@ class BlogPost(db.Model):
                 title = forgery_py.lorem_ipsum.title(),
                 desc = forgery_py.lorem_ipsum.paragraph(),
                 channel_id = i+1,
-                contributor_id = i+1
             )
             db.session.add(bp)
         try:

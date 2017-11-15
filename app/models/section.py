@@ -1,20 +1,9 @@
-from .. import db
-from geoalchemy2 import Geometry
 from datetime import datetime
-from .channel import Channel
-from .contributor import *
+from geoalchemy2 import Geometry
 
+from .. import db
+from .relationships import sections_authors
 
-""" Taxonomy table """
-sections_authors = db.Table('sections_authors',
-    db.Column('section_id',
-        db.Integer,
-        db.ForeignKey('sections.id'),
-        primary_key=True),
-    db.Column('contributor_id',
-        db.Integer,
-        db.ForeignKey('contributors.id'),
-        primary_key=True))
 
 class Section(db.Model):
     """ Podcast sections """

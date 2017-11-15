@@ -1,8 +1,8 @@
-from .. import db
 from datetime import datetime
-from .podcast import Podcast
-from .channel import Channel
 from sqlalchemy.orm import validates
+
+from .. import db
+
 
 class Event(db.Model):
     """ An agenda item """
@@ -36,14 +36,16 @@ class Event(db.Model):
             create_rel_podcast(self)
         super().__init__(**kwargs)
 
-    @validates('channel_id')
-    def validate_channel_id(self, key, channel_id):
-        if self.live_show == True:
-            if not self.channel_id:
-                self.channel_id = "Émission"
-                return self
-            else:
-                return self
+    # FIXME
+    # @validates('channel_id')
+    # def validate_channel_id(self, key, channel_id):
+    #
+    #     if self.live_show == True:
+    #         if not self.channel_id:
+    #             self.channel_id = "Émission"
+    #             return self
+    #         else:
+    #             return self
 
     def list(filter='', order='', number=3):
         events = Event.query.filter(Event.begin >= datetime.today()) \

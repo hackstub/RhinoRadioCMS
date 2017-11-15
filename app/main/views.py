@@ -27,13 +27,13 @@ from app.models.podcast import Podcast
 app = Flask(__name__)
 
 from app.models.podcast import Podcast
-from app.models.contributor import *
-from app.models.blog import *
-from app.models.event import *
-from app.models.channel import *
-from app.models.tag import *
-from app.models.section import *
-from app.models.page import *
+from app.models.section import Section
+from app.models.contributor import Contributor
+from app.models.blog import BlogPost
+from app.models.event import Event
+from app.models.channel import Channel
+from app.models.tag import Tag
+from app.models.page import Page
 
 
 #########################
@@ -95,7 +95,6 @@ def agenda():
 def contribute():
     # create a real "contribute" page
     page = Page.query.all()[2]
-    print("COUCOUCOU",page)
     return [ 'displayMain',
              { "content": render_template("main_pages/contribute.html",
                                           page=page) } ]

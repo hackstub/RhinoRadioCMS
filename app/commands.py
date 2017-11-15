@@ -4,13 +4,14 @@ from flask import url_for
 from flask_script import Command
 from . import db
 
-from app.models.podcast import Podcast, Section
-from app.models.contributor import *
-from app.models.blog import *
-from app.models.event import *
-from app.models.channel import *
-from app.models.tag import *
-from app.models.page import *
+from app.models.podcast import Podcast
+from app.models.section import Section
+from app.models.contributor import Contributor
+from app.models.blog import BlogPost
+from app.models.event import Event
+from app.models.channel import Channel
+from app.models.tag import Tag
+from app.models.page import Page
 
 
 class RoutesCommand(Command):

@@ -1,21 +1,8 @@
-from .. import db
 from datetime import datetime
 from geoalchemy2 import Geometry
-from .contributor import Contributor
-from .channel import Channel
-from .section import Section
-from .tag import Tag
 
-""" Taxonomy table """
-podcasts_authors = db.Table('podcasts_authors',
-    db.Column('podcast_id',
-        db.Integer,
-        db.ForeignKey('podcasts.id'),
-        primary_key=True),
-    db.Column('contributor_id',
-        db.Integer,
-        db.ForeignKey('contributors.id'),
-        primary_key=True))
+from .. import db
+from .relationships import podcasts_authors
 
 
 class Podcast(db.Model):
@@ -64,6 +51,8 @@ class Podcast(db.Model):
         return self.title
 
     def list(filter='', order='', number=10):
+        from .channel import Channel
+
         podcasts = Podcast.query.filter(filter).join(
             Channel, Channel.id==Podcast.channel_id
         ).order_by(

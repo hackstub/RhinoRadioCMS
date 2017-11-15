@@ -1,15 +1,6 @@
 from .. import db
-from .contributor import *
+from .relationships import channels_authors
 
-channels_authors = db.Table('channels_authors',
-    db.Column('channel_id',
-        db.Integer,
-        db.ForeignKey('channels.id'),
-        primary_key=True),
-    db.Column('contributor_id',
-        db.Integer,
-        db.ForeignKey('contributors.id'),
-        primary_key=True))
 
 class Channel(db.Model):
     __tablename__ = "channels"

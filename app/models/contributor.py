@@ -1,7 +1,6 @@
 from .. import db
+from .relationships import *
 
-from .channel import *
-from .section import *
 
 class Contributor(db.Model):
     __tablename__ = 'contributors'
@@ -21,6 +20,10 @@ class Contributor(db.Model):
     website = db.Column(db.String(256))
     channels = db.relationship('Channel',
                 secondary = 'channels_authors',
+                lazy = 'select',
+                back_populates = 'contributors')
+    blog_posts = db.relationship('BlogPost',
+                secondary = 'blog_posts_authors',
                 lazy = 'select',
                 back_populates = 'contributors')
 
