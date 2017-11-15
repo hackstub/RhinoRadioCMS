@@ -67,6 +67,8 @@ pip3 install Gunicorn
 ```
 More to come.
 
+Uncomment '#scheme="https"' in views.py
+
 ## Doc
 
 Eeeeeeeh... Soon™.

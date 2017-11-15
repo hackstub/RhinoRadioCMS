@@ -177,7 +177,8 @@ def on_air():
     if request.args.get('token') != LIQUIDSOAP_TOKEN:
         error = 'Invalid token !'
     else:
-        return live(stream = request.args.get('stream'))
+        live(stream = request.args.get('stream'))
+        return ('', 200)
 
 def live(stream):
     pass

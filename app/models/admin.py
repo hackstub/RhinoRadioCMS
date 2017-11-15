@@ -95,7 +95,7 @@ class PodcastView(FullTextView):
         sections = 'Extraits',
         place = 'Lieu',
         itinerary = 'Itinéraire',
-        channels = 'Chaîne'
+        channel = 'Chaîne'
         )
     form_args = {
         'type': {
