@@ -7,29 +7,28 @@ from .. import db
 class Event(db.Model):
     """ An agenda item """
     __tablename__ = 'events'
+
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(256))
-    """ Event's title """
+    name = db.Column(db.String(256))
+    description = db.Column(db.Text)
+    # Where the event will take place
     place = db.Column(db.String(128))
-    """ Location """
+    # Date of the event's beggining
     begin = db.Column(db.DateTime)
-    """ Date of the event's beggining """
+    # Date of the event's ending
     end = db.Column(db.DateTime)
-    """ Date of the event's ending """
-    desc = db.Column(db.Text)
-    """ Description of the event """
     channel_id = db.Column(db.Integer, db.ForeignKey('channels.id'))
-    """ Channel of the event """
-    live_show = db.Column(db.Boolean())
-    """ Live broadcast schedule ? """
+    # Podcast id (self-generated if live_show is true)
     podcast_id = db.Column(db.Integer, db.ForeignKey('podcasts.id'))
-    """ Podcast id (self-generated if live_show is true) """
+    # Live broadcast scheduled ?
+    live_show = db.Column(db.Boolean())
+
 
     def __repr__(self):
-        return '<EVENT %r>' % self.title
+        return '<EVENT %r>' % self.name
 
     def __str__(self):
-        return self.title
+        return self.name
 
     def __init__(self, **kwargs):
         if self.live_show == True:
@@ -56,13 +55,13 @@ class Event(db.Model):
     def create_rel_podcast(self):
         channel = Channel.query.filter_by(Channel.id == self.channel_id).first()
         podcast = Podcast(
-            title = channel.title + 'du' + self.date.strftime("%d/%m/%y"),
-            contributors = channel.contributors,
-            desc = self.desc,
-            channel_id = self.channel_id,
-            mood = channel.mood,
-            night = channel.night,
-            date = self.begin)
+            name=channel.name + 'du' + self.date.strftime("%d/%m/%y"),
+            contributors=channel.contributors,
+            description=self.description,
+            channel_id=self.channel_id,
+            mood=channel.mood,
+            night=channel.night,
+            date=self.begin)
         self.podcast_id = podcast.id
         db.session.add(podcast.id)
         try:
@@ -80,12 +79,12 @@ class Event(db.Model):
         seed()
         for i in range(count):
             e = Event(
-                title = forgery_py.lorem_ipsum.title(),
-                place = forgery_py.address.street_address(),
-                begin = forgery_py.date.date(),
-                end = forgery_py.date.date(),
-                desc = forgery_py.lorem_ipsum.paragraph(),
-                channel_id = i+1
+                name=forgery_py.lorem_ipsum.title(),
+                place=forgery_py.address.street_address(),
+                begin=forgery_py.date.date(),
+                end=forgery_py.date.date(),
+                description=forgery_py.lorem_ipsum.paragraph(),
+                channel_id=i+1
             )
             db.session.add(e)
         try:

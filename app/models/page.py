@@ -4,17 +4,16 @@ class Page(db.Model):
     """ Pages """
     __tablename__ = 'pages'
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(256))
-    desc = db.Column(db.Text)
+    name = db.Column(db.String(256))
+    description = db.Column(db.Text)
     channel_id = db.Column(db.Integer, db.ForeignKey('channels.id'))
-    parent_page_id = db.relationship('Page')
-    children = db.Column(db.Integer, db.ForeignKey('pages.id'))
+
 
     def __repr__(self):
-        return '<PAGE %r>' % self.title
+        return '<PAGE %r>' % self.name
 
     def __str__(self):
-        return self.title
+        return self.name
 
     @staticmethod
     def fake_feed(count=10):
@@ -25,17 +24,14 @@ class Page(db.Model):
 
         seed()
         about = Page(
-            title = "À propos",
-            desc = forgery_py.lorem_ipsum.paragraphs(quantity=10)
+            name="À propos",
+            description=forgery_py.lorem_ipsum.paragraphs(quantity=20)
         )
-        db.session.add(about)
-        for i in range(count):
-            p = Page(
-                title = forgery_py.lorem_ipsum.title(),
-                desc = forgery_py.lorem_ipsum.paragraphs(quantity=9),
-                channel_id = i+1
-            )
-            db.session.add(p)
+        contribute = Page(
+            name='Contribuer',
+            description=forgery_py.lorem_ipsum.paragraphs(quantity=10)
+        )
+        db.session.add(about, contribute)
         try:
             db.session.commit()
         except IntegrityError:

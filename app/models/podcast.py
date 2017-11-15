@@ -2,7 +2,7 @@ from datetime import datetime
 from geoalchemy2 import Geometry
 
 from .. import db
-from .relationships import podcasts_authors
+from .relationships import podcasts_contributors
 
 
 class Podcast(db.Model):
@@ -10,55 +10,50 @@ class Podcast(db.Model):
     __tablename__ = 'podcasts'
 
     id = db.Column(db.Integer, primary_key=True)
-    # Title of the podcast
-    title = db.Column(db.String(256))
-    # Contibutors authoring the podcast
-    contributors = db.relationship('Contributor',
-                secondary='podcasts_authors',
-                lazy='select',
-                back_populates='podcasts')
-    # Sections of the podcast
-    sections = db.relationship('Section',
-                backref=db.backref('podcast', lazy='select'),
-                lazy='select')
-    # Mood of the podcast
-    mood = db.Column(db.String(128))
-    # Musical or non-musical
-    music = db.Column(db.Boolean())
-    # Channel id of the podcast
-    channel_id = db.Column(db.Integer, db.ForeignKey('channels.id'))
+    name = db.Column(db.String(256))
+    description = db.Column(db.Text)
     # Date of recording
     date = db.Column(db.Date, default=datetime.utcnow)
-    # Link to the audio file
-    link = db.Column(db.String(256))
     # Datetime of publication
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     # Place of recording/playing
-    location = db.Column(Geometry(geometry_type='POINT', srid=0))
-    # License of the podcast
+    # location = db.Column(Geometry(geometry_type='POINT', srid=0))
+    channel_id = db.Column(db.Integer, db.ForeignKey('channels.id'))
+    contributors = db.relationship(
+        'Contributor',
+        secondary='podcasts_contributors',
+        cascade='all, delete',
+        lazy='select',
+        back_populates='podcasts')
+    # Sections of the podcast if it contains several content types/authors/...
+    sections = db.relationship(
+        'Section',
+        backref=db.backref('podcast', lazy='select'),
+        lazy='select')
+    tags = db.relationship(
+        'Tag',
+        backref=db.backref('podcasts', lazy='select'),
+        lazy='select')
+    link = db.Column(db.String(256))
     license = db.Column('license', db.String(256))
-    # Tags of the podcasts
-    tags = db.relationship('Tag',
-                backref=db.backref('podcasts', lazy='select'),
-                lazy='select')
-    # Description of the channel
-    desc = db.Column(db.Text)
+    mood = db.Column(db.String(128))
+    # Musical or non-musical
+    music = db.Column(db.Boolean())
+
 
     def __repr__(self):
-        return '<PODCAST %r>' % self.title
+        return '<PODCAST %r>' % self.name
 
     def __str__(self):
-        return self.title
+        return self.name
 
     def list(filter='', order='', number=10):
         from .channel import Channel
 
-        podcasts = Podcast.query.filter(filter).join(
-            Channel, Channel.id==Podcast.channel_id
-        ).order_by(
-            Podcast.timestamp.desc(),
-            order
-        ).paginate(per_page=number).items
+        podcasts = Podcast.query.filter(filter)            \
+            .join(Channel, Channel.id==Podcast.channel_id) \
+            .order_by(Podcast.timestamp.desc(), order)     \
+            .paginate(per_page=number).items
         return podcasts
 
     @staticmethod
@@ -71,17 +66,19 @@ class Podcast(db.Model):
         seed()
         for i in range(count):
             p = Podcast(
-                title = forgery_py.lorem_ipsum.title(),
-                desc = forgery_py.lorem_ipsum.paragraph(),
-                channel_id = randint(1, 11),
-                mood = choice(['slow', 'medium', 'fast']),
-                link = choice([
+                name=forgery_py.lorem_ipsum.title(),
+                description=forgery_py.lorem_ipsum.paragraph(),
+                channel_id=randint(1, 11),
+                mood=choice(['slow', 'medium', 'fast']),
+                link=choice([
                     'http://podcast.radiorhino.eu/Émissions/Cachemire%20Darbuqqa/Cachemire%20épisode%201.mp3',
                     'http://podcast.radiorhino.eu/Émissions/Cachemire%20Darbuqqa/Cachemire%20épisode%202.mp3',
                     'http://podcast.radiorhino.eu/Émissions/Cachemire%20Darbuqqa/Cachemire%20épisode%205.mp3',
                     'http://podcast.radiorhino.eu/Émissions/Cachemire%20Darbuqqa/Cachmire%20épisode%206-1.mp3',
                     'http://podcast.radiorhino.eu/Émissions/Cachemire%20Darbuqqa/cachemire%20darbuqqa%2012-1%20fausse%20stéréo.mp3']),
-                music = choice([True, False])
+                music=choice([True, False]),
+                license=choice(['Copyright', 'CC-BY-NC',
+                                'CC-BY-SA', 'CC-BY-ND'])
             )
             db.session.add(p)
         try:

@@ -1,32 +1,32 @@
 from datetime import datetime
 
 from .. import db
-from .relationships import blog_posts_authors
+from .relationships import blog_posts_contributors
 
 
 class BlogPost(db.Model):
     """ Blog posts """
     __tablename__ = 'blog_posts'
+
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(256))
-    """ Title of the post """
+    name = db.Column(db.String(256))
+    description = db.Column(db.Text)
+    # Date of creation
     timestamp = db.Column(db.Date, default=datetime.utcnow)
-    """ Date of creation """
-    desc = db.Column(db.Text)
-    """ Description """
     channel_id = db.Column(db.Integer, db.ForeignKey('channels.id'))
-    """ Channel """
-    contributors = db.relationship('Contributor',
-                secondary='blog_posts_authors',
-                lazy='select',
-                back_populates='blog_posts')
-    """ Contributor """
+    contributors = db.relationship(
+        'Contributor',
+        secondary='blog_posts_contributors',
+        cascade='all, delete',
+        lazy='select',
+        back_populates='blog_posts')
+
 
     def __repr__(self):
-        return '<BLOGPOST %r>' % self.title
+        return '<BLOGPOST %r>' % self.name
 
     def __str__(self):
-        return self.title
+        return self.name
 
     def list(filter='', order='', number=3):
         from .channel import Channel
@@ -47,9 +47,9 @@ class BlogPost(db.Model):
         seed()
         for i in range(count):
             bp = BlogPost(
-                title = forgery_py.lorem_ipsum.title(),
-                desc = forgery_py.lorem_ipsum.paragraph(),
-                channel_id = i+1,
+                name=forgery_py.lorem_ipsum.title(),
+                description=forgery_py.lorem_ipsum.paragraph(),
+                channel_id=i+1,
             )
             db.session.add(bp)
         try:
