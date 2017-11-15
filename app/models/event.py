@@ -3,6 +3,7 @@ from datetime import datetime
 from .podcast import Podcast
 from .channel import Channel
 from sqlalchemy.orm import validates
+from sqlalchemy.exc import IntegrityError
 
 class Event(db.Model):
     """ An agenda item """
@@ -68,10 +69,60 @@ class Event(db.Model):
         except IntegrityError:
             db.session.rollback()
 
+
+    @staticmethod
+    def closest_live():
+
+        now = datetime.now()
+
+        # Keep only lives that are not done yet
+        lives = Event.query.filter(Event.live_show == True) \
+                           .filter(Event.end > now) \
+                           .all()
+
+        found_live = None
+        live_in = None
+        for live in lives:
+
+            # Get number of seconds until this event begin
+            this_live_in = (live.begin - now).total_seconds()
+
+            # If live is closest than the one already found, keep it
+            if found_live is None or abs(live_in) > abs(this_live_in):
+                found_live = live
+                live_in = this_live_in
+
+        return (found_live, live_in)
+
+
+    @staticmethod
+    def start_live(stream_url):
+
+        live, live_in = Event.closest_live()
+
+        # If live starts or started more than one hour from now, return 404
+        if live is None or abs(live_in) > 3600:
+            return ('NOTYET', 400)
+
+        # Get the podcast
+        podcast = Podcast.query.filter(Podcast.id==live.podcast_id).first()
+        if podcast is None:
+            return ('NOPODCAST', 404)
+
+        # Set the link
+        podcast.link = stream_url
+
+        # Write it!
+        try:
+            db.session.commit()
+            return ('OK', 200)
+        except IntegrityError:
+            db.session.rollback()
+            return ('INTEGRITYERROR', 409)
+
     @staticmethod
     def fake_feed(count=10):
         """ Randomly feeds the database """
-        from sqlalchemy.exc import IntegrityError
         from random import seed
         import forgery_py
 
