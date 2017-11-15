@@ -1,3 +1,9 @@
+// ╭───────────────────────────────────────────────────╮
+// │     ╷╭─╴   ╭─┐╷ ╷┌─╮╶┬╴╭─╮   ┌─╮╷  ╭─┐╷ ╷┌─╴┌─╮   │
+// │     │╰─╮   ├─┤│ ││ │ │ │ │   ├─╯│  ├─┤╰─┤├─╴├┬╯   │
+// │   ╰─╯╶─╯   ╵ ╵╰─╯└─╯╶┴╴╰─╯   ╵  ╰─╴╵ ╵╶─╯╰─╴╵ ╰   │
+// ╰───────────────────────────────────────────────────╯
+
 function Player() {
     this.audio = document.getElementById("audio");
 
@@ -22,21 +28,32 @@ Player.prototype.initListeners = function() {
     var _this = this;
 
     // init play button listener
-    var playButton = document.getElementById("play");
-    playButton.onclick = function() {
+    function togglePlayPause() {
         if (_this.audio.paused) _this.play();
         else _this.pause();
     }
 
+    var playButton = document.getElementById("play");
+    playButton.onclick = togglePlayPause;
+
+    // init space bar listener (FIXME merge with upper function)
+    window.onkeypress = function(e) {
+        if (e.keyCode === 32 || e.key === " ") {
+            e.preventDefault();
+            togglePlayPause();
+        }
+    }
+
+    // generic sliders mouse event listener
     function sliderListerner(e, action, graphicUpdate) {
-        // generic sliders mouse event listener
-        e.preventDefault();
-        action(e);
         function removeListeners(e) {
             action(e, true);
             window.removeEventListener("mousemove", action);
             window.removeEventListener("mouseup", removeListeners);
         }
+        e.preventDefault();
+        action(e);
+
         window.addEventListener("mousemove", action);
         window.addEventListener("mouseup", removeListeners);
     }
