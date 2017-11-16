@@ -162,7 +162,7 @@ def collectives():
 def collective(coll):
     """ Return home template for collective coll """
     channel_id = Channel.query.filter(Channel.name==coll).first()
-    podcasts = getPodcasts(filter='Podcast.channel_id=channel_id'),
+    podcasts = getPodcasts(filter='Podcast.channel_id==channel_id'),
     return [ 'displayMain',
              { "content": render_template("notimplemented.html",
                                           podcasts=podcasts) }]

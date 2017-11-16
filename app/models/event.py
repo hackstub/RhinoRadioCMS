@@ -2,7 +2,7 @@ from .. import db
 from datetime import datetime
 from .podcast import Podcast
 from .channel import Channel
-from sqlalchemy.orm import validates
+from sqlalchemy.orm import validates, reconstructor
 
 class Event(db.Model):
     """ An agenda item """
@@ -32,16 +32,18 @@ class Event(db.Model):
         return self.title
 
     def __init__(self, **kwargs):
-        if self.live_show == True:
-            create_rel_podcast(self)
-        super().__init__(**kwargs)
+        print(kwargs)
+        self.data = kwargs
+        if 'live_show' in self.data and self.data['live_show'] == True:
+            self.create_rel_podcast(self)
 
     @validates('channel_id')
     def validate_channel_id(self, key, channel_id):
         if self.live_show == True:
-            if not self.channel_id:
-                self.channel_id = "Émission"
-                return self
+            print(self.live_show)
+            if not channel_id:
+                channel_id = 1
+                return channel_id
             else:
                 return self
 
@@ -51,18 +53,22 @@ class Event(db.Model):
             .paginate(per_page=number).items
         return events
 
+    # FIXME: Self is not an object and needs to be barsed by its .data[]
+    @staticmethod
     def create_rel_podcast(self):
-        channel = Channel.query.filter_by(Channel.id == self.channel_id).first()
+        channel = Channel.query.filter(Channel.id == self.channel_id).first()
         podcast = Podcast(
             title = channel.title + 'du' + self.date.strftime("%d/%m/%y"),
             contributors = channel.contributors,
             desc = self.desc,
-            channel_id = self.channel_id,
+            channel_id = channel.id,
             mood = channel.mood,
             night = channel.night,
+            live_show = True,
             date = self.begin)
         self.podcast_id = podcast.id
-        db.session.add(podcast.id)
+        print(podcast)
+        db.session.add(podcast)
         try:
             db.session.commit()
         except IntegrityError:
