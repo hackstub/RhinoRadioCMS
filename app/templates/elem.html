@@ -1,6 +1,6 @@
 <section>
 
-    <p><a class="source-link" href="{{ elem.link }}">
+    <p><a class="content-link" href="{{ url_for('main.podcasts', id=elem.id, '/play') }}">
         {% include 'svg/small_play.svg' -%}
     </a> {{ elem.name }}</p>
 

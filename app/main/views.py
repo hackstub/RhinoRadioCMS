@@ -18,7 +18,8 @@ from flask import (Flask,
 # Specific app stuff
 from . import main
 from .forms import SubscribeForm
-from .partial_content import partial_content_decorator
+from .partial_content import (partial_content_decorator,
+                              partial_content_no_history_decorator)
 from .jinja_custom_filters import *
 from .. import db                      # FIXME no longer needed i think
 from app.models.admin import *
@@ -50,6 +51,7 @@ def base():
                           )
 
 partial_content = partial_content_decorator(base)
+partial_content_no_history = partial_content_no_history_decorator(base)
 
 @main.route('/')
 @partial_content
@@ -86,10 +88,9 @@ def contribute():
 #  Podcasts             #
 #########################
 
-@main.route('/podcasts/', methods=['GET', 'POST'])
+@main.route('/podcasts')
 @partial_content
 def podcasts():
-    print(request.args.get('id'))
     page = request.args.get('page', 1, type=int)
     pagination = Podcast.query                         \
         .join(Channel, Channel.id==Podcast.channel_id) \
@@ -102,7 +103,7 @@ def podcasts():
                                           podcasts=podcasts,
                                           pagination=pagination) } ]
 
-@main.route('/podcast/<id>')
+@main.route('/podcasts/<id>')
 @partial_content
 def podcast(id):
     podcast = Podcast.query.filter_by(id = id).first()
@@ -110,11 +111,19 @@ def podcast(id):
              { "content": render_template("elem.html",
                                           elem=podcast) }]
 
+@main.route('/podcasts/<id>/play')
+@partial_content_no_history
+def podcast(id):
+    podcast = Podcast.query.filter_by(id = id).first()
+    return [ "player.load.bind(player)",
+             { "link" : podcast.link,
+               "title" : podcast.title } ]
+
 #########################
 #  Contributors         #
 #########################
 
-@main.route('/contributors/')
+@main.route('/contributors')
 @partial_content
 def contributors():
     #collectives = Channel.query.filter(Channel.type=="collective").all()
@@ -123,11 +132,11 @@ def contributors():
                                           contributors=Contributor.list())}]
 
 
-@main.route('/contributors/<id>')
-@partial_content
-def contributor(id):
-    return [ 'displayMain',
-             { "content": render_template("notimplemented.html") }]
+# @main.route('/contributors/<id>')
+# @partial_content
+# def contributor(id):
+#     return [ 'displayMain',
+#              { "content": render_template("notimplemented.html") }]
 
 #########################
 #  Collectives          #
