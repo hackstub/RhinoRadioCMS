@@ -2,7 +2,7 @@
 <h2>Blog</h2>
 {% for post in blog_posts %}
 <div class="list-elem">
-    <h3>{{ post.title }}</h3>
+    <h3>{{ post.name }}</h3>
     <p>CHANNEL : <a class="contentLink" href="{{ url_for('main.collective', coll=post.channel.id) }}">
         {{ post.channel.name }}
     </a></p>
@@ -14,7 +14,7 @@
     {% endif %}
 
     <p>{{ post.timestamp }}</p>
-    <p>{{ post.desc }}</p>
+    <p>{{ post.description }}</p>
 </div>
 {% endfor %}
 </section>

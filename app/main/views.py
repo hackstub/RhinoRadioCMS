@@ -70,7 +70,7 @@ def index():
 @partial_content
 def about():
 
-    page = Page.query.filter_by(title='À propos').first_or_404()
+    page = Page.query.filter_by(name='À propos').first_or_404()
 
     return [ 'displayMain',
            { "content": render_template("main_pages/about.html",
@@ -90,11 +90,11 @@ def agenda():
              { "content": render_template("main_pages/agendas.html",
                                           events = Event.list(number=10)) } ]
 
-@main.route('/contribute/')
+@main.route('/contribute')
 @partial_content
 def contribute():
     # create a real "contribute" page
-    page = Page.query.all()[2]
+    page = Page.query.filter_by(name='Contribuer').first_or_404()
     return [ 'displayMain',
              { "content": render_template("main_pages/contribute.html",
                                           page=page) } ]
@@ -118,7 +118,7 @@ def podcast(id):
 
     return [ "player.load.bind(player)",
              { "link" : podcast.link,
-               "title" : podcast.title } ]
+               "title" : podcast.name } ]
 
 
 #########################
@@ -128,11 +128,10 @@ def podcast(id):
 @main.route('/contributors/')
 @partial_content
 def contributors():
-    collectives = Channel.query.filter(Channel.type=="collective").all()
+    #collectives = Channel.query.filter(Channel.type=="collective").all()
     return [ 'displayMain',
              { "content": render_template("main_pages/contributors.html",
-                                          contributors=Contributor.list(),
-                                          collectives=collectives) }]
+                                          contributors=Contributor.list())}]
 
 
 @main.route('/contributor/<contrib>')

@@ -10,7 +10,7 @@
         </svg></a>
 
     <a class="contentLink"
-       href="{{ url_for('main.podcast', id=podcast.id) }}">{{- podcast.title }}
+       href="{{ url_for('main.podcast', id=podcast.id) }}">{{- podcast.name }}
     </a>
 
     <p><a class="contentLink" href="{{ url_for('main.collective', coll=podcast.channel.id) }}">
@@ -43,7 +43,7 @@
     <p>TAGS : {{ podcast.tags|join(', ', attribute='name') }}</p>
     {% endif %}
 
-    {{ podcast.desc|safe }}
+    {{ podcast.description|safe }}
 </div>
 {% endfor %}
 </section>
