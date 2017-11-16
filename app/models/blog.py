@@ -17,9 +17,11 @@ class BlogPost(db.Model):
     contributors = db.relationship(
         'Contributor',
         secondary='blog_posts_contributors',
-        cascade='all, delete',
+        cascade='all, delete-orphan',
+        single_parent='True',
         lazy='select',
         back_populates='blog_posts')
+    #FIXME ADD COLLECTIVE
 
 
     def __repr__(self):

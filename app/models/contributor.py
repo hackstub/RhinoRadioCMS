@@ -10,30 +10,36 @@ class Contributor(db.Model):
     description = db.Column(db.Text)
     email = db.Column(db.String(256))
     website = db.Column(db.String(256))
+
     channels = db.relationship(
         'Channel',
         secondary='channels_contributors',
-        cascade='all, delete',
+        cascade='all, delete-orphan',
+        single_parent='True',
         lazy='select',
         back_populates='contributors')
     podcasts = db.relationship(
         'Podcast',
         secondary='podcasts_contributors',
-        cascade='all, delete',
+        cascade='all, delete-orphan',
+        single_parent='True',
         lazy='select',
         back_populates='contributors')
     sections = db.relationship(
         'Section',
         secondary='sections_contributors',
-        cascade='all, delete',
+        cascade='all, delete-orphan',
+        single_parent='True',
         lazy='select',
         back_populates='contributors')
     blog_posts = db.relationship(
         'BlogPost',
         secondary='blog_posts_contributors',
-        cascade='all, delete',
+        cascade='all, delete-orphan',
+        single_parent='True',
         lazy='select',
         back_populates='contributors')
+
 
     def __repr__(self):
         return '<CONTRIBUTOR %r>' % self.name

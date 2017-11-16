@@ -22,6 +22,7 @@ class Event(db.Model):
     podcast_id = db.Column(db.Integer, db.ForeignKey('podcasts.id'))
     # Live broadcast scheduled ?
     live_show = db.Column(db.Boolean())
+    #FIXME ADD COLLECTIVE
 
 
     def __repr__(self):

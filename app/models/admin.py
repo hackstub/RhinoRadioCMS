@@ -163,6 +163,6 @@ admin.add_view(FileAdmin(podcastPath, '/static/podcasts/',
                          name='Anciens podcasts'))
 admin.add_view(BlogView(BlogPost, db.session))
 admin.add_view(ContributorView(Contributor, db.session))
-admin.add_view(ModelView(Event, db.session))
+admin.add_view(EventView(Event, db.session))
 admin.add_view(ChannelView(Channel, db.session))
 admin.add_view(PageAdminView(Page, db.session))

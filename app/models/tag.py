@@ -9,6 +9,7 @@ class Tag(db.Model):
     channel_id = db.Column(db.Integer, db.ForeignKey('channels.id'))
     podcast_id = db.Column(db.Integer, db.ForeignKey('podcasts.id'))
     section_id = db.Column(db.Integer, db.ForeignKey('sections.id'))
+    #FIXME ADD COLLECTIVE
 
     def __repr__(self):
         return '<TAG %r>' % self.name

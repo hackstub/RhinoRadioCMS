@@ -31,7 +31,8 @@ class Page(db.Model):
             name='Contribuer',
             description=forgery_py.lorem_ipsum.paragraphs(quantity=10)
         )
-        db.session.add(about, contribute)
+        db.session.add(about)
+        db.session.add(contribute)
         try:
             db.session.commit()
         except IntegrityError:

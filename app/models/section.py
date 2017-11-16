@@ -24,7 +24,8 @@ class Section(db.Model):
     contributors = db.relationship(
         'Contributor',
         secondary = 'sections_contributors',
-        cascade='all, delete',
+        cascade='all, delete-orphan',
+        single_parent='True',
         lazy = 'select',
         back_populates = 'sections')
     podcast_id = db.Column(db.Integer, db.ForeignKey('podcasts.id'))
@@ -33,6 +34,7 @@ class Section(db.Model):
         backref=db.backref('sections', lazy='select'),
         lazy='select')
     mood = db.Column(db.String(128))
+    #FIXME ADD COLLECTIVE
 
 
     def __repr__(self):

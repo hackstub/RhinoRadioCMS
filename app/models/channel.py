@@ -11,25 +11,26 @@ class Channel(db.Model):
     contributors = db.relationship(
         'Contributor',
         secondary='channels_contributors',
-        cascade='all, delete',
+        cascade='all, delete-orphan',
+        single_parent='True',
         lazy='select',
         back_populates='channels')
     podcasts = db.relationship(
         'Podcast',
         backref='channel',
-        lazy=True)
+        lazy='select')
     sections = db.relationship(
         'Section',
         backref='channel',
-        lazy=True)
+        lazy='select')
     blog_posts = db.relationship(
         'BlogPost',
         backref='channel',
-        lazy=True)
+        lazy='select')
     events = db.relationship(
         'Event',
         backref='',
-        lazy=True)
+        lazy='select')
     tags = db.relationship(
         'Tag',
         backref=db.backref('channel', lazy='select'),
@@ -40,6 +41,7 @@ class Channel(db.Model):
     music = db.Column(db.Boolean())
     # is it a night show ?
     night = db.Column(db.Boolean())
+    #FIXME ADD COLLECTIVE
 
 
     def __repr__(self):

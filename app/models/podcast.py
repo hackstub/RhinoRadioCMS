@@ -22,7 +22,8 @@ class Podcast(db.Model):
     contributors = db.relationship(
         'Contributor',
         secondary='podcasts_contributors',
-        cascade='all, delete',
+        cascade='all, delete-orphan',
+        single_parent='True',
         lazy='select',
         back_populates='podcasts')
     # Sections of the podcast if it contains several content types/authors/...
@@ -39,6 +40,7 @@ class Podcast(db.Model):
     mood = db.Column(db.String(128))
     # Musical or non-musical
     music = db.Column(db.Boolean())
+    #FIXME ADD COLLECTIVE
 
 
     def __repr__(self):
