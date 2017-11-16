@@ -25,6 +25,7 @@ from app.models.podcast import Podcast
 
 app = Flask(__name__)
 
+from app.models.event import Event
 from app.models.podcast import Podcast
 from app.models.contributor import *
 from app.models.blog import *
@@ -173,15 +174,31 @@ def collective(coll):
 
 @main.route('/on_air', methods=['POST'])
 def on_air():
-    error = None
-    if request.args.get('token') != LIQUIDSOAP_TOKEN:
-        error = 'Invalid token !'
-    else:
-        live(stream = request.args.get('stream'))
-        return ('', 200)
 
-def live(stream):
-    pass
+    # Check we're authorized to do this
+    # Security Nazi : a simple string comparison is probably not secure against
+    # time attack, but that's good enough ;)
+    # FIXME : use real token in prod
+    #if request.args.get('token') != LIQUIDSOAP_TOKEN:
+    print(request.form["token"])
+    if request.form['token'] != 'lol':
+        return ('INVALIDTOKEN', 401) # Unauthorized
+
+    stream_url = request.args.get('stream')
+    return Event.start_live(stream_url)
+
+
+@main.route('/next_live')
+def next_live():
+
+    live, next_live_in = Event.closest_live()
+
+    return jsonify({ "next_live_in": next_live_in })
+
+
+#########################
+#  Static stuff         #
+#########################
 
 def getStyles():
      return [ url_for('static',
