@@ -18,11 +18,11 @@ class Event(db.Model):
     # Date of the event's ending
     end = db.Column(db.DateTime)
     channel_id = db.Column(db.Integer, db.ForeignKey('channels.id'))
+    collective_id = db.Column(db.Integer, db.ForeignKey('collectives.id'))
     # Podcast id (self-generated if live_show is true)
     podcast_id = db.Column(db.Integer, db.ForeignKey('podcasts.id'))
     # Live broadcast scheduled ?
     live_show = db.Column(db.Boolean())
-    #FIXME ADD COLLECTIVE
 
 
     def __repr__(self):

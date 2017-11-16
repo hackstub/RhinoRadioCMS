@@ -1,5 +1,5 @@
 from .. import db
-from .relationships import channels_contributors
+from .relationships import channels_contributors, channels_collectives
 
 
 class Channel(db.Model):
@@ -8,6 +8,13 @@ class Channel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128))
     description = db.Column(db.Text)
+    collectives = db.relationship(
+        'Collective',
+        secondary='channels_collectives',
+        cascade='all, delete-orphan',
+        single_parent='True',
+        lazy='select',
+        back_populates='channels')
     contributors = db.relationship(
         'Contributor',
         secondary='channels_contributors',
@@ -41,7 +48,6 @@ class Channel(db.Model):
     music = db.Column(db.Boolean())
     # is it a night show ?
     night = db.Column(db.Boolean())
-    #FIXME ADD COLLECTIVE
 
 
     def __repr__(self):

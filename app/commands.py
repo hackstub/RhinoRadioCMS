@@ -5,6 +5,7 @@ from flask_script import Command
 from . import db
 
 from app.models.podcast import Podcast
+from app.models.collective import Collective
 from app.models.section import Section
 from app.models.contributor import Contributor
 from app.models.blog import BlogPost
@@ -112,6 +113,7 @@ class LoremCommand(Command):
         for i in range(2):
             BlogPost.fake_feed()
             Contributor.fake_feed()
+            Collective.fake_feed()
             Event.fake_feed()
             Channel.fake_feed()
             Podcast.fake_feed()

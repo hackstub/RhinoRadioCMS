@@ -7,6 +7,7 @@ class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128))
     channel_id = db.Column(db.Integer, db.ForeignKey('channels.id'))
+    collective_id = db.Column(db.Integer, db.ForeignKey('collectives.id'))
     podcast_id = db.Column(db.Integer, db.ForeignKey('podcasts.id'))
     section_id = db.Column(db.Integer, db.ForeignKey('sections.id'))
     #FIXME ADD COLLECTIVE

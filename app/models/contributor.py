@@ -18,6 +18,13 @@ class Contributor(db.Model):
         single_parent='True',
         lazy='select',
         back_populates='contributors')
+    collectives = db.relationship(
+        'Collective',
+        secondary='collectives_contributors',
+        cascade='all, delete-orphan',
+        single_parent='True',
+        lazy='select',
+        back_populates='contributors')
     podcasts = db.relationship(
         'Podcast',
         secondary='podcasts_contributors',

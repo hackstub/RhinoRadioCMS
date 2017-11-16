@@ -2,7 +2,7 @@ from datetime import datetime
 from geoalchemy2 import Geometry
 
 from .. import db
-from .relationships import sections_contributors
+from .relationships import sections_contributors, sections_collectives
 
 
 class Section(db.Model):
@@ -21,6 +21,13 @@ class Section(db.Model):
     end = db.Column(db.Time)
     # Ending of the section in the podcast
     channel_id = db.Column(db.Integer, db.ForeignKey('channels.id'))
+    collectives = db.relationship(
+        'Collective',
+        secondary = 'sections_collectives',
+        cascade='all, delete-orphan',
+        single_parent='True',
+        lazy = 'select',
+        back_populates = 'sections')
     contributors = db.relationship(
         'Contributor',
         secondary = 'sections_contributors',
@@ -34,7 +41,6 @@ class Section(db.Model):
         backref=db.backref('sections', lazy='select'),
         lazy='select')
     mood = db.Column(db.String(128))
-    #FIXME ADD COLLECTIVE
 
 
     def __repr__(self):

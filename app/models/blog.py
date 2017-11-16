@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from .. import db
-from .relationships import blog_posts_contributors
+from .relationships import blog_posts_contributors, blog_posts_collectives
 
 
 class BlogPost(db.Model):
@@ -14,6 +14,13 @@ class BlogPost(db.Model):
     # Date of creation
     timestamp = db.Column(db.Date, default=datetime.utcnow)
     channel_id = db.Column(db.Integer, db.ForeignKey('channels.id'))
+    collectives = db.relationship(
+        'Collective',
+        secondary='blog_posts_collectives',
+        cascade='all, delete-orphan',
+        single_parent='True',
+        lazy='select',
+        back_populates='blog_posts')
     contributors = db.relationship(
         'Contributor',
         secondary='blog_posts_contributors',
@@ -21,7 +28,6 @@ class BlogPost(db.Model):
         single_parent='True',
         lazy='select',
         back_populates='blog_posts')
-    #FIXME ADD COLLECTIVE
 
 
     def __repr__(self):

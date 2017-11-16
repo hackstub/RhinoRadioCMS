@@ -2,7 +2,7 @@ from datetime import datetime
 from geoalchemy2 import Geometry
 
 from .. import db
-from .relationships import podcasts_contributors
+from .relationships import podcasts_contributors, podcasts_collectives
 
 
 class Podcast(db.Model):
@@ -19,6 +19,13 @@ class Podcast(db.Model):
     # Place of recording/playing
     # location = db.Column(Geometry(geometry_type='POINT', srid=0))
     channel_id = db.Column(db.Integer, db.ForeignKey('channels.id'))
+    collectives = db.relationship(
+        'Collective',
+        secondary='podcasts_collectives',
+        cascade='all, delete-orphan',
+        single_parent='True',
+        lazy='select',
+        back_populates='podcasts')
     contributors = db.relationship(
         'Contributor',
         secondary='podcasts_contributors',
@@ -40,7 +47,6 @@ class Podcast(db.Model):
     mood = db.Column(db.String(128))
     # Musical or non-musical
     music = db.Column(db.Boolean())
-    #FIXME ADD COLLECTIVE
 
 
     def __repr__(self):

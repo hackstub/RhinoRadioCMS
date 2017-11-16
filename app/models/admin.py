@@ -8,6 +8,7 @@ from .. import db, admin, base_path
 import os.path as op
 
 from .podcast import Podcast
+from .collective import Collective
 from .section import Section
 from .contributor import Contributor
 from .blog import BlogPost
@@ -85,7 +86,8 @@ class ChannelView(FullTextView):
         )
 
 class ContributorView(ModelView):
-    form_excluded_columns = ('podcasts')
+    # FIXME Commenting for verification
+    #form_excluded_columns = ('podcasts', 'sections', 'blog_posts')
     column_channels = dict(
         name='Nom',
         status='Statut'
@@ -98,10 +100,6 @@ class PodcastView(FullTextView):
             ('slow', 'Au pas'),
             ('medium', 'Au trot'),
             ('fast', 'Au galop !')
-        ],
-        'music': [
-            (True, 'Oui'),
-            (False, 'Non')
         ]
     }
     column_exclude_list = ('description')
@@ -163,6 +161,7 @@ admin.add_view(FileAdmin(podcastPath, '/static/podcasts/',
                          name='Anciens podcasts'))
 admin.add_view(BlogView(BlogPost, db.session))
 admin.add_view(ContributorView(Contributor, db.session))
+admin.add_view(ContributorView(Collective, db.session))
 admin.add_view(EventView(Event, db.session))
 admin.add_view(ChannelView(Channel, db.session))
 admin.add_view(PageAdminView(Page, db.session))
