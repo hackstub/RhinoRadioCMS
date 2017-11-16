@@ -1,13 +1,13 @@
 <section>
 
-    <p><a class="content-link" href="{{ url_for('main.podcasts', id=elem.id, '/play') }}">
+    <p><a class="content-link" href="{{ url_for('main.play', id=elem.id) }}">
         {% include 'svg/small_play.svg' -%}
     </a> {{ elem.name }}</p>
 
     <p>CONTRIBUTEURS: </br>
     {% for contributor in elem.contributors %}
         <a class="content-link"
-            href="{{ url_for('main.contributors', contrib=contributor.id) }}">
+            href="{{ url_for('main.contributors', id=contributor.id) }}">
         {{ contributor.name -}}
         </a>
         {%- if not loop.last %}, {% endif %}
@@ -20,7 +20,7 @@
     <p>COLLECTIFS : </br>
     {% for collective in elem.collectives %}
         <a class="content-link"
-            href="{{ url_for('main.collectives', contrib=collective.id) }}">
+            href="{{ url_for('main.collectives', id=collective.id) }}">
         {{ collective.name -}}
         </a>
         {%- if not loop.last %}, {% endif %}
@@ -45,7 +45,7 @@
         <a href="#">
         {% for contributor in section.contributors %}
             <a class="content-link"
-                href="{{ url_for('main.contributors', contrib=contributor.id) }}">
+                href="{{ url_for('main.contributors', id=contributor.id) }}">
             {{ contributor.name }}
             </a>
             {% if not loop.last %}, {% endif %}

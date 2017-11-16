@@ -18,8 +18,7 @@ from flask import (Flask,
 # Specific app stuff
 from . import main
 from .forms import SubscribeForm
-from .partial_content import (partial_content_decorator,
-                              partial_content_no_history_decorator)
+from .partial_content import *
 from .jinja_custom_filters import *
 from .. import db                      # FIXME no longer needed i think
 from app.models.admin import *
@@ -113,11 +112,11 @@ def podcast(id):
 
 @main.route('/podcasts/<id>/play')
 @partial_content_no_history
-def podcast(id):
+def play(id):
     podcast = Podcast.query.filter_by(id = id).first()
     return [ "player.load.bind(player)",
              { "link" : podcast.link,
-               "title" : podcast.title } ]
+               "title" : podcast.name } ]
 
 #########################
 #  Contributors         #

@@ -36,3 +36,6 @@ def partial_content(f, base, history=True):
 
 def partial_content_decorator(base):
     return partial(partial_content, base=base)
+
+def partial_content_no_history_decorator(base):
+    return partial(partial_content, base=base, history=False)

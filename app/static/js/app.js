@@ -40,12 +40,14 @@ function loadContent(target) {
             // Load the content we got, using the function specified by the server
             var f = eval(response_data[0]);
             var data = response_data[1];
+            // It is very clear
+            var nohistory = response_data[2] == "nohistory";
             f(data);
 
             // Push this content in the history
             // N.B : in the future, we might want to have a mechanism to do this only
             // for specific contents...
-            if (window.location.pathname != target) {
+            if (window.location.pathname != target && !nohistory) {
                 history.pushState({}, '', target);
             }
 
