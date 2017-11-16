@@ -5,7 +5,6 @@
 
 {% for podcast in podcasts %}
 <div class="list-elem">
-    {#
     <a class="source-link" href="{{ podcast.link }}">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 36.48 40">
             <g class="line main-width black">
@@ -15,14 +14,14 @@
     <a class="content-link"
        href="{{ url_for('main.podcasts', id=podcast.id) }}">{{- podcast.name }}
     </a>
-#}
+
     <p><a>
         {{ podcast.channel.name }}
     </a></p>
 
     <p>
         {% for contributor in podcast.contributors -%}
-        <a class="content-link" href="{{ url_for('main.contributor', contrib=contributor.id) }}">{{ contributor.name }}</a>
+        <a class="content-link" href="{{ url_for('main.contributors', contrib=contributor.id) }}">{{ contributor.name }}</a>
         {%- if not loop.last %}, {% endif -%}
         {%- endfor %}
     </p>

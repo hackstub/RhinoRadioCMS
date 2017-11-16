@@ -73,20 +73,6 @@ def about():
            { "content": render_template("main_pages/about.html",
                                         page=page) } ]
 
-@main.route('/blogs')
-@partial_content
-def blogs():
-    return [ 'displayMain',
-             { "content": render_template("main_pages/blogs.html",
-                                          blog_posts = BlogPost.list(number=10) )} ]
-
-@main.route('/agendas')
-@partial_content
-def agenda():
-    return [ 'displayMain',
-             { "content": render_template("main_pages/agendas.html",
-                                          events = Event.list(number=10)) } ]
-
 @main.route('/contrib')
 @partial_content
 def contribute():
@@ -120,10 +106,11 @@ def podcasts():
 def podcast(id):
     podcast = Podcast.query.filter_by(id = id).first()
 
-    return [ "player.load.bind(player)",
-             { "link" : podcast.link,
-               "title" : podcast.name } ]
-
+    # return [ "player.load.bind(player)",
+    #          { "link" : podcast.link,
+    #            "title" : podcast.name } ]
+    return [ 'displayMain',
+             { "content": render_template("notimplemented.html") }]
 
 #########################
 #  Contributors         #
@@ -138,36 +125,61 @@ def contributors():
                                           contributors=Contributor.list())}]
 
 
-@main.route('/contributor/<contrib>')
+@main.route('/contributors/<id>')
 @partial_content
-def contributor(contrib):
-    #podcasts = Podcast.list(filter = contrib + "in Podcast.contributors")
-    #podcasts = Podcast.query.filter_by(contributor_id = Contributor.query.filter_by(name = contrib).first()).all()
+def contributor(id):
     return [ 'displayMain',
              { "content": render_template("notimplemented.html") }]
-
 
 #########################
 #  Collectives          #
 #########################
 
-@main.route('/collectives')
+@main.route('/collectives/')
 @partial_content
 def collectives():
-    """ Return list of all the collectives """
     return [ 'displayMain',
-             { "content": render_template("notimplemented.html",
-                                          collectives=Collectives.list()) }]
+             { "content": render_template("notimplemented.html") }]
 
-@main.route('/collective/<id>')
+@main.route('/collectives/<id>')
 @partial_content
 def collective(id):
-    """ Return home template for collective coll """
-    collective = Collective.query.filter(Collective.id==id).first()
-    #podcasts = getPodcasts(filter='Podcast.channel_id==channel_id'),
     return [ 'displayMain',
-             { "content": render_template("notimplemented.html",
-                                          collective=collective) }]
+             { "content": render_template("notimplemented.html") }]
+
+#########################
+#  Blogs                #
+#########################
+
+@main.route('/blogs')
+@partial_content
+def blogs():
+    return [ 'displayMain',
+             { "content": render_template("main_pages/blogs.html",
+                                          blog_posts = BlogPost.list(number=10) )} ]
+
+@main.route('/blogs/<id>')
+@partial_content
+def blog(id):
+    return [ 'displayMain',
+             { "content": render_template("notimplemented.html") }]
+
+#########################
+#  Agendas              #
+#########################
+
+@main.route('/agendas')
+@partial_content
+def agendas():
+    return [ 'displayMain',
+             { "content": render_template("main_pages/agendas.html",
+                                          events = Event.list(number=10)) } ]
+
+@main.route('/agendas/<id>')
+@partial_content
+def agenda(id):
+    return [ 'displayMain',
+             { "content": render_template("notimplemented.html") }]
 
 #########################
 #  Static stuff         #

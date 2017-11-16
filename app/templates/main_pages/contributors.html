@@ -2,7 +2,7 @@
 <h2>Contributeurs</h2>
 {% for contributor in contributors %}
     <p><a class="content-link"
-       href="{{ url_for('main.contributor', contrib=contributor.id) }}">
+       href="{{ url_for('main.contributors', contrib=contributor.id) }}">
        {{ contributor.name }}
    </a></p>
 {% endfor %}
@@ -14,7 +14,7 @@
 {% for collective in collectives %}
 <div class="collective">
     <a class="content-link"
-       href="{{ url_for('main.collective', coll=collective.id) }}">
+       href="{{ url_for('main.collectives', coll=collective.id) }}">
        {{ collective.name }}
     </a>
 </div>
