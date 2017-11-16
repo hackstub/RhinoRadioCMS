@@ -3,8 +3,8 @@ import os
 import json
 from glob import glob
 from config import config, LIQUIDSOAP_TOKEN
-from uuid import uuid4
-from datetime import date
+from uuid import uuid4                 # FIXME no longer needed i think
+from datetime import date              # same
 
 # Flask stuff
 from flask import (Flask,
@@ -19,12 +19,9 @@ from flask import (Flask,
 from . import main
 from .forms import SubscribeForm
 from .partial_content import partial_content_decorator
-from .. import db
+from .jinja_custom_filters import *
+from .. import db                      # FIXME no longer needed i think
 from app.models.admin import *
-from app.models.podcast import Podcast
-
-app = Flask(__name__)
-
 from app.models.event import Event
 from app.models.podcast import Podcast
 from app.models.section import Section
@@ -34,6 +31,8 @@ from app.models.event import Event
 from app.models.channel import Channel
 from app.models.tag import Tag
 from app.models.page import Page
+
+app = Flask(__name__)
 
 
 #########################
@@ -45,7 +44,7 @@ def base():
                             styles = getStyles(),
                             scripts = getScripts(),
                             podcasts = Podcast.list(),
-                            blogPosts = BlogPost.list(),
+                            blog_posts = BlogPost.list(),
                             events = Event.list(),
                             content = request.path
                           )
@@ -58,7 +57,7 @@ def index():
     return [ 'displayMain',
            { "content": render_template("index.html",
                                         podcasts = Podcast.list(),
-                                        blogPosts = BlogPost.list(),
+                                        blog_posts = BlogPost.list(),
                                         events = Event.list()) } ]
 
 
@@ -69,28 +68,26 @@ def index():
 @main.route('/about')
 @partial_content
 def about():
-
     page = Page.query.filter_by(name='À propos').first_or_404()
-
     return [ 'displayMain',
            { "content": render_template("main_pages/about.html",
                                         page=page) } ]
 
-@main.route('/blogs/')
+@main.route('/blogs')
 @partial_content
 def blogs():
     return [ 'displayMain',
              { "content": render_template("main_pages/blogs.html",
                                           blog_posts = BlogPost.list(number=10) )} ]
 
-@main.route('/agendas/')
+@main.route('/agendas')
 @partial_content
 def agenda():
     return [ 'displayMain',
              { "content": render_template("main_pages/agendas.html",
                                           events = Event.list(number=10)) } ]
 
-@main.route('/contribute')
+@main.route('/contrib')
 @partial_content
 def contribute():
     # create a real "contribute" page
@@ -103,15 +100,22 @@ def contribute():
 #  Podcasts             #
 #########################
 
-@main.route('/podcasts/')
+@main.route('/podcasts/', methods=['GET', 'POST'])
 @partial_content
 def podcasts():
+    page = request.args.get('page', type=int)
+    pagination = Podcast.query                         \
+        .join(Channel, Channel.id==Podcast.channel_id) \
+        .order_by(Podcast.timestamp.desc())            \
+        .paginate(page, per_page=10, error_out=False)
+    podcasts = pagination.items
+
     return [ 'displayMain',
              { "content": render_template("main_pages/podcasts.html",
-                                          podcasts = Podcast.list()) } ]
+                                          podcasts=podcasts,
+                                          pagination=pagination) } ]
 
-
-@main.route('/podcast/<id>')
+@main.route('/podcasts/<id>')
 @partial_content
 def podcast(id):
     podcast = Podcast.query.filter_by(id = id).first()
@@ -151,20 +155,19 @@ def contributor(contrib):
 @partial_content
 def collectives():
     """ Return list of all the collectives """
-    collectives = Channel.query.filter(Channel.type=="COLLECTIVE").all_or_404()
     return [ 'displayMain',
              { "content": render_template("notimplemented.html",
-                                          collectives=collectives) }]
+                                          collectives=Collectives.list()) }]
 
-@main.route('/collective/<coll>')
+@main.route('/collective/<id>')
 @partial_content
-def collective(coll):
+def collective(id):
     """ Return home template for collective coll """
-    channel_id = Channel.query.filter(Channel.name==coll).first()
-    podcasts = getPodcasts(filter='Podcast.channel_id==channel_id'),
+    collective = Collective.query.filter(Collective.id==id).first()
+    #podcasts = getPodcasts(filter='Podcast.channel_id==channel_id'),
     return [ 'displayMain',
              { "content": render_template("notimplemented.html",
-                                          podcasts=podcasts) }]
+                                          collective=collective) }]
 
 #########################
 #  Static stuff         #

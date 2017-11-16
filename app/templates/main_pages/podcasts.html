@@ -1,25 +1,28 @@
+{% import "_macros.html" as macros %}
+
 <section id="left-panel">
 <h2>Podcasts</h2>
+
 {% for podcast in podcasts %}
 <div class="list-elem">
+    {#
     <a class="source-link" href="{{ podcast.link }}">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 36.48 40">
             <g class="line main-width black">
                 <polygon points="7.745,2.5 28.735,20 7.745,37.5"/>
             </g>
         </svg></a>
-
-    <a class="contentLink"
-       href="{{ url_for('main.podcast', id=podcast.id) }}">{{- podcast.name }}
+    <a class="content-link"
+       href="{{ url_for('main.podcasts', id=podcast.id) }}">{{- podcast.name }}
     </a>
-
-    <p><a class="contentLink" href="{{ url_for('main.collective', coll=podcast.channel.id) }}">
+#}
+    <p><a>
         {{ podcast.channel.name }}
     </a></p>
 
     <p>
         {% for contributor in podcast.contributors -%}
-        <a class="contentLink" href="{{ url_for('main.contributor', contrib=contributor.id) }}">{{ contributor.name }}</a>
+        <a class="content-link" href="{{ url_for('main.contributor', contrib=contributor.id) }}">{{ contributor.name }}</a>
         {%- if not loop.last %}, {% endif -%}
         {%- endfor %}
     </p>
@@ -27,13 +30,13 @@
     {% if podcast.sections|length > 0 %}
     <ul>
         {% for section in podcast.sections %}
-        <li>{{ section.title }}</li>
+        <li>{{ section.name }}</li>
         {% endfor %}
     </ul>
     {% endif %}
 
     <!-- <p>{{ podcast.date }}</p> -->
-    <p>{{ podcast.timestamp }}</p>
+    <p>{{ podcast.timestamp|format_date }}</p>
 
     {% if podcast.license %}
     <p>LICENCE : {{ podcast.license }}</p>
@@ -46,6 +49,11 @@
     {{ podcast.description|safe }}
 </div>
 {% endfor %}
+
+<div class="pagination">
+{{ macros.pagination_widget(pagination, 'main.podcasts') }}
+</div>
+
 </section>
 
 <section id="right-panel">

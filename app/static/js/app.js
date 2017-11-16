@@ -10,9 +10,9 @@ window.addEventListener("popstate", function(e) {
 
 // Capture 'click' for all content links
 function captureContentLinks() {
-    // Getting the class name 'contentLink' is specific to Radio Rhino
+    // Getting the class name 'content-link' is specific to Radio Rhino
     // Could be factorized in the future ;)
-    var links = document.getElementsByClassName("contentLink");
+    var links = document.getElementsByClassName("content-link");
     var linksLen = links.length;
 
     function load(e) {
@@ -41,9 +41,9 @@ function loadContent(target) {
             var f = eval(response_data[0]);
             var data = response_data[1];
             f(data);
-            
+
             // Push this content in the history
-            // N.B : in the future, we might want to have a mechanism to do this only 
+            // N.B : in the future, we might want to have a mechanism to do this only
             // for specific contents...
             if (window.location.pathname != target) {
                 history.pushState({}, '', target);

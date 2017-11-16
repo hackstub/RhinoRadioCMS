@@ -34,11 +34,12 @@ class Event(db.Model):
     def __str__(self):
         return self.name
 
-    def __init__(self, **kwargs):
-        print(kwargs)
-        self.data = kwargs
-        if 'live_show' in self.data and self.data['live_show'] == True:
-            self.create_rel_podcast(self)
+    # FIXME dont know what happens here, but this breaks the fake_feed gen
+    # def __init__(self, **kwargs):
+    #     print(kwargs)
+    #     self.data = kwargs
+    #     if 'live_show' in self.data and self.data['live_show'] == True:
+    #         self.create_rel_podcast(self)
 
     @validates('channel_id')
     def validate_channel_id(self, key, channel_id):
@@ -54,6 +55,7 @@ class Event(db.Model):
         events = Event.query.filter(Event.begin >= datetime.today()) \
             .order_by(Event.begin.desc())                            \
             .paginate(per_page=number).items
+        print(events)
         return events
 
     # FIXME: Self is not an object and needs to be barsed by its .data[]

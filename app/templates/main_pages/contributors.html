@@ -1,7 +1,7 @@
 <section id="left-panel">
 <h2>Contributeurs</h2>
 {% for contributor in contributors %}
-    <p><a class="contentLink"
+    <p><a class="content-link"
        href="{{ url_for('main.contributor', contrib=contributor.id) }}">
        {{ contributor.name }}
    </a></p>
@@ -13,7 +13,7 @@
 {# Reactivate when collectives class is ready
 {% for collective in collectives %}
 <div class="collective">
-    <a class="contentLink"
+    <a class="content-link"
        href="{{ url_for('main.collective', coll=collective.id) }}">
        {{ collective.name }}
     </a>
