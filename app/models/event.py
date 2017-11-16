@@ -28,26 +28,20 @@ class Event(db.Model):
     live_show = db.Column(db.Boolean())
 
 
-    def __repr__(self):
-        return '<EVENT %r>' % self.name
+    #def __repr__(self):
+    #    return '<EVENT %r>' % self.name
 
-    def __str__(self):
-        return self.name
+    #def __str__(self):
+    #    return self.name
 
     # FIXME dont know what happens here, but this breaks the fake_feed gen
     def __init__(self, **kwargs):
         super(Event, self).__init__(**kwargs)
         if self.live_show:
-            self.create_rel_podcast()
+            channel_id = kwargs.get("channel_id")
+            collective_id = kwargs.get("collective_id", None)
+            self.create_rel_podcast(channel_id, collective_id)
 
-    @validates('channel_id')
-    def validate_channel_id(self, key, channel_id):
-        if self.live_show == True:
-            if not channel_id:
-                channel_id = 1
-                return channel_id
-            else:
-                return self
 
     def list(filter='', order='', number=3):
         events = Event.query.filter(Event.begin >= datetime.today()) \
@@ -55,24 +49,19 @@ class Event(db.Model):
             .paginate(per_page=number).items
         return events
 
-    @staticmethod
-    def create_rel_podcast(self):
-        channel = Channel.query.filter(Channel.id == self.channel_id).first()
+
+    def create_rel_podcast(self, channel_id, collective_id):
+        channel = Channel.query.filter(Channel.id == channel_id).first()
         podcast = Podcast(
-            name = channel.title + 'du' + self.date.strftime("%d/%m/%y"),
+            name = channel.name + ' du ' + self.begin.strftime("%d/%m/%y"),
             contributors = channel.contributors,
-            description = self.desc,
+            description = self.description,
             channel_id = channel.id,
             mood = channel.mood,
             night = channel.night,
-            live_show = True,
             date = self.begin)
         self.podcast_id = podcast.id
         db.session.add(podcast)
-        try:
-            db.session.commit()
-        except IntegrityError:
-            db.session.rollback()
 
 
     @staticmethod
@@ -139,7 +128,8 @@ class Event(db.Model):
                 begin=forgery_py.date.date(),
                 end=forgery_py.date.date(),
                 description=forgery_py.lorem_ipsum.paragraph(),
-                channel_id=i+1
+                channel_id=Channel.query.first().id,
+                live_show=(i in [3, 7])
             )
             db.session.add(e)
         try:
