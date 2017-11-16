@@ -66,6 +66,17 @@ class Channel(db.Model):
         return items
 
     @staticmethod
+    def init():
+        """ Adds generic Channel """
+        from sqlalchemy.exc import IntegrityError
+        c = Channel(name = "Émission")
+        db.session.add(c)
+        try:
+            db.session.commit()
+        except IntegrityError:
+            db.session.callback()
+
+    @staticmethod
     def fake_feed(count=10):
         from sqlalchemy.exc import IntegrityError
         from random import seed, choice

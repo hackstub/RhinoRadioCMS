@@ -1,0 +1,75 @@
+{
+    "name": "Rhino Radio CMS",
+    "id": "rhinoCMS",
+    "packaging_format": 1,
+    "description": {
+        "en": "Experimental webradio CMS.",
+        "fr": "CMS de webradio expérimental."
+    },
+    "version": ".3",
+    "url": "https://github.com/hackstub/RhinoRadioCMS",
+    "license": "GPL",
+    "maintainer": {
+        "name": "Hackstub, Radio Rhino",
+        "email": "contact@radiorhino.eu",
+        "url": "https://radiorhino.eu"
+    },
+    "requirements": {
+        "yunohost": ">= 2.7.2"
+    },
+    "multi_instance": true,
+    "services": [
+        "nginx",
+        "postgresql"
+    ],
+    "arguments": {
+        "install" : [
+            {
+                "name": "domain",
+                "type": "domain",
+                "ask": {
+                    "en": "Choose a domain name for Rhino CMS",
+                    "fr": "Choisissez un nom de domaine pour Rhino CMS"
+                },
+                "example": "example.com"
+            },
+            {
+                "name": "path",
+                "type": "path",
+                "ask": {
+                    "en": "Choose a path for Rhino CMS",
+                    "fr": "Choisissez un chemin pour Rhino CMS"
+                },
+                "example": "/example",
+                "default": "/rhinocms"
+            },
+            {
+                "name": "admin",
+                "type": "user",
+                "ask": {
+                    "en": "Choose an admin user",
+                    "fr": "Choisissez l’administrateur"
+                },
+                "example": "johndoe"
+            },
+            {
+                "name": "is_public",
+                "type": "boolean",
+                "ask": {
+                    "en": "Is it a public application?",
+                    "fr": "Est-ce une application publique ?"
+                },
+                "default": true
+            },
+            {
+                "name": "language",
+                "ask": {
+                    "en": "Choose the application language",
+                    "fr": "Choisissez la langue de l'application"
+                },
+                "choices": ["fr", "en"],
+                "default": "fr"
+            }
+        ]
+    }
+}

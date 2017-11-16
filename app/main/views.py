@@ -2,7 +2,7 @@
 import os
 import json
 from glob import glob
-from config import config
+from config import config, LIQUIDSOAP_TOKEN
 from uuid import uuid4
 from datetime import date
 
@@ -14,7 +14,6 @@ from flask import (Flask,
                    request,
                    redirect,
                    flash)
-from werkzeug.utils import secure_filename
 
 # Specific app stuff
 from . import main
@@ -26,6 +25,7 @@ from app.models.podcast import Podcast
 
 app = Flask(__name__)
 
+from app.models.event import Event
 from app.models.podcast import Podcast
 from app.models.section import Section
 from app.models.contributor import Contributor
@@ -161,10 +161,38 @@ def collectives():
 def collective(coll):
     """ Return home template for collective coll """
     channel_id = Channel.query.filter(Channel.name==coll).first()
-    podcasts = getPodcasts(filter='Podcast.channel_id=channel_id'),
+    podcasts = getPodcasts(filter='Podcast.channel_id==channel_id'),
     return [ 'displayMain',
              { "content": render_template("notimplemented.html",
                                           podcasts=podcasts) }]
+
+#########################
+#  Static stuff         #
+#########################
+
+@main.route('/on_air', methods=['POST'])
+def on_air():
+
+    # Check we're authorized to do this
+    # Security Nazi : a simple string comparison is probably not secure against
+    # time attack, but that's good enough ;)
+    # FIXME : use real token in prod
+    #if request.args.get('token') != LIQUIDSOAP_TOKEN:
+    print(request.form["token"])
+    if request.form['token'] != 'lol':
+        return ('INVALIDTOKEN', 401) # Unauthorized
+
+    stream_url = request.args.get('stream')
+    return Event.start_live(stream_url)
+
+
+@main.route('/next_live')
+def next_live():
+
+    live, next_live_in = Event.closest_live()
+
+    return jsonify({ "next_live_in": next_live_in })
+
 
 #########################
 #  Static stuff         #

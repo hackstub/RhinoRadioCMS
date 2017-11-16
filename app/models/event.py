@@ -1,5 +1,8 @@
 from datetime import datetime
-from sqlalchemy.orm import validates
+from sqlalchemy.orm import validates, reconstructor
+from sqlalchemy.exc import IntegrityError
+from .podcast import Podcast
+from .channel import Channel
 
 from .. import db
 
@@ -32,20 +35,20 @@ class Event(db.Model):
         return self.name
 
     def __init__(self, **kwargs):
-        if self.live_show == True:
-            create_rel_podcast(self)
-        super().__init__(**kwargs)
+        print(kwargs)
+        self.data = kwargs
+        if 'live_show' in self.data and self.data['live_show'] == True:
+            self.create_rel_podcast(self)
 
-    # FIXME
-    # @validates('channel_id')
-    # def validate_channel_id(self, key, channel_id):
-    #
-    #     if self.live_show == True:
-    #         if not self.channel_id:
-    #             self.channel_id = "Émission"
-    #             return self
-    #         else:
-    #             return self
+    @validates('channel_id')
+    def validate_channel_id(self, key, channel_id):
+        if self.live_show == True:
+            print(self.live_show)
+            if not channel_id:
+                channel_id = 1
+                return channel_id
+            else:
+                return self
 
     def list(filter='', order='', number=3):
         events = Event.query.filter(Event.begin >= datetime.today()) \
@@ -53,27 +56,81 @@ class Event(db.Model):
             .paginate(per_page=number).items
         return events
 
+    # FIXME: Self is not an object and needs to be barsed by its .data[]
+    @staticmethod
     def create_rel_podcast(self):
-        channel = Channel.query.filter_by(Channel.id == self.channel_id).first()
+        channel = Channel.query.filter(Channel.id == self.channel_id).first()
         podcast = Podcast(
-            name=channel.name + 'du' + self.date.strftime("%d/%m/%y"),
-            contributors=channel.contributors,
-            description=self.description,
-            channel_id=self.channel_id,
-            mood=channel.mood,
-            night=channel.night,
-            date=self.begin)
+            name = channel.title + 'du' + self.date.strftime("%d/%m/%y"),
+            contributors = channel.contributors,
+            description = self.desc,
+            channel_id = channel.id,
+            mood = channel.mood,
+            night = channel.night,
+            live_show = True,
+            date = self.begin)
         self.podcast_id = podcast.id
-        db.session.add(podcast.id)
+        print(podcast)
+        db.session.add(podcast)
         try:
             db.session.commit()
         except IntegrityError:
             db.session.rollback()
 
+
+    @staticmethod
+    def closest_live():
+
+        now = datetime.now()
+
+        # Keep only lives that are not done yet
+        lives = Event.query.filter(Event.live_show == True) \
+                           .filter(Event.end > now) \
+                           .all()
+
+        found_live = None
+        live_in = None
+        for live in lives:
+
+            # Get number of seconds until this event begin
+            this_live_in = (live.begin - now).total_seconds()
+
+            # If live is closest than the one already found, keep it
+            if found_live is None or abs(live_in) > abs(this_live_in):
+                found_live = live
+                live_in = this_live_in
+
+        return (found_live, live_in)
+
+
+    @staticmethod
+    def start_live(stream_url):
+
+        live, live_in = Event.closest_live()
+
+        # If live starts or started more than one hour from now, return 404
+        if live is None or abs(live_in) > 3600:
+            return ('NOTYET', 400)
+
+        # Get the podcast
+        podcast = Podcast.query.filter(Podcast.id==live.podcast_id).first()
+        if podcast is None:
+            return ('NOPODCAST', 404)
+
+        # Set the link
+        podcast.link = stream_url
+
+        # Write it!
+        try:
+            db.session.commit()
+            return ('OK', 200)
+        except IntegrityError:
+            db.session.rollback()
+            return ('INTEGRITYERROR', 409)
+
     @staticmethod
     def fake_feed(count=10):
         """ Randomly feeds the database """
-        from sqlalchemy.exc import IntegrityError
         from random import seed
         import forgery_py
 
