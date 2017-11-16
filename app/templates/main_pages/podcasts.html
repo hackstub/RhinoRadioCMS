@@ -12,7 +12,7 @@
             </g>
         </svg></a>
     <a class="content-link"
-       href="{{ url_for('main.podcasts', id=podcast.id) }}">{{- podcast.name }}
+       href="{{ url_for('main.podcast', id=podcast.id) }}">{{- podcast.name }}
     </a>
 
     <p><a>
@@ -34,7 +34,6 @@
     </ul>
     {% endif %}
 
-    <!-- <p>{{ podcast.date }}</p> -->
     <p>{{ podcast.timestamp|format_date }}</p>
 
     {% if podcast.license %}

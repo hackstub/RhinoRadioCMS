@@ -62,7 +62,7 @@ def index():
 
 
 #########################
-#  About                #
+#  Pages                #
 #########################
 
 @main.route('/about')
@@ -89,7 +89,8 @@ def contribute():
 @main.route('/podcasts/', methods=['GET', 'POST'])
 @partial_content
 def podcasts():
-    page = request.args.get('page', type=int)
+    print(request.args.get('id'))
+    page = request.args.get('page', 1, type=int)
     pagination = Podcast.query                         \
         .join(Channel, Channel.id==Podcast.channel_id) \
         .order_by(Podcast.timestamp.desc())            \
@@ -101,16 +102,13 @@ def podcasts():
                                           podcasts=podcasts,
                                           pagination=pagination) } ]
 
-@main.route('/podcasts/<id>')
+@main.route('/podcast/<id>')
 @partial_content
 def podcast(id):
     podcast = Podcast.query.filter_by(id = id).first()
-
-    # return [ "player.load.bind(player)",
-    #          { "link" : podcast.link,
-    #            "title" : podcast.name } ]
     return [ 'displayMain',
-             { "content": render_template("notimplemented.html") }]
+             { "content": render_template("elem.html",
+                                          elem=podcast) }]
 
 #########################
 #  Contributors         #

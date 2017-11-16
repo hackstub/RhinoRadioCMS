@@ -1,0 +1,71 @@
+<section>
+
+    <p><a class="source-link" href="{{ elem.link }}">
+        {% include 'svg/small_play.svg' -%}
+    </a> {{ elem.name }}</p>
+
+    <p>CONTRIBUTEURS: </br>
+    {% for contributor in elem.contributors %}
+        <a class="content-link"
+            href="{{ url_for('main.contributors', contrib=contributor.id) }}">
+        {{ contributor.name -}}
+        </a>
+        {%- if not loop.last %}, {% endif %}
+    {% endfor %}
+    </p>
+
+    </br>
+
+    <p>CHANNEL : {{ elem.channel.name }}</p>
+    <p>COLLECTIFS : </br>
+    {% for collective in elem.collectives %}
+        <a class="content-link"
+            href="{{ url_for('main.collectives', contrib=collective.id) }}">
+        {{ collective.name -}}
+        </a>
+        {%- if not loop.last %}, {% endif %}
+    {% endfor %}
+    </p>
+
+    </br>
+
+    <p>PUBLICATION : {{ elem.timestamp|format_date }}</p>
+    <p>LICENCE : {{ elem.licence }}</p>
+    </br>
+
+    <p>DESCRIPTION : </br>
+    {{ elem.description }}
+    </p>
+
+    </br>
+
+    {% for section in elem.sections %}
+    <p>SECTIONS: </br>
+        {{ section.name }}
+        <a href="#">
+        {% for contributor in section.contributors %}
+            <a class="content-link"
+                href="{{ url_for('main.contributors', contrib=contributor.id) }}">
+            {{ contributor.name }}
+            </a>
+            {% if not loop.last %}, {% endif %}
+        {% endfor %}
+        </a>
+    </p>
+    {% endfor %}
+
+    </br>
+
+    <p>TAGS : </br>
+    {% for tag in elem.tags %}
+        {{ tag.name }}
+        {% if not loop.last %}, {% endif %}
+    {% endfor %}
+    </p>
+
+    <p>MOOD : {{ elem.mood }}</p>
+    <p>MUSIC: {{ elem.music }}</p>
+
+
+
+</section>
