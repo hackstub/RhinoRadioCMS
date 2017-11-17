@@ -47,6 +47,7 @@ class Podcast(db.Model):
     mood = db.Column(db.String(128))
     # Musical or non-musical
     music = db.Column(db.Boolean())
+    night = db.Column(db.Boolean())
 
 
     def __repr__(self):

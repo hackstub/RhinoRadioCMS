@@ -18,7 +18,7 @@ from flask import (Flask,
 # Specific app stuff
 from . import main
 from .forms import SubscribeForm
-from .partial_content import partial_content_decorator
+from .partial_content import *
 from .jinja_custom_filters import *
 from .. import db                      # FIXME no longer needed i think
 from app.models.admin import *
@@ -50,6 +50,7 @@ def base():
                           )
 
 partial_content = partial_content_decorator(base)
+partial_content_no_history = partial_content_no_history_decorator(base)
 
 @main.route('/')
 @partial_content
@@ -86,10 +87,9 @@ def contribute():
 #  Podcasts             #
 #########################
 
-@main.route('/podcasts/', methods=['GET', 'POST'])
+@main.route('/podcasts')
 @partial_content
 def podcasts():
-    print(request.args.get('id'))
     page = request.args.get('page', 1, type=int)
     pagination = Podcast.query                         \
         .join(Channel, Channel.id==Podcast.channel_id) \
@@ -102,48 +102,51 @@ def podcasts():
                                           podcasts=podcasts,
                                           pagination=pagination) } ]
 
-@main.route('/podcast/<id>')
+@main.route('/podcasts/<id>')
 @partial_content
 def podcast(id):
     podcast = Podcast.query.filter_by(id = id).first()
     return [ 'displayMain',
-             { "content": render_template("elem.html",
+             { "content": render_template("elem_pages/podcast.html",
                                           elem=podcast) }]
 
-#########################
-#  Contributors         #
-#########################
+@main.route('/podcasts/<id>/play')
+@partial_content_no_history
+def play(id):
+    podcast = Podcast.query.filter_by(id = id).first()
+    return [ "player.load.bind(player)",
+             { "link" : podcast.link,
+               "title" : podcast.name } ]
 
-@main.route('/contributors/')
+##############################
+#  Contributors/Collectives  #
+##############################
+
+@main.route('/contributors')
+@main.route('/collectives')
 @partial_content
 def contributors():
-    #collectives = Channel.query.filter(Channel.type=="collective").all()
     return [ 'displayMain',
              { "content": render_template("main_pages/contributors.html",
-                                          contributors=Contributor.list())}]
-
+                                          contributors=Contributor.list(),
+                                          collectives=Collective.list(),
+                                         )}]
 
 @main.route('/contributors/<id>')
 @partial_content
 def contributor(id):
+    contributor = Contributor.query.filter_by(id = id).first()
     return [ 'displayMain',
-             { "content": render_template("notimplemented.html") }]
-
-#########################
-#  Collectives          #
-#########################
-
-@main.route('/collectives/')
-@partial_content
-def collectives():
-    return [ 'displayMain',
-             { "content": render_template("notimplemented.html") }]
+             { "content": render_template("elem_pages/contributor.html",
+                                          elem=contributor) }]
 
 @main.route('/collectives/<id>')
 @partial_content
 def collective(id):
+    collective = Collective.query.filter_by(id = id).first()
     return [ 'displayMain',
-             { "content": render_template("notimplemented.html") }]
+             { "content": render_template("elem_pages/contributor.html",
+                                          elem=collective) }]
 
 #########################
 #  Blogs                #
