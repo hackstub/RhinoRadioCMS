@@ -41,8 +41,6 @@ app = Flask(__name__)
 
 def base():
     return render_template( 'base.html',
-                            styles = getStyles(),
-                            scripts = getScripts(),
                             podcasts = Podcast.list(),
                             blog_posts = BlogPost.list(),
                             events = Event.list(),
@@ -216,20 +214,3 @@ def next_live():
                      "on_air_light": on_air_light["on_air_light"]})
 
 
-#########################
-#  Static stuff         #
-#########################
-
-def getStyles():
-     return [ url_for('static',
-                      filename=file.replace('app/static/', ''),
-                      #_scheme='https',
-                      _external=True)
-             for file in glob("app/static/css/*.css") ]
-
-def getScripts():
-     return [ url_for('static',
-                      filename=file.replace('app/static/', ''),
-                      #_scheme='https',
-                      _external=True)
-             for file in glob("app/static/js/*.js") ]

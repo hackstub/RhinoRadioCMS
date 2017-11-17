@@ -157,8 +157,11 @@ class PageAdminView(FullTextView):
     )
 
 admin.add_view(PodcastView(Podcast, db.session))
-admin.add_view(FileAdmin(podcastPath, '/static/podcasts/',
-                         name='Anciens podcasts'))
+try:
+    admin.add_view(FileAdmin(podcastPath, '/static/podcasts/', 
+                             name='Anciens podcasts'))
+except:
+    print("Failed to load /static/podcasts, ignoring. (Is sshfs working properly?)")
 admin.add_view(BlogView(BlogPost, db.session))
 admin.add_view(ContributorView(Contributor, db.session))
 admin.add_view(ContributorView(Collective, db.session))

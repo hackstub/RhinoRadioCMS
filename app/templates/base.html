@@ -3,9 +3,8 @@
     <head>
         {% block head %}
         <meta charset="utf-8" lang="FR/fr">
-        {% for style in styles %}
-        <link rel="stylesheet" href="{{ style }}">
-        {% endfor %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/player.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
         <title>Radio Rhino{% if title %} | {{ title }} {% endif %}</title>
         {% endblock %}
     </head>
@@ -24,9 +23,8 @@
         {% endblock %}
     </body>
 
-    {% for script in scripts %}
-    <script type="text/javascript" src={{ script }}></script>
-    {% endfor %}
+    <script type="text/javascript" src={{ url_for('static', filename='js/player.js') }}></script>
+    <script type="text/javascript" src={{ url_for('static', filename='js/app.js') }}></script>
 
     {% if content %}
     <script type="text/javascript">
