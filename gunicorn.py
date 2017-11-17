@@ -2,7 +2,8 @@ command = "/home/rhino/RhinoRadioCMS/venv/bin/gunicorn"
 pythonpath = '/home/rhino/RhinoRadioCMS'
 
 user = 'rhino'
-workers = 4
+workers = 2
+timeout = 30
 
 bind = 'unix:/home/rhino/RhinoRadioCMS/sock'
 pid = "/run/gunicorn/rhinosite-pid"
