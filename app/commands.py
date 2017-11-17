@@ -110,13 +110,13 @@ class LoremCommand(Command):
         self.db = db
 
     def run(self):
-        for i in range(2):
-            BlogPost.fake_feed()
-            Contributor.fake_feed()
-            Collective.fake_feed()
-            Channel.fake_feed()
-            Event.fake_feed()
-            Podcast.fake_feed()
-            Section.fake_feed()
-            Tag.fake_feed()
-            Page.fake_feed()
+        #for i in range(2):
+        Contributor.fake_feed()
+        Collective.fake_feed()
+        Channel.fake_feed()
+        Tag.fake_feed()
+        BlogPost.fake_feed()
+        Podcast.fake_feed()
+        Section.fake_feed()
+        Page.fake_feed()
+        Event.fake_feed()
