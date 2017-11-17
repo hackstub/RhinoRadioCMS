@@ -2,7 +2,6 @@
 <html lang="fr" dir="ltr">
     <head>
         {% block head %}
-        <meta charset="utf-8">
         <!-- Instruct Internet Explorer to use its latest rendering engine -->
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <!-- Viewport for responsive web design -->
@@ -12,9 +11,8 @@
         <meta name="description" content="Radio Rhino">
         <!-- FIXME add favicon -->
         <!-- FIXME add canonical links -->
-        {% for style in styles %}
-        <link rel="stylesheet" href="{{ style }}">
-        {% endfor %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/player.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
         {% endblock %}
     </head>
 
@@ -32,9 +30,8 @@
         {% endblock %}
     </body>
 
-    {% for script in scripts %}
-    <script type="text/javascript" src={{ script }}></script>
-    {% endfor %}
+    <script type="text/javascript" src={{ url_for('static', filename='js/player.js') }}></script>
+    <script type="text/javascript" src={{ url_for('static', filename='js/app.js') }}></script>
 
     {% if content %}
     <script type="text/javascript">

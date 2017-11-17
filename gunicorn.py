@@ -1,11 +1,18 @@
-import multiprocessing
+command = "/home/rhino/RhinoRadioCMS/venv/bin/gunicorn"
+pythonpath = '/home/rhino/RhinoRadioCMS'
 
-bind = "127.0.0.1:8000"
+user = 'rhino'
+workers = 4
+
+bind = 'unix:/home/rhino/RhinoRadioCMS/sock'
+pid = "/run/gunicorn/rhinosite-pid"
+
 backlog = 2048
-
-workers = multiprocessing.cpu_count() * 2 + 1
-
-user = 1000
+errorlog = "/var/log/rhinosite/error.log"
+accesslog = "/var/log/rhinosite/acces.log"
+access_log_format = '%({X-Real-IP}i)s %({X-Forwarded-For}i)s %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"'
+loglevel = 'warning'
+capture_output = True
 
 limit_request_line = 2048
 limit_request_fields = 50
