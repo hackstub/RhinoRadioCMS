@@ -7,13 +7,15 @@ from wtforms.widgets import TextArea
 from .. import db, admin, base_path
 import os.path as op
 
-from .podcast import *
-from .contributor import *
-from .blog import *
-from .event import *
-from .channel import *
-from .tag import *
-from .page import *
+from .podcast import Podcast
+from .collective import Collective
+from .section import Section
+from .contributor import Contributor
+from .blog import BlogPost
+from .event import Event
+from .channel import Channel
+from .tag import Tag
+from .page import Page
 
 #####################
 #  Admin views      #
@@ -59,43 +61,58 @@ class CKTextAreaWidget(TextArea):
 class CKTextAreaField(TextAreaField):
     widget = CKTextAreaWidget()
 
-class ModalView(ModelView):
-    create_modal = True
-
 class FullTextView(ModelView):
     extra_js = ['//cdn.ckeditor.com/4.6.0/standard/ckeditor.js']
     form_overrides = {
-        'desc': CKTextAreaField
+        'description': CKTextAreaField
     }
 
 #####################
 #  Custom Views     #
 #####################
+class ChannelView(FullTextView):
+    form_excluded_columns = (
+        'podcasts',
+        'sections',
+        'blog_posts',
+        'events')
+    column_labels = dict(
+        name='Nom',
+        description='Description',
+        contributors='Auteurs',
+        mood='Ambiance',
+        music='Musique seulement ?',
+        night='Nocturne ?'
+        )
+
+class ContributorView(ModelView):
+    # FIXME Commenting for verification
+    #form_excluded_columns = ('podcasts', 'sections', 'blog_posts')
+    column_channels = dict(
+        name='Nom',
+        status='Statut'
+    )
 
 class PodcastView(FullTextView):
-    form_excluded_columns = ['timestamp', 'location']
+    form_excluded_columns = ('timestamp')
     form_choices = {
         'mood': [
             ('slow', 'Au pas'),
             ('medium', 'Au trot'),
             ('fast', 'Au galop !')
-        ],
-        'music': [
-            (True, 'Oui'),
-            (False, 'Non')
         ]
     }
+    column_exclude_list = ('description')
     column_labels = dict(
-        title = 'Titre',
-        contributors = 'Auteurs',
-        desc = 'Description',
-        mood = 'Ambiance',
-        music = 'Musique',
-        link = 'Lien',
-        sections = 'Extraits',
-        place = 'Lieu',
-        itinerary = 'Itinéraire',
-        channel = 'Chaîne'
+        name='Titre',
+        description='Description',
+        date='Date d\'enregistrement',
+        channel='Chaîne',
+        contributors='Auteurs',
+        sections='Extraits',
+        link='Lien',
+        mood='Ambiance',
+        music='Musique seulement ?'
         )
     form_args = {
         'type': {
@@ -106,59 +123,45 @@ class PodcastView(FullTextView):
     inline_models = (Tag, Section, )
 
 class SectionView(FullTextView):
-    form_excluded_columns = ['timestamp', 'location']
+    form_excluded_columns = ('timestamp', 'location')
     column_labels = dict(
-        title = 'Titre',
-        desc = 'Description',
-        contributor_id = 'Auteur'
+        title='Titre',
+        desc='Description',
+        contributor_id='Auteur'
     )
-
-class EventView(ModalView):
-    column_labels = dict(
-        title = 'Titre',
-        place = 'Lieu',
-        begin = 'Début',
-        end = 'Fin',
-        desc = 'Description',
-        channel_id = 'Channel',
-        live_show = 'Direct'
-    )
-
-class ContributorView(ModalView):
-    form_excluded_columns = ['podcasts']
-    column_channels = dict(
-        name = 'Nom',
-        status = 'Statut'
-    )
-
-class ChannelView(ModalView):
-    form_excluded_columns = [
-        'podcasts',
-        'sections',
-        'blogPosts',
-        'pages',
-        'events']
 
 class BlogView(FullTextView):
-    form_excluded_columns = ['timestamp']
+    form_excluded_columns = ('timestamp')
     column_channels = dict(
-        title = 'Titre',
-        desc = 'Contenu',
-        channel_id = 'Chaîne',
-        contributor_id = 'Auteur'
+        name='Titre',
+        description='Contenu',
+        channel_id='Chaîne',
+        contributors='Auteurs'
+    )
+
+class EventView(FullTextView):
+    column_labels = dict(
+        name='Titre',
+        description='Description',
+        place='Lieu',
+        begin='Début',
+        end='Fin',
+        channel_id='Channel',
+        live_show='Direct ?'
     )
 
 class PageAdminView(FullTextView):
     column_channels = dict(
-        parent_page_id='Parent',
-        title='Titre',
-        desc='Contenu'
+        name='Titre',
+        description='Contenu'
     )
 
 admin.add_view(PodcastView(Podcast, db.session))
-admin.add_view(FileAdmin(podcastPath, '/static/podcasts/', name='Anciens podcasts'))
+admin.add_view(FileAdmin(podcastPath, '/static/podcasts/',
+                         name='Anciens podcasts'))
 admin.add_view(BlogView(BlogPost, db.session))
 admin.add_view(ContributorView(Contributor, db.session))
-admin.add_view(ModelView(Event, db.session))
+admin.add_view(ContributorView(Collective, db.session))
+admin.add_view(EventView(Event, db.session))
 admin.add_view(ChannelView(Channel, db.session))
 admin.add_view(PageAdminView(Page, db.session))

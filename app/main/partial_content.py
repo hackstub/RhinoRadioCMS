@@ -6,9 +6,10 @@ from functools import partial
 #  Wrapper for partial content loading  #
 #########################################
 
-def partial_content(f, base):
+def partial_content(f, base, history=True):
     @wraps(f)
     def decorated_function(*args, **kwargs):
+        assert isinstance(history, bool)
         # We make sure to come from an 'already loaded site' ...
         # Otherwise, load the base with a small javascript snippet that tells
         # to re-request the loading of the content
@@ -24,6 +25,8 @@ def partial_content(f, base):
         assert len(data) == 2
         assert isinstance(data[0], str)
         assert isinstance(data[1], dict)
+        # FIXME refactorize this shit with a dict
+        data.append("pushhistory" if history else "nohistory")
 
         response = jsonify(data)
         response.status_code = 200
@@ -33,3 +36,6 @@ def partial_content(f, base):
 
 def partial_content_decorator(base):
     return partial(partial_content, base=base)
+
+def partial_content_no_history_decorator(base):
+    return partial(partial_content, base=base, history=False)

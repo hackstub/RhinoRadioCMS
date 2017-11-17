@@ -2,11 +2,11 @@
 <h2>Agenda</h2>
 {% for event in events %}
 <div class="list-elem">
-    <h3>{{ event.title }}</h3>
+    <h3>{{ event.name }}</h3>
     <p>PLACE : {{ event.place }}</p>
     <p>FROM {{ event.begin }} TO {{ event.end }}</p>
     <p>LIVE : {{ event.live_show }}</p>
-    <p>{{ event.desc }}</p>
+    <p>{{ event.description }}</p>
 </div>
 {% endfor %}
 </section>

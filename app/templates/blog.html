@@ -1,10 +1,10 @@
 <article id="blog">
     <h2>Blog</h2>
-    {% for post in blogPosts %}
+    {% for post in blog_posts %}
     <div>
-        <h3>{{ post.title }} </h3>
+        <h3>{{ post.name }} </h3>
         <h5>{{ post.timestamp }}</h5>
-        <p>{{ post.content }}</p>
+        {{ post.description|safe }}
     </div>
     {% endfor %}
 </article>

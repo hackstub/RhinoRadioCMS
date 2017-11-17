@@ -3,14 +3,14 @@
         <h2>Derniers podcasts</h2>
         {% for podcast in podcasts %}
         <li>
-            <a class="contentLink" href="{{ url_for('main.podcast', id=podcast.id) }}">{{ podcast.title }}</a>
+            <a class="content-link" href="{{ url_for('main.podcasts', id=podcast.id) }}">{{ podcast.name }}</a>
         </li>
         {% endfor %}
     </ul>
 </section>
 
 <section id="right-panel">
-{% if blogPosts %}
+{% if blog_posts %}
     {% include "blog.html" %}
 {% endif %}
 {% if events %}

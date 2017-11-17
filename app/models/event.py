@@ -1,52 +1,47 @@
-from .. import db
 from datetime import datetime
-from .podcast import Podcast
-from .channel import Channel
 from sqlalchemy.orm import validates, reconstructor
 from sqlalchemy.exc import IntegrityError
+from .podcast import Podcast
+from .channel import Channel
+
+from .. import db
+
 
 class Event(db.Model):
     """ An agenda item """
     __tablename__ = 'events'
+
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(256))
-    """ Event's title """
+    name = db.Column(db.String(256))
+    description = db.Column(db.Text)
+    # Where the event will take place
     place = db.Column(db.String(128))
-    """ Location """
+    # Date of the event's beggining
     begin = db.Column(db.DateTime)
-    """ Date of the event's beggining """
+    # Date of the event's ending
     end = db.Column(db.DateTime)
-    """ Date of the event's ending """
-    desc = db.Column(db.Text)
-    """ Description of the event """
     channel_id = db.Column(db.Integer, db.ForeignKey('channels.id'))
-    """ Channel of the event """
-    live_show = db.Column(db.Boolean())
-    """ Live broadcast schedule ? """
+    collective_id = db.Column(db.Integer, db.ForeignKey('collectives.id'))
+    # Podcast id (self-generated if live_show is true)
     podcast_id = db.Column(db.Integer, db.ForeignKey('podcasts.id'))
-    """ Podcast id (self-generated if live_show is true) """
+    # Live broadcast scheduled ?
+    live_show = db.Column(db.Boolean())
 
-    def __repr__(self):
-        return '<EVENT %r>' % self.title
 
-    def __str__(self):
-        return self.title
+    #def __repr__(self):
+    #    return '<EVENT %r>' % self.name
 
+    #def __str__(self):
+    #    return self.name
+
+    # FIXME dont know what happens here, but this breaks the fake_feed gen
     def __init__(self, **kwargs):
-        print(kwargs)
-        self.data = kwargs
-        if 'live_show' in self.data and self.data['live_show'] == True:
-            self.create_rel_podcast(self)
+        super(Event, self).__init__(**kwargs)
+        if self.live_show:
+            channel_id = kwargs.get("channel_id")
+            collective_id = kwargs.get("collective_id", None)
+            self.create_rel_podcast(channel_id, collective_id)
 
-    @validates('channel_id')
-    def validate_channel_id(self, key, channel_id):
-        if self.live_show == True:
-            print(self.live_show)
-            if not channel_id:
-                channel_id = 1
-                return channel_id
-            else:
-                return self
 
     def list(filter='', order='', number=3):
         events = Event.query.filter(Event.begin >= datetime.today()) \
@@ -54,26 +49,19 @@ class Event(db.Model):
             .paginate(per_page=number).items
         return events
 
-    # FIXME: Self is not an object and needs to be barsed by its .data[]
-    @staticmethod
-    def create_rel_podcast(self):
-        channel = Channel.query.filter(Channel.id == self.channel_id).first()
+
+    def create_rel_podcast(self, channel_id, collective_id):
+        channel = Channel.query.filter(Channel.id == channel_id).first()
         podcast = Podcast(
-            title = channel.title + 'du' + self.date.strftime("%d/%m/%y"),
+            name = channel.name + ' du ' + self.begin.strftime("%d/%m/%y"),
             contributors = channel.contributors,
-            desc = self.desc,
+            description = self.description,
             channel_id = channel.id,
             mood = channel.mood,
             night = channel.night,
-            live_show = True,
             date = self.begin)
         self.podcast_id = podcast.id
-        print(podcast)
         db.session.add(podcast)
-        try:
-            db.session.commit()
-        except IntegrityError:
-            db.session.rollback()
 
 
     @staticmethod
@@ -135,12 +123,13 @@ class Event(db.Model):
         seed()
         for i in range(count):
             e = Event(
-                title = forgery_py.lorem_ipsum.title(),
-                place = forgery_py.address.street_address(),
-                begin = forgery_py.date.date(),
-                end = forgery_py.date.date(),
-                desc = forgery_py.lorem_ipsum.paragraph(),
-                channel_id = i+1
+                name=forgery_py.lorem_ipsum.title(),
+                place=forgery_py.address.street_address(),
+                begin=forgery_py.date.date(),
+                end=forgery_py.date.date(),
+                description=forgery_py.lorem_ipsum.paragraph(),
+                channel_id=Channel.query.first().id,
+                live_show=(i in [3, 7])
             )
             db.session.add(e)
         try:
