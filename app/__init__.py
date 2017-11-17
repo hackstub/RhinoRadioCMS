@@ -12,7 +12,7 @@ import os.path as op
 mail = Mail()
 db = SQLAlchemy()
 moment = Moment()
-admin = Admin(name = __APP_NAME__ + ' Admin', template_mode="bootstrap3")
+admin = Admin(name = __APP_NAME__ + ' Admin', template_mode="bootstrap3", url="/site/admin")
 base_path = op.dirname(__file__)
 
 def create_app(config_name):
