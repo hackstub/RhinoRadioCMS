@@ -1,12 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr" dir="ltr">
     <head>
         {% block head %}
-        <meta charset="utf-8" lang="FR/fr">
+        <meta charset="utf-8">
+        <!-- Instruct Internet Explorer to use its latest rendering engine -->
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <!-- Viewport for responsive web design -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Radio Rhino{% if title %} | {{ title }} {% endif %}</title>
+        <!-- FIXME add description -->
+        <meta name="description" content="Radio Rhino">
+        <!-- FIXME add favicon -->
+        <!-- FIXME add canonical links -->
         {% for style in styles %}
         <link rel="stylesheet" href="{{ style }}">
         {% endfor %}
-        <title>Radio Rhino{% if title %} | {{ title }} {% endif %}</title>
         {% endblock %}
     </head>
 
