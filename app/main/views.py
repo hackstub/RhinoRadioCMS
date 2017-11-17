@@ -107,7 +107,7 @@ def podcasts():
 def podcast(id):
     podcast = Podcast.query.filter_by(id = id).first()
     return [ 'displayMain',
-             { "content": render_template("elem.html",
+             { "content": render_template("elem_pages/podcast.html",
                                           elem=podcast) }]
 
 @main.route('/podcasts/<id>/play')
@@ -118,40 +118,35 @@ def play(id):
              { "link" : podcast.link,
                "title" : podcast.name } ]
 
-#########################
-#  Contributors         #
-#########################
+##############################
+#  Contributors/Collectives  #
+##############################
 
 @main.route('/contributors')
+@main.route('/collectives')
 @partial_content
 def contributors():
-    #collectives = Channel.query.filter(Channel.type=="collective").all()
     return [ 'displayMain',
              { "content": render_template("main_pages/contributors.html",
-                                          contributors=Contributor.list())}]
+                                          contributors=Contributor.list(),
+                                          collectives=Collective.list(),
+                                         )}]
 
-
-# @main.route('/contributors/<id>')
-# @partial_content
-# def contributor(id):
-#     return [ 'displayMain',
-#              { "content": render_template("notimplemented.html") }]
-
-#########################
-#  Collectives          #
-#########################
-
-@main.route('/collectives/')
+@main.route('/contributors/<id>')
 @partial_content
-def collectives():
+def contributor(id):
+    contributor = Contributor.query.filter_by(id = id).first()
     return [ 'displayMain',
-             { "content": render_template("notimplemented.html") }]
+             { "content": render_template("elem_pages/contributor.html",
+                                          elem=contributor) }]
 
 @main.route('/collectives/<id>')
 @partial_content
 def collective(id):
+    collective = Collective.query.filter_by(id = id).first()
     return [ 'displayMain',
-             { "content": render_template("notimplemented.html") }]
+             { "content": render_template("elem_pages/contributor.html",
+                                          elem=collective) }]
 
 #########################
 #  Blogs                #

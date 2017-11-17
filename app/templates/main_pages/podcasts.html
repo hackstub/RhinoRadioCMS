@@ -4,48 +4,34 @@
 <h2>Podcasts</h2>
 
 {% for podcast in podcasts %}
-<div class="list-elem">
-    <a class="source-link" href="{{ podcast.link }}">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 36.48 40">
-            <g class="line main-width black">
-                <polygon points="7.745,2.5 28.735,20 7.745,37.5"/>
-            </g>
-        </svg></a>
+<article class="list-elem">
+    <a class="content-link" href="{{ url_for('main.play', id=podcast.id) }}">
+        {% include 'svg/small_play.svg' %}</a>
     <a class="content-link"
-       href="{{ url_for('main.podcast', id=podcast.id) }}">{{- podcast.name }}
+       href="{{ url_for('main.podcast', id=podcast.id) }}">{{ podcast.name }}
     </a>
 
     <p><a>
         {{ podcast.channel.name }}
     </a></p>
-
+    <p>
+        {% for collective in podcast.collectives -%}
+        <a class="content-link" href="{{ url_for('main.collective', id=collective.id) }}">{{ collective.name }}</a>
+        {%- if not loop.last %}, {% endif -%}
+        {%- endfor %}
+    </p>
     <p>
         {% for contributor in podcast.contributors -%}
-        <a class="content-link" href="{{ url_for('main.contributors', contrib=contributor.id) }}">{{ contributor.name }}</a>
+        <a class="content-link" href="{{ url_for('main.contributor', id=contributor.id) }}">{{ contributor.name }}</a>
         {%- if not loop.last %}, {% endif -%}
         {%- endfor %}
     </p>
 
-    {% if podcast.sections|length > 0 %}
-    <ul>
-        {% for section in podcast.sections %}
-        <li>{{ section.name }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
 
     <p>{{ podcast.timestamp|format_date }}</p>
 
-    {% if podcast.license %}
-    <p>LICENCE : {{ podcast.license }}</p>
-    {% endif %}
-
-    {% if podcast.tags|length > 0 %}
-    <p>TAGS : {{ podcast.tags|join(', ', attribute='name') }}</p>
-    {% endif %}
-
-    {{ podcast.description|safe }}
-</div>
+    {{ podcast.description|safe|truncate(100, False) }}
+</article>
 {% endfor %}
 
 <div class="pagination">
@@ -55,5 +41,6 @@
 </section>
 
 <section id="right-panel">
-<h2>Selection</h2>
+<h2>Selecteur</h2>
+<p>Les selecteurs par type, date, etc. arriveront plus tard.</p>
 </section>

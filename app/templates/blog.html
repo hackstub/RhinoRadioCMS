@@ -4,7 +4,7 @@
     <div>
         <h3>{{ post.name }} </h3>
         <h5>{{ post.timestamp }}</h5>
-        <p>{{ post.description }}</p>
+        {{ post.description|safe }}
     </div>
     {% endfor %}
 </article>
