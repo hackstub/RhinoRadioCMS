@@ -69,6 +69,12 @@ More to come.
 
 Uncomment '#scheme="https"' in views.py
 
+Set environment variables :
+AIRTIME_API_KEY
+STREAM_URL
+
+If your podcast files are on a distant machine : set an autofs + sshfs on app/static/podcasts.
+
 ## Doc
 
 Eeeeeeeh... Soon™.

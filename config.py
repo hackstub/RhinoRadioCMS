@@ -3,6 +3,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 __APP_NAME__ = "Rhino Radio CMS"
 LIQUIDSOAP_TOKEN = os.environ.get('LIQUIDSOAP_TOKEN') or 'hijackmyradio'
+AIRTIME_API_KEY = os.environ.get('AIRTIME_API_KEY')
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'hackme'

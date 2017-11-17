@@ -193,7 +193,13 @@ def next_live():
 
     live, next_live_in = Event.closest_live()
 
-    return jsonify({ "next_live_in": next_live_in })
+    # FIXME: use Airtime API response to on_air_light (see )
+    on_air_light = json.loads(
+        "http://airtime.radiorhino.eu/api/on-air-light/format/json/api-key/"
+        + AIRTIME_API_KEY)
+    print(on_air_light)
+    return jsonify({ "next_live_in": next_live_in,
+                     "on_air_light": on_air_light["on_air_light"]})
 
 
 #########################
