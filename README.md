@@ -80,6 +80,12 @@ If your podcast files are on a distant machine : set an autofs + sshfs on app/st
 sshfs user@distant-ip:/podcasts/dir/
 ```
 
+## Prod upgrade
+```bash
+git pull
+git merge origin master
+service rhinosite restart
+```
 
 
 ## Doc
