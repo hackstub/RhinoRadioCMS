@@ -15,6 +15,14 @@ section {
     &.solo {
         max-width: 40em;
     }
+    &.principal {
+        width: 35%;
+    }
+    &.second {
+        width: 60%;
+        padding-left: 7em;
+        padding-right: 6em;
+    }
 
     div {
         &.flex {
@@ -86,6 +94,10 @@ section {
 
         &:hover {
             border-bottom-color: $black;
+            color: $black;
+        }
+        &:visited {
+            color: $black;
         }
     }
 
@@ -93,11 +105,37 @@ section {
         font-family: $font-title;
         font-size: $font-title-size;
     }
+    .widget:not(:first-child) {
+        margin-top: 1em;
+    }
+    .widgetBis:not(:first-child) {
+        margin-top: 4em;
+    }
 
-
-
+    .description {
+        p {
+            margin-bottom: 1em;
+        }
+        a {
+            text-decoration: underline;
+            border-bottom: none;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: $font-title;
+            font-size: 1.85em;
+        }
+        strong {
+            font-style: bold;
+        }
+        em {
+            font-style: italic;
+        }
+    }
 
 }
+
+
+
 .more {
     margin-left: calc(100% - 5em);
     text-align: center;
