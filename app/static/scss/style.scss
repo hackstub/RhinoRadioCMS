@@ -66,22 +66,6 @@ nav {
 main {
     @include flexbox();
     width: 100%;
-
-    a {
-
-        // font-family: pixelpath;
-        // font-size: $font-title-size;
-        // text-decoration: none;
-
-        // background-color: $white;
-        // position: sticky;
-        // top: 0;
-
-        // &:hover {
-        //     background-color: $main-color;
-        //     border-bottom: none;
-        // }
-    }
 }
 ::-moz-selection {
     background-color: $black;
