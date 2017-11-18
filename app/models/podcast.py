@@ -22,14 +22,14 @@ class Podcast(db.Model):
     collectives = db.relationship(
         'Collective',
         secondary='podcasts_collectives',
-        cascade='all, delete-orphan',
+        cascade='all',
         single_parent='True',
         lazy='select',
         back_populates='podcasts')
     contributors = db.relationship(
         'Contributor',
         secondary='podcasts_contributors',
-        cascade='all, delete-orphan',
+        cascade='all',
         single_parent='True',
         lazy='select',
         back_populates='podcasts')

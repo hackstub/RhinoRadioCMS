@@ -11,14 +11,14 @@ class Channel(db.Model):
     collectives = db.relationship(
         'Collective',
         secondary='channels_collectives',
-        cascade='all, delete-orphan',
+        cascade='all',
         single_parent='True',
         lazy='select',
         back_populates='channels')
     contributors = db.relationship(
         'Contributor',
         secondary='channels_contributors',
-        cascade='all, delete-orphan',
+        cascade='all',
         single_parent='True',
         lazy='select',
         back_populates='channels')

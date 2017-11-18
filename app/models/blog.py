@@ -17,14 +17,14 @@ class BlogPost(db.Model):
     collectives = db.relationship(
         'Collective',
         secondary='blog_posts_collectives',
-        cascade='all, delete-orphan',
+        cascade='all',
         single_parent='True',
         lazy='select',
         back_populates='blog_posts')
     contributors = db.relationship(
         'Contributor',
         secondary='blog_posts_contributors',
-        cascade='all, delete-orphan',
+        cascade='all',
         single_parent='True',
         lazy='select',
         back_populates='blog_posts')

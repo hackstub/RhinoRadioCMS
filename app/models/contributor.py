@@ -14,35 +14,35 @@ class Contributor(db.Model):
     channels = db.relationship(
         'Channel',
         secondary='channels_contributors',
-        cascade='all, delete-orphan',
+        cascade='all',
         single_parent='True',
         lazy='select',
         back_populates='contributors')
     collectives = db.relationship(
         'Collective',
         secondary='collectives_contributors',
-        cascade='all, delete-orphan',
+        cascade='all',
         single_parent='True',
         lazy='select',
         back_populates='contributors')
     podcasts = db.relationship(
         'Podcast',
         secondary='podcasts_contributors',
-        cascade='all, delete-orphan',
+        cascade='all',
         single_parent='True',
         lazy='select',
         back_populates='contributors')
     sections = db.relationship(
         'Section',
         secondary='sections_contributors',
-        cascade='all, delete-orphan',
+        cascade='all',
         single_parent='True',
         lazy='select',
         back_populates='contributors')
     blog_posts = db.relationship(
         'BlogPost',
         secondary='blog_posts_contributors',
-        cascade='all, delete-orphan',
+        cascade='all',
         single_parent='True',
         lazy='select',
         back_populates='contributors')

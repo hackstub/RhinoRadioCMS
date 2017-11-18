@@ -24,14 +24,14 @@ class Section(db.Model):
     collectives = db.relationship(
         'Collective',
         secondary = 'sections_collectives',
-        cascade='all, delete-orphan',
+        cascade='all',
         single_parent='True',
         lazy = 'select',
         back_populates = 'sections')
     contributors = db.relationship(
         'Contributor',
         secondary = 'sections_contributors',
-        cascade='all, delete-orphan',
+        cascade='all',
         single_parent='True',
         lazy = 'select',
         back_populates = 'sections')
