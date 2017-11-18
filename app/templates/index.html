@@ -1,19 +1,71 @@
-<section id="left-panel">
-    <ul>
-        <h2>Derniers podcasts</h2>
-        {% for podcast in podcasts %}
-        <li>
-            <a class="content-link" href="{{ url_for('main.podcast', id=podcast.id) }}">{{ podcast.name }}</a>
-        </li>
-        {% endfor %}
-    </ul>
+<section class="principal">
+    <div class="title">
+        {% include 'svg/title_podcasts.svg' %}
+    </div>
+    {% for elem in podcasts %}
+    <article class="widget">
+        <div class="flex">
+            <a class="picto content-link" href="{{ url_for('main.play', id=elem.id) }}">
+                {% include 'svg/small_play.svg' -%}
+            </a>
+            <div class="bloc name">
+                <h3><a class="content-link" href="{{ url_for('main.podcast', id=elem.id) }}">{{ elem.name }}</a></h3>
+            </div>
+        </div>
+        <span class="license">{{ elem.timestamp|format_date }}</span>
+    </article>
+    {% endfor %}
+
+    {% if events %}
+        <div class="title marg2">
+            {% include 'svg/title_agenda.svg' %}
+        </div>
+        <div>
+            {% for elem in events %}
+            <article class="widgetBis">
+                <h3>{{ elem.name }}</h3>
+                <span>Du {{ elem.begin|format_date  }} au {{ elem.end|format_date }}</span>
+                <div class="marg description">
+                    {{ elem.description|safe|truncate(200, False) }}
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+
+
+    {% endif %}
+
 </section>
 
-<section id="right-panel">
-{% if blog_posts %}
-    {% include "blog.html" %}
-{% endif %}
-{% if events %}
-    {% include "agenda.html" %}
-{% endif %}
+<section class="second">
+    {% if blog_posts %}
+    <div class="title">
+        {% include 'svg/title_blog.svg' %}
+    </div>
+
+    {% for elem in blog_posts %}
+    <article>
+        <h3>{{ elem.name }}</h3>
+        <span class="license">{{ elem.timestamp|format_date }}</span>
+
+        {% if elem.contributors|length > 0 %}
+        <p class="marg">Par
+        {% for contributor in elem.contributors %}
+            <a class="content-link"
+                href="{{ url_for('main.contributor', id=contributor.id) }}">
+            {{ contributor.name -}}
+            </a>
+            {%- if not loop.last %}, {% endif %}
+        {% endfor %}
+        </p>
+        {% endif %}
+
+        <div class="marg2 description">
+            {{ elem.description|safe }}
+        </div>
+
+    </article>
+    {% endfor %}
+    {% endif %}
+
 </section>

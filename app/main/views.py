@@ -55,9 +55,9 @@ partial_content_no_history = partial_content_no_history_decorator(base)
 def index():
     return [ 'displayMain',
            { "content": render_template("index.html",
-                                        podcasts = Podcast.list(),
-                                        blog_posts = BlogPost.list(),
-                                        events = Event.list()) } ]
+                                        podcasts = Podcast.list(number=3),
+                                        blog_posts = BlogPost.list(number=3),
+                                        events = Event.list(number=3)) } ]
 
 
 #########################
@@ -67,7 +67,7 @@ def index():
 @main.route('/about')
 @partial_content
 def about():
-    page = Page.query.filter_by(name='À propos').first_or_404()
+    page = Page.query.filter_by(name='about').first_or_404()
     return [ 'displayMain',
            { "content": render_template("main_pages/about.html",
                                         page=page) } ]
@@ -76,7 +76,7 @@ def about():
 @partial_content
 def contribute():
     # create a real "contribute" page
-    page = Page.query.filter_by(name='Contribuer').first_or_404()
+    page = Page.query.filter_by(name='contribute').first_or_404()
     return [ 'displayMain',
              { "content": render_template("main_pages/contribute.html",
                                           page=page) } ]
@@ -195,4 +195,3 @@ def get_live():
     return [ "updateLive",
              { "next_live_in" : next_live_in,
                "stream_url_play" : stream_url } ]
-
