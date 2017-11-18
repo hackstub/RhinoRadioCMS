@@ -1,24 +1,42 @@
-<section id="left-panel">
-<h2>Blog</h2>
-{% for post in blog_posts %}
-<div class="list-elem">
-    <h3>{{ post.name }}</h3>
-    <p>CHANNEL : <a>
-        {{ post.channel.name }}
-    </a></p>
-    {% if post.contributor %}
-    <p>CONTRIBUTOR : <a class="content-link"
-        href="{{ url_for('main.contributor', contrib=post.contributor.id) }}">
-        {{ post.contributor.name }}
-    </a></p>
+<section class="second">
+    {% if blog_posts %}
+    <div class="title">
+        {% include 'svg/title_blog.svg' %}
+    </div>
+
+    {% for elem in blog_posts %}
+    <article class="widgetBis">
+        <h3>{{ elem.name }}</h3>
+        <span class="license">{{ elem.timestamp|format_date }}</span>
+
+        {% if elem.contributors|length > 0 %}
+        <p class="marg">Par
+        {% for contributor in elem.contributors %}
+            <a class="content-link"
+                href="{{ url_for('main.contributor', id=contributor.id) }}">
+            {{ contributor.name -}}
+            </a>
+            {%- if not loop.last %}, {% endif %}
+        {% endfor %}
+        {% if elem.contributors|length > 0 %}
+        @
+        {% for collective in elem.collectives %}
+            <a class="content-link"
+                href="{{ url_for('main.collective', id=collective.id) }}">
+            {{ collective.name -}}
+            </a>
+            {%- if not loop.last %}, {% endif %}
+        {% endfor %}
+        {% endif %}
+        </p>
+        {% endif %}
+
+        <div class="marg2 description">
+            {{ elem.description|safe }}
+        </div>
+
+    </article>
+    {% endfor %}
     {% endif %}
 
-    <p>{{ post.timestamp }}</p>
-    {{ post.description|safe }}
-</div>
-{% endfor %}
-</section>
-
-<section id="right-panel">
-<h2>Selection</h2>
 </section>

@@ -1,4 +1,8 @@
-<section>
-    <h2>{{ page.name }}</h2>
-    {{ page.description|safe }}
+<section class="second">
+    <div class="title marg2">
+        {% include 'svg/title_contribute.svg' %}
+    </div>
+    <div class="marg description">
+        {{ page.description|safe }}
+    </div>
 </section>
