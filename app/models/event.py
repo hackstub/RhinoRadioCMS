@@ -36,11 +36,11 @@ class Event(db.Model):
 
     # FIXME dont know what happens here, but this breaks the fake_feed gen
     def __init__(self, **kwargs):
-        super(Event, self).__init__(**kwargs)
         if self.live_show:
             channel_id = kwargs.get("channel_id")
             collective_id = kwargs.get("collective_id", None)
             self.create_rel_podcast(channel_id, collective_id)
+        super(Event, self).__init__(**kwargs)
 
 
     def list(filter='', order='', number=3):
