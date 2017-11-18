@@ -1,100 +1,79 @@
-<section>
-    {% if elem.collectives|length > 0 %}
-    <h2>Contributeur :</h2>
-    {% else %}
-    <h2>Collectif : {{ elem.collectives }}</h2>
-    {% endif %}
-    <p>{{ elem.name }}</p>
+<section class="second">
+    <div class="title">
+    </div>
+    <article class="">
+        {#
+        {% if elem.collectives|length > 0 %}
+        <div class="title">
+            {% include 'svg/title_contributor.svg' %}
+        </div>
+        {% else %}
+        <div class="title">
+            {% include 'svg/title_collective.svg' %}
+        </div>
+        {% endif %}
+        #}
 
-    {% if elem.collectives %}
-    <p>COLLECTIFS : </br>
-    {% for collective in elem.collectives %}
-        <a class="content-link"
-            href="{{ url_for('main.collective', id=collective.id) }}">
-        {{ collective.name -}}
-        </a>
-        {%- if not loop.last %}, {% endif %}
-    {% endfor %}
-    </p>
-    {% endif %}
+        <h3>{{ elem.name }}</h3>
 
+        {% if elem.website %}
+        <p class="marg"><a href="{{ elem.website }}">{{ elem.website }}</a></p>
+        {% endif %}
 
-    {% if elem.contributors %}
-    <p>CONTRIBUTEURS : </br>
-    {% for contributor in elem.contributors %}
-        <a class="content-link"
-            href="{{ url_for('main.contributor', id=contributor.id) }}">
-        {{ contributor.name -}}
-        </a>
-        {%- if not loop.last %}, {% endif %}
-    {% endfor %}
-    </p>
-    {% endif %}
+        {% if elem.status %}
+        <p class="marg">----> {{ elem.status }}</p>
+        {% endif %}
 
-
-    {% if elem.channels %}
-    <p>CHANNEL : </br>
-    {% for channel in elem.channels %}
-        <a class="content-link"
-            href="{{ url_for('main.index') }}">
-        {{ channel.name -}}
-        </a>
-        {%- if not loop.last %}, {% endif %}
-    {% endfor %}
-    </p>
-    {% endif %}
-
-
-    {% if elem.podcasts %}
-    <p>PODCASTS : </br>
-    {% for podcast in elem.podcasts %}
-        <a class="content-link"
-            href="{{ url_for('main.podcast', id=podcast.id) }}">
-        {{ podcast.name -}}
-        </a>
-        {%- if not loop.last %}, {% endif %}
-    {% endfor %}
-    </p>
-    {% endif %}
-
-
-    {% if elem.sections %}
-    <p>SECTION : </br>
-    {% for section in elem.sections %}
-        <a class="content-link"
-            href="{{ url_for('main.podcast', id=section.podcast.id) }}">
-        {{ section.name -}}
-        </a>
-        {%- if not loop.last %}, {% endif %}
-    {% endfor %}
-    </p>
-    {% endif %}
-
-
-
-    <p>INDICATION : {{ elem.status }}</p>
-    <p>{{ elem.email }}</p>
-    <p><a href="{{ elem.website }}">{{ elem.website }}</a></p>
-
-    <p>DESCRIPTION :</p>
-    {{ elem.description|safe }}
-
-</section>
-
-{% if elem.blog_posts %}
-<section>
-    <h2>Blog</h2>
-    <div class="list-item">
-        {% for post in elem.blog_posts %}
+        {% if elem.collectives|length > 0 %}
+        <p class="marg">Membre de
+        {% for collective in elem.collectives %}
             <a class="content-link"
-                href="{{ url_for('main.blog', id=post.id) }}">
-            {{ post.name -}}
+                href="{{ url_for('main.collective', id=collective.id) }}">
+            {{ collective.name -}}
             </a>
-            <h5>{{ post.timestamp }}</h5>
-            {{ post.description|safe }}
             {%- if not loop.last %}, {% endif %}
         {% endfor %}
         </p>
+        {% endif %}
+
+        {% if elem.channels|length > 0 %}
+        <p class="marg">Anime
+        {% for elem in elem.channels %}
+            <a class="content-link"
+                href="{{ url_for('main.collective', id=elem.id) }}">
+            {{ elem.name -}}
+            </a>
+            {%- if not loop.last %}, {% endif %}
+        {% endfor %}
+        </p>
+        {% endif %}
+
+        <!-- FIXME format mail adress [AT] -->
+        {#<p>{{ elem.email }}</p>#}
+
+        {% if elem.description %}
+        <div class="marg2 description">
+            {{ elem.description|safe }}
+        </div>
+        {% endif %}
+    </article>
+
+    <div class="marg2">
     </div>
+
+    {% if elem.podcasts|length > 0 %}
+    {% for elem in elem.podcasts %}
+    <article class="widget">
+        <div class="flex">
+            <a class="picto content-link" href="{{ url_for('main.play', id=elem.id) }}">
+                {% include 'svg/small_play.svg' -%}
+            </a>
+            <div class="bloc name">
+                <h3><a class="content-link" href="{{ url_for('main.podcast', id=elem.id) }}">{{ elem.name }}</a></h3>
+            </div>
+        </div>
+        <span class="license">{{ elem.timestamp|format_date }}</span>
+    </article>
+    {% endfor %}
+    {% endif %}
 </section>
-{% endif %}
