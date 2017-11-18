@@ -84,6 +84,13 @@ class ChannelView(FullTextView):
         music='Musique seulement ?',
         night='Nocturne ?'
         )
+    form_choices = {
+        'mood': [
+            ('slow', 'Au pas'),
+            ('medium', 'Au trot'),
+            ('fast', 'Au galop !')
+        ]
+    }
 
 class ContributorView(ModelView):
     # FIXME Commenting for verification
@@ -129,6 +136,13 @@ class SectionView(FullTextView):
         desc='Description',
         contributor_id='Auteur'
     )
+    form_choices = {
+        'mood': [
+            ('slow', 'Au pas'),
+            ('medium', 'Au trot'),
+            ('fast', 'Au galop !')
+        ]
+    }
 
 class BlogView(FullTextView):
     form_excluded_columns = ('timestamp')
@@ -158,7 +172,7 @@ class PageAdminView(FullTextView):
 
 admin.add_view(PodcastView(Podcast, db.session))
 try:
-    admin.add_view(FileAdmin(podcastPath, '/static/podcasts/', 
+    admin.add_view(FileAdmin(podcastPath, '/static/podcasts/',
                              name='Anciens podcasts'))
 except:
     print("Failed to load /static/podcasts, ignoring. (Is sshfs working properly?)")
