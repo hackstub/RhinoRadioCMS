@@ -4,6 +4,5 @@ __pycache__
 app/uploads/*
 venv/*
 doc/_build/
-app/static/podcasts
 .sass-cache
 alchemydumps/*
