@@ -1,4 +1,5 @@
 @import 'rules';
+@import 'mixins';
 
 * {
     margin: 0;
@@ -14,9 +15,10 @@ html {
 
 body {
     height: 100%;
-    display: flex;
+    @include flexbox();
     height: calc(100% - 7.5em);
     margin-bottom: 7.5em;
+    padding-bottom: 3em;
 }
 
 p, h1, h2, h3, h4, h5, h6 {
@@ -30,9 +32,9 @@ nav {
     height: 100%;
     width: 20%;
     padding-left: 3em;
-    margin-bottom: 3em;
-    position: sticky;
-    position: webkit-sticky;
+    margin-right: 3em;
+    // position: sticky;
+    // position: webkit-sticky;
     top: 0;
 
     #logo {
@@ -62,25 +64,34 @@ nav {
 }
 
 main {
-    display: flex;
+    @include flexbox();
     width: 100%;
 
     a {
+
         // font-family: pixelpath;
         // font-size: $font-title-size;
         // text-decoration: none;
-        // border-bottom: 3px solid $main-color;
+
         // background-color: $white;
         // position: sticky;
         // top: 0;
 
-        &:hover {
-            background-color: $main-color;
-            border-bottom: none;
-        }
+        // &:hover {
+        //     background-color: $main-color;
+        //     border-bottom: none;
+        // }
     }
 }
+::-moz-selection {
+    background-color: $black;
+    color: $white;
 
+ }
+::selection {
+    background-color: $black;
+    color: $white;
+}
 
 @import 'sections';
 @import 'svgs';
