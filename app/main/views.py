@@ -184,33 +184,15 @@ def agenda(id):
 #  Static stuff         #
 #########################
 
-@main.route('/on_air', methods=['POST'])
-def on_air():
-
-    # Check we're authorized to do this
-    # Security Nazi : a simple string comparison is probably not secure against
-    # time attack, but that's good enough ;)
-    # FIXME : use real token in prod
-    #if request.args.get('token') != LIQUIDSOAP_TOKEN:
-    print(request.form["token"])
-    if request.form['token'] != 'lol':
-        return ('INVALIDTOKEN', 401) # Unauthorized
-
-    stream_url = request.args.get('stream')
-    return Event.start_live(stream_url)
-
-
-@main.route('/next_live')
-def next_live():
+@main.route('/get_live')
+@partial_content_no_history
+def get_live():
 
     live, next_live_in = Event.closest_live()
 
-    # FIXME: use Airtime API response to on_air_light (see )
-    on_air_light = json.loads(
-        "http://airtime.radiorhino.eu/api/on-air-light/format/json/api-key/"
-        + AIRTIME_API_KEY)
-    print(on_air_light)
-    return jsonify({ "next_live_in": next_live_in,
-                     "on_air_light": on_air_light["on_air_light"]})
+    stream_url_play = url_for('main.podcast', id=live.podcast().id)
 
+    return [ "updateLive",
+             { "next_live_in" : next_live_in,
+               "stream_url_play" : stream_url } ]
 
