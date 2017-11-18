@@ -145,8 +145,8 @@ class SectionView(FullTextView):
     }
 
 class BlogView(FullTextView):
-    form_excluded_columns = ('timestamp')
     column_channels = dict(
+        timestamp='Date de publication',
         name='Titre',
         description='Contenu',
         channel_id='Chaîne',

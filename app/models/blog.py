@@ -12,19 +12,19 @@ class BlogPost(db.Model):
     name = db.Column(db.String(256))
     description = db.Column(db.Text)
     # Date of creation
-    timestamp = db.Column(db.Date, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     channel_id = db.Column(db.Integer, db.ForeignKey('channels.id'))
     collectives = db.relationship(
         'Collective',
         secondary='blog_posts_collectives',
-        cascade='all, delete-orphan',
+        cascade='all',
         single_parent='True',
         lazy='select',
         back_populates='blog_posts')
     contributors = db.relationship(
         'Contributor',
         secondary='blog_posts_contributors',
-        cascade='all, delete-orphan',
+        cascade='all',
         single_parent='True',
         lazy='select',
         back_populates='blog_posts')

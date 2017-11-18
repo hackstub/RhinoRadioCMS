@@ -16,35 +16,35 @@ class Collective(db.Model):
     channels = db.relationship(
         'Channel',
         secondary='channels_collectives',
-        cascade='all, delete-orphan',
+        cascade='all',
         single_parent='True',
         lazy='select',
         back_populates='collectives')
     contributors = db.relationship(
         'Contributor',
         secondary = 'collectives_contributors',
-        cascade='all, delete-orphan',
+        cascade='all',
         single_parent='True',
         lazy = 'select',
         back_populates = 'collectives')
     podcasts = db.relationship(
         'Podcast',
         secondary='podcasts_collectives',
-        cascade='all, delete-orphan',
+        cascade='all',
         single_parent='True',
         lazy='select',
         back_populates='collectives')
     sections = db.relationship(
         'Section',
         secondary='sections_collectives',
-        cascade='all, delete-orphan',
+        cascade='all',
         single_parent='True',
         lazy='select',
         back_populates='collectives')
     blog_posts = db.relationship(
         'BlogPost',
         secondary='blog_posts_collectives',
-        cascade='all, delete-orphan',
+        cascade='all',
         single_parent='True',
         lazy='select',
         back_populates='collectives')
