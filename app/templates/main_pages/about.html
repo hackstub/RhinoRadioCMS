@@ -1,14 +1,18 @@
-<section>
-    <h2>{{ page.name }}</h2>
-    {{ page.description|safe }}
+<section class="second">
+    <div class="title marg2">
+        {% include 'svg/title_about.svg' %}
+    </div>
+    <div class="marg description">
+        {{ page.description|safe }}
+    </div>
 </section>
 
-<section id="subscribe">
-  <h2 class="iconbox-title">Newsletter</h2>
-    <div class="iconbox-desc">
+<section id="subscribe" class="principal">
+  <h3 class="iconbox-title marg">Newsletter</h3>
+    <div class="iconbox-desc marg">
     <form id="ml-subscribe" method="POST" action="https://radiorhino.eu/mailman/subscribe/news">
         <input  type="text" name="email" maxlength="80" size="20" placeholder="Votre adresse email" required>
-        <input type="submit" value="S'inscrire" href="javascript:{}" onclick="document.getElementById('ml-subscribe').submit(); return false;">
+        <input class="marg" type="submit" value="S'inscrire" href="javascript:{}" onclick="document.getElementById('ml-subscribe').submit(); return false;">
     </form>
     </div>
 </section>
