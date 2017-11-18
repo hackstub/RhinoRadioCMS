@@ -11,7 +11,11 @@
             {% endif %}
         </div>
     </div>
-    <span class="license">{{ elem.timestamp|format_date }} / {{ elem.license }}</span>
+    <span class="license">{{ elem.timestamp|format_date }}
+        {% if elem.license %}
+        / {{ elem.license }}
+        {% endif %}
+    </span>
 
     {% if elem.collectives|length > 0 %}
     <p class="marg decal">Par

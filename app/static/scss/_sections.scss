@@ -98,7 +98,18 @@ section {
 
 
 }
+.more {
+    margin-left: calc(100% - 5em);
+    text-align: center;
+    margin-top: 3em;
+    width: 5em;
+    border: 1px solid $black;
+    padding: 0em 0em;
 
+    a {
+        border: none;
+    }
+}
 
 #left-panel {
 
@@ -107,7 +118,7 @@ section {
 
 }
 
-
-.list-elem {
-    margin-top: 2em;
+.title {
+    width: 20em;
+    margin-bottom: 3em;
 }

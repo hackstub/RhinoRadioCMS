@@ -93,6 +93,26 @@ main {
     color: $white;
 }
 
+
+// PAGES
+
+.disabled {
+    display: none;
+}
+
+.pagination {
+    margin-top: 3em;
+    li {
+        list-style: none;
+        display: inline;
+    }
+    a {
+        font-family: $font-title;
+        font-size: 1.85em;
+    }
+}
+
+
 @import 'sections';
 @import 'svgs';
 @import 'fonts';
