@@ -6,3 +6,4 @@ venv/*
 doc/_build/
 app/static/podcasts
 .sass-cache
+alchemydumps/*

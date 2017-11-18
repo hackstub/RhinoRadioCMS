@@ -12,7 +12,7 @@ class BlogPost(db.Model):
     name = db.Column(db.String(256))
     description = db.Column(db.Text)
     # Date of creation
-    timestamp = db.Column(db.Date, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     channel_id = db.Column(db.Integer, db.ForeignKey('channels.id'))
     collectives = db.relationship(
         'Collective',
