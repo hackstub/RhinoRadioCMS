@@ -1,15 +1,14 @@
 <section>
     <h2>{{ page.name }}</h2>
     {{ page.description }}
-    <section id="subscribe">
-      <h2 class="iconbox-title">Newsletter</h2>
-        <div class="iconbox-desc">
-        <form id="ml-subscribe" method="POST" action="https://radiorhino.eu/mailman/subscribe/news">
-            <input  type="text" name="email" maxlength="80" size="20" placeholder="Votre adresse email" required>
-            <input type="submit" value="S'inscrire" href="javascript:{}" onclick="document.getElementById('ml-subscribe').submit(); return false;">
-        </form>
-        </div>
-    </section>
+</section>
 
-
+<section id="subscribe">
+  <h2 class="iconbox-title">Newsletter</h2>
+    <div class="iconbox-desc">
+    <form id="ml-subscribe" method="POST" action="https://radiorhino.eu/mailman/subscribe/news">
+        <input  type="text" name="email" maxlength="80" size="20" placeholder="Votre adresse email" required>
+        <input type="submit" value="S'inscrire" href="javascript:{}" onclick="document.getElementById('ml-subscribe').submit(); return false;">
+    </form>
+    </div>
 </section>
