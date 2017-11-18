@@ -41,7 +41,7 @@ class BlogPost(db.Model):
 
         blogPosts = BlogPost.query.filter(filter)                       \
             .join(Channel, Channel.id==BlogPost.channel_id)             \
-            .order_by(BlogPost.timestamp.desc())                        \
+            .order_by(BlogPost.timestamp.asc())                        \
             .paginate(per_page=number).items
         return blogPosts
 

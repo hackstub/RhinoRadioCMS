@@ -6,7 +6,7 @@
     <p>PLACE : {{ event.place }}</p>
     <p>FROM {{ event.begin }} TO {{ event.end }}</p>
     <p>LIVE : {{ event.live_show }}</p>
-    <p>{{ event.description }}</p>
+    <p>{{ event.description|safe }}</p>
 </div>
 {% endfor %}
 </section>
