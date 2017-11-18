@@ -1,46 +1,62 @@
 {% import "_macros.html" as macros %}
 
-<section id="left-panel">
-<h2>Podcasts</h2>
+<section class="solo">
+    <div class="title">
+        {% include 'svg/title_podcasts.svg' %}
+    </div>
 
-{% for podcast in podcasts %}
-<article class="list-elem">
-    <a class="content-link" href="{{ url_for('main.play', id=podcast.id) }}">
-        {% include 'svg/small_play.svg' %}</a>
-    <a class="content-link"
-       href="{{ url_for('main.podcast', id=podcast.id) }}">{{ podcast.name }}
-    </a>
 
-    <p><a>
-        {{ podcast.channel.name }}
-    </a></p>
-    <p>
-        {% for collective in podcast.collectives -%}
-        <a class="content-link" href="{{ url_for('main.collective', id=collective.id) }}">{{ collective.name }}</a>
-        {%- if not loop.last %}, {% endif -%}
-        {%- endfor %}
+{% for elem in podcasts %}
+<article>
+    <div class="flex">
+        <a class="picto content-link" href="{{ url_for('main.play', id=elem.id) }}">
+            {% include 'svg/small_play.svg' -%}
+        </a>
+        <div class="bloc name">
+            <h3> {{ elem.name }} </h3>
+            {% if elem.channel.name %}
+            <h3><a class="content-link" href="">{{ elem.channel.name|upper }}</a></h3>
+            {% endif %}
+        </div>
+    </div>
+    <span class="license">{{ elem.timestamp|format_date }}</span>
+
+    {% if elem.collectives|length > 0 %}
+    <p class="marg decal">Par
+    {% for collective in elem.collectives %}
+        <a class="content-link"
+            href="{{ url_for('main.collective', id=collective.id) }}">
+        {{ collective.name -}}
+        </a>
+        {%- if not loop.last %}, {% endif %}
+    {% endfor %}
     </p>
-    <p>
-        {% for contributor in podcast.contributors -%}
-        <a class="content-link" href="{{ url_for('main.contributor', id=contributor.id) }}">{{ contributor.name }}</a>
-        {%- if not loop.last %}, {% endif -%}
-        {%- endfor %}
+    {% endif %}
+
+    {% if elem.contributors|length > 0 %}
+    <p class="marg decal">Avec
+    {% for contributor in elem.contributors %}
+        <a class="content-link"
+            href="{{ url_for('main.contributor', id=contributor.id) }}">
+        {{ contributor.name -}}
+        </a>
+        {%- if not loop.last %}, {% endif %}
+    {% endfor %}
     </p>
+    {% endif %}
 
-
-    <p>{{ podcast.timestamp|format_date }}</p>
-
-    {{ podcast.description|safe|truncate(100, False) }}
+    {% if elem.description %}
+    <div class="marg2 decal">
+        {{ elem.description|safe|truncate(100, False) }}
+    </div>
+    {% endif %}
 </article>
+<p class="more"><a class="content-link" href="{{ url_for('main.podcast', id=elem.id) }}">more</a></p>
 {% endfor %}
+
 
 <div class="pagination">
 {{ macros.pagination_widget(pagination, 'main.podcasts') }}
 </div>
 
-</section>
-
-<section id="right-panel">
-<h2>Selecteur</h2>
-<p>Les selecteurs par type, date, etc. arriveront plus tard.</p>
 </section>

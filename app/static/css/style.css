@@ -66,6 +66,18 @@ main {
   background-color: black;
   color: white; }
 
+.disabled {
+  display: none; }
+
+.pagination {
+  margin-top: 3em; }
+  .pagination li {
+    list-style: none;
+    display: inline; }
+  .pagination a {
+    font-family: pixelpath;
+    font-size: 1.85em; }
+
 .marg {
   margin-top: 1em; }
 
@@ -144,8 +156,19 @@ section {
     font-family: pixelpath;
     font-size: 2.2em; }
 
-.list-elem {
-  margin-top: 2em; }
+.more {
+  margin-left: calc(100% - 5em);
+  text-align: center;
+  margin-top: 3em;
+  width: 5em;
+  border: 1px solid black;
+  padding: 0em 0em; }
+  .more a {
+    border: none; }
+
+.title {
+  width: 20em;
+  margin-bottom: 3em; }
 
 /* SVGS */
 .line {

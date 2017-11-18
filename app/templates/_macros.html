@@ -3,18 +3,17 @@
     <li{% if not pagination.has_prev %} class="disabled"{% endif %}>
         <a class="content-link" href="{% if pagination.has_prev %}{{ url_for(endpoint,
         page = pagination.page - 1, **kwargs) }}{% else %}#{% endif %}">
-        &laquo;
-        </a>
-        </li>
+        &laquo;</a>
+    </li>
         {% for p in pagination.iter_pages() %}
         {% if p %}
         {% if p == pagination.page %}
         <li class="active">
-        <a class="content-link" href="{{ url_for(endpoint, page = p, **kwargs) }}">{{ p }}</a>
+        <a class="content-link" href="{{ url_for(endpoint, page = p, **kwargs) }}">{{- p -}}</a>
         </li>
         {% else %}
         <li>
-        <a class="content-link" href="{{ url_for(endpoint, page = p, **kwargs) }}">{{ p }}</a>
+        <a class="content-link" href="{{ url_for(endpoint, page = p, **kwargs) }}">{{- p -}}</a>
         </li>
         {% endif %}
         {% else %}
