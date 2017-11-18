@@ -14,7 +14,7 @@
     {% endif %}
 
     <p>{{ post.timestamp }}</p>
-    <p>{{ post.description }}</p>
+    {{ post.description|safe }}
 </div>
 {% endfor %}
 </section>

@@ -1,23 +1,20 @@
-<section>
+<section class="solo">
 
-    <p><a class="content-link" href="{{ url_for('main.play', id=elem.id) }}">
-        {% include 'svg/small_play.svg' -%}
-    </a> {{ elem.name }}</p>
-
-    <p>CONTRIBUTEURS: </br>
-    {% for contributor in elem.contributors %}
-        <a class="content-link"
-            href="{{ url_for('main.contributor', id=contributor.id) }}">
-        {{ contributor.name -}}
+    <div class="flex">
+        <a class="picto content-link" href="{{ url_for('main.play', id=elem.id) }}">
+            {% include 'svg/small_play.svg' -%}
         </a>
-        {%- if not loop.last %}, {% endif %}
-    {% endfor %}
-    </p>
+        <div class="bloc name">
+            <h3> {{ elem.name }} </h3>
+            {% if elem.channel.name %}
+            <h3><a class="content-link" href="">{{ elem.channel.name|upper }}</a></h3>
+            {% endif %}
+        </div>
+    </div>
+    <span class="license">{{ elem.timestamp|format_date }} / {{ elem.license }}</span>
 
-    </br>
-
-    <p>CHANNEL : {{ elem.channel.name }}</p>
-    <p>COLLECTIFS : </br>
+    {% if elem.collectives|length > 0 %}
+    <p class="marg decal">Par
     {% for collective in elem.collectives %}
         <a class="content-link"
             href="{{ url_for('main.collective', id=collective.id) }}">
@@ -26,45 +23,65 @@
         {%- if not loop.last %}, {% endif %}
     {% endfor %}
     </p>
+    {% endif %}
 
-    </br>
-
-    <p>PUBLICATION : {{ elem.timestamp|format_date }}</p>
-    <p>LICENCE : {{ elem.license }}</p>
-    </br>
-
-    <p>DESCRIPTION :</p>
-    {{ elem.description|safe }}
-
-    </br>
-
-    {% for section in elem.sections %}
-    <p>SECTIONS: </br>
-        {{ section.name }}
-        <a href="#">
-        {% for contributor in section.contributors %}
-            <a class="content-link"
-                href="{{ url_for('main.contributor', id=contributor.id) }}">
-            {{ contributor.name }}
-            </a>
-            {% if not loop.last %}, {% endif %}
-        {% endfor %}
+    {% if elem.contributors|length > 0 %}
+    <p class="marg decal">Avec
+    {% for contributor in elem.contributors %}
+        <a class="content-link"
+            href="{{ url_for('main.contributor', id=contributor.id) }}">
+        {{ contributor.name -}}
         </a>
-    </p>
+        {%- if not loop.last %}, {% endif %}
     {% endfor %}
+    </p>
+    {% endif %}
 
-    </br>
+    {% if elem.description %}
+    <div class="marg2 decal">
+        {{ elem.description|safe }}
+    </div>
+    {% endif %}
 
-    <p>TAGS : </br>
+    {% if elem.sections|length > 0 %}
+    <div class="marg2">
+        {% for section in elem.sections %}
+        <div class="section">
+            <div class="flex">
+                <div>
+                    <p class="bloc">{{ section.begin|format_date('%-M') }}'</p>
+                </div>
+                <div class="">
+                    <h4>{{ section.name }}</h4>
+                </div>
+
+            </div>
+            <p class="decal">
+                {% if section.contributors|length > 0 %}
+                Par
+                <a href="#">
+                {% for contributor in section.contributors %}
+                    <a class="content-link"
+                        href="{{ url_for('main.contributor', id=contributor.id) }}">
+                    {{ contributor.name }}
+                    </a>
+                    {% if not loop.last %}, {% endif %}
+                {% endfor %}
+                </a>
+                {% endif %}
+            </p>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if elem.tags|length > 0 %}
+    <p class="tags decal marg2">Tags :
     {% for tag in elem.tags %}
-        {{ tag.name }}
+        <a>{{ tag.name }}</a>
         {% if not loop.last %}, {% endif %}
     {% endfor %}
     </p>
-
-    <p>MOOD : {{ elem.mood }}</p>
-    <p>MUSIC: {{ elem.music }}</p>
-
-
+    {% endif %}
 
 </section>
