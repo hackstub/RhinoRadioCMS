@@ -3,7 +3,7 @@
         <h2>Derniers podcasts</h2>
         {% for podcast in podcasts %}
         <li>
-            <a class="content-link" href="{{ url_for('main.podcasts', id=podcast.id) }}">{{ podcast.name }}</a>
+            <a class="content-link" href="{{ url_for('main.podcast', id=podcast.id) }}">{{ podcast.name }}</a>
         </li>
         {% endfor %}
     </ul>

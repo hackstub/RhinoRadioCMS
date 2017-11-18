@@ -22,6 +22,9 @@ body {
 p, h1, h2, h3, h4, h5, h6 {
     color: $black;
 }
+a {
+    outline: 0;
+}
 
 nav {
     height: 100%;
@@ -78,69 +81,7 @@ main {
     }
 }
 
-section {
-    padding: 5em 3em 3em 3em;
 
-    h2 {
-        margin-bottom: 0.7em;
-        padding: 0em 0.5em;
-        color: $white;
-        background-color: $black;
-    }
-
-    article {
-        div ~ div {
-            margin-top: 0.8em;
-        }
-
-        &:last-child {
-            margin-top: 3em;
-        }
-    }
-
-    &:last-child {
-        margin-right: 3em;
-        min-width: 30%;
-        max-width: 40%;
-    }
-}
-
-a {
-    outline: 0;
-}
-#left-panel {
-    width: 100%;
-}
-#right-panel {
-
-}
-/* SVGS */
-.line {
-    fill: none;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-}
-.main-width {
-    stroke-width: 5;
-    stroke-miterlimit: 5;
-}
-.aux-width {
-    stroke-width: 3;
-    stroke-miterlimit: 3;
-}
-.black {
-    stroke: $black;
-}
-.main-color {
-    stroke: $main-color;
-}
-.circle {
-    fill: $black;
-    stroke: none;
-}
-
-.list-elem {
-    margin-top: 2em;
-}
-
+@import 'sections';
+@import 'svgs';
 @import 'fonts';

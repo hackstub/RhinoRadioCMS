@@ -5,7 +5,7 @@ class Tag(db.Model):
     __tablename__ = "tags"
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(128))
+    name = db.Column(db.String(128), default="Nom du tag")
     channel_id = db.Column(db.Integer, db.ForeignKey('channels.id'))
     collective_id = db.Column(db.Integer, db.ForeignKey('collectives.id'))
     podcast_id = db.Column(db.Integer, db.ForeignKey('podcasts.id'))

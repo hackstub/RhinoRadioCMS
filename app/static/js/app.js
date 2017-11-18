@@ -71,6 +71,28 @@ function displayMain(data) {
     document.getElementsByTagName("main")[0].innerHTML = data["content"];
 }
 
+function checkLive() {
+    loadContent(document.getElementById("live_autocheck").getAttribute("href"));
+}
+
+//checkLive();
+//var checkLive_ = setInterval(checkLive, 15000);
+
+function updateLive(data) {
+    // If live started / is ongoing
+    if (data["next_live_in"] < 0)
+    {
+        document.getElementById("live_autocheck").style.display = '';
+        document.getElementById("live_play").setAttribute("href", data["stream_url_play"]);
+    }
+    // If live is not ongoing
+    else
+    {
+        document.getElementById("live_autocheck").style.display = 'none';
+        document.getElementById("live_play").setAttribute("href", '');
+    }
+}
+
 // ###########################################################################
 // #  Init a few things when loading the document                            #
 // ###########################################################################

@@ -27,21 +27,15 @@ class Event(db.Model):
     # Live broadcast scheduled ?
     live_show = db.Column(db.Boolean())
 
+    def __repr__(self):
+        return '<EVENT %r>' % self.name
 
-    #def __repr__(self):
-    #    return '<EVENT %r>' % self.name
-
-    #def __str__(self):
-    #    return self.name
+    def __str__(self):
+        return self.name
 
     # FIXME dont know what happens here, but this breaks the fake_feed gen
     def __init__(self, **kwargs):
-        if self.live_show:
-            channel_id = kwargs.get("channel_id")
-            collective_id = kwargs.get("collective_id", None)
-            self.create_rel_podcast(channel_id, collective_id)
         super(Event, self).__init__(**kwargs)
-
 
     def list(filter='', order='', number=3):
         events = Event.query.filter(Event.begin >= datetime.today()) \
@@ -50,18 +44,31 @@ class Event(db.Model):
         return events
 
 
-    def create_rel_podcast(self, channel_id, collective_id):
-        channel = Channel.query.filter(Channel.id == channel_id).first()
+    def create_rel_podcast(self):
+        channel = Channel.query.filter(Channel.id == self.channel_id).first()
         podcast = Podcast(
             name = channel.name + ' du ' + self.begin.strftime("%d/%m/%y"),
             contributors = channel.contributors,
             description = self.description,
-            channel_id = channel.id,
+            channel_id = self.channel.id,
             mood = channel.mood,
             night = channel.night,
             date = self.begin)
         self.podcast_id = podcast.id
         db.session.add(podcast)
+        print(podcast)
+        db.session.commit()
+
+
+    def ongoing(self):
+        now = datetime.now()
+        return (live.begin < now) and (live.end > now)
+
+
+    def podcast(self):
+        if not self.live_now:
+            return None
+        return Podcast.query.filter(Postcast.id == self.podcast_id).first()
 
 
     @staticmethod

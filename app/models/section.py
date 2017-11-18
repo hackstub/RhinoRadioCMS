@@ -10,7 +10,7 @@ class Section(db.Model):
     __tablename__ = "sections"
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(256))
+    name = db.Column(db.String(256), default="Nom de la section")
     description = db.Column(db.Text)
     # Date of publication
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)

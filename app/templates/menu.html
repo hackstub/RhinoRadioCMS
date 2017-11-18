@@ -2,6 +2,9 @@
     <a id="logo" class="content-link" href="{{ url_for('main.index') }}">
         {% include 'svg/logo.svg' %}
     </a>
+    <div id="live_autocheck" href="{{ url_for('main.get_live') }}" style="display:none;">
+        <a id="live_play" class="content-link" href="">Play</a>
+    </div>
     <div>
         <a class="content-link" href="{{ url_for('main.podcasts') }}">
             {% include 'svg/title_podcasts.svg' %}</a>
