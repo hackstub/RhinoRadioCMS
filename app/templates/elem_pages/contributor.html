@@ -23,7 +23,7 @@
     <p>CONTRIBUTEURS : </br>
     {% for contributor in elem.contributors %}
         <a class="content-link"
-            href="{{ url_for('main.contributors', id=contributor.id) }}">
+            href="{{ url_for('main.contributor', id=contributor.id) }}">
         {{ contributor.name -}}
         </a>
         {%- if not loop.last %}, {% endif %}
@@ -36,7 +36,7 @@
     <p>CHANNEL : </br>
     {% for channel in elem.channels %}
         <a class="content-link"
-            href="{{ url_for('main.channels', id=channel.id) }}">
+            href="{{ url_for('main.index') }}">
         {{ channel.name -}}
         </a>
         {%- if not loop.last %}, {% endif %}
@@ -87,7 +87,7 @@
     <div class="list-item">
         {% for post in elem.blog_posts %}
             <a class="content-link"
-                href="{{ url_for('main.blogs', id=post.id) }}">
+                href="{{ url_for('main.blog', id=post.id) }}">
             {{ post.name -}}
             </a>
             <h5>{{ post.timestamp }}</h5>
