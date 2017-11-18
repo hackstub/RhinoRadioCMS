@@ -4,7 +4,7 @@
     <div class="list-elem">
         <h3>{{ event.name }}</h3>
         <h4>Du {{ event.begin }} au {{ event.end }}</h4>
-        <p>{{ event.description }}</p>
+        {{ event.description|safe }}
     </div>
     {% endfor %}
 </article>
