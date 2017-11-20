@@ -5,6 +5,10 @@
 .marg2 {
     margin-top: 3em;
 }
+// WHOOPS
+.marg3 {
+    margin-top: 2em;
+}
 .decal {
     margin-left: 5.5em;
 }
@@ -14,6 +18,7 @@ section {
 
     &.solo {
         max-width: 40em;
+        margin-left: 5em;
     }
     &.principal {
         width: 35%;
@@ -100,6 +105,10 @@ section {
             color: $black;
         }
     }
+    a.pabo {
+        border: none;
+        text-decoration: underline;
+    }
 
     h3 {
         font-family: $font-title;
@@ -139,7 +148,7 @@ section {
 .more {
     margin-left: calc(100% - 5em);
     text-align: center;
-    margin-top: 3em;
+    margin-top: 2em;
     width: 5em;
     border: 1px solid $black;
     padding: 0em 0em;

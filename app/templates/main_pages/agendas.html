@@ -1,16 +1,25 @@
-<section id="left-panel">
-<h2>Agenda</h2>
-{% for event in events %}
-<div class="list-elem">
-    <h3>{{ event.name }}</h3>
-    <p>PLACE : {{ event.place }}</p>
-    <p>FROM {{ event.begin }} TO {{ event.end }}</p>
-    <p>LIVE : {{ event.live_show }}</p>
-    <p>{{ event.description|safe }}</p>
-</div>
-{% endfor %}
-</section>
+<section class="second">
+    {% if events %}
+        <div class="title marg2">
+            {% include 'svg/title_agenda.svg' %}
+        </div>
+        <div>
+            {% for elem in events %}
+            <article class="widgetBis">
+                <h3>{{ elem.name }}</h3>
+                <span>Du {{ elem.begin|format_date  }} au {{ elem.end|format_date }}</span>
 
-<section id="right-panel">
-<h2>Selection</h2>
+                {% if elem.place %}
+                <p>Lieu : {{ elem.place }}</p>
+                {% endif %}
+
+                <div class="marg description">
+                    {{ elem.description|safe }}
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+
+
+    {% endif %}
 </section>

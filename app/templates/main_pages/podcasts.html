@@ -7,7 +7,7 @@
 
 
 {% for elem in podcasts %}
-<article>
+<article class="widgetBis">
     <div class="flex">
         <a class="picto content-link" href="{{ url_for('main.play', id=elem.id) }}">
             {% include 'svg/small_play.svg' -%}

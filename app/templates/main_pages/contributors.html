@@ -1,32 +1,36 @@
-<section id="left-panel">
-<h2>Contributeurs</h2>
-{{ contributors|length }}
-{% for contributor in contributors %}
-    <article class="list-elem">
+<section class="solo">
+    <div class="title">
+        {% include 'svg/title_contributors.svg' %}
+    </div>
+
+{% for elem in contributors %}
+    <article class="widget">
         <p>
             <a class="content-link"
-               href="{{ url_for('main.contributor', id=contributor.id) }}">
-            {{ contributor.name }}</a>
+               href="{{ url_for('main.contributor', id=elem.id) }}">
+            {{ elem.name }}</a>
             =>
-            <a href="{{ contributor.website }}">{{ contributor.website }}</a>
+            <a class="pabo" href="{{ elem.website }}">{{ elem.website }}</a>
         </p>
-        <p>------>{{ contributor.status }}</p>
+        <p class="marg">------> {{ elem.status }}</p>
     </article>
 {% endfor %}
 </section>
 
-<section id="right-panel">
-<h2>Collectifs</h2>
-{% for collective in collectives %}
-<article class="list-elem">
-    <p>
-        <a class="content-link"
-           href="{{ url_for('main.collective', id=collective.id) }}">
-        {{ collective.name }}</a>
-        =>
-        <a href="{{ collective.website }}">{{ collective.website }}</a>
-    </p>
-    <p>------>{{ collective.status }}</p>
-</article>
-{% endfor %}
+<section class="solo">
+    <div class="title">
+        {% include 'svg/title_collectives.svg' %}
+    </div>
+    {% for elem in collectives %}
+        <article class="widget">
+            <p>
+                <a class="content-link"
+                   href="{{ url_for('main.collective', id=elem.id) }}">
+                {{ elem.name }}</a>
+                =>
+                <a class="pabo" href="{{ elem.website }}">{{ elem.website }}</a>
+            </p>
+            <p class="marg">------> {{ elem.status }}</p>
+        </article>
+    {% endfor %}
 </section>
