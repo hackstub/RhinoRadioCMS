@@ -70,7 +70,8 @@ def about():
     page = Page.query.get_or_404(1)
     return [ 'displayMain',
            { "content": render_template("main_pages/about.html",
-                                        page=page) } ]
+                                        page=page),
+             "title": "À propos"} ]
 
 @main.route('/contrib')
 @partial_content
@@ -79,7 +80,8 @@ def contribute():
     page = Page.query.get_or_404(2)
     return [ 'displayMain',
              { "content": render_template("main_pages/contribute.html",
-                                          page=page) } ]
+                                          page=page),
+               "title": "Contribuer"} ]
 
 #########################
 #  Podcasts             #
@@ -97,7 +99,8 @@ def podcasts():
     return [ 'displayMain',
              { "content": render_template("main_pages/podcasts.html",
                                           podcasts=podcasts,
-                                          pagination=pagination) } ]
+                                          pagination=pagination),
+               "title": "Podcasts" } ]
 
 @main.route('/podcasts/<id>')
 @partial_content
@@ -115,7 +118,8 @@ def play(id):
     podcast = Podcast.query.get_or_404(id)
     return [ "player.load.bind(player)",
              { "link" : podcast.link,
-               "title" : podcast.name } ]
+               "title" : podcast.name,
+               "channel": podcast.channel_id } ]
 
 ##############################
 #  Contributors/Collectives  #
@@ -192,7 +196,7 @@ def agenda(id):
     event = Event.query.get_or_404(id)
     return [ 'displayMain',
              { "content": render_template("notimplemented.html"),
-               "title": ""} ]
+               "title": event.name} ]
 
 #########################
 #  Static stuff         #
