@@ -67,7 +67,7 @@ def index():
 @main.route('/about')
 @partial_content
 def about():
-    page = Page.query.filter_by(name='about').first_or_404()
+    page = Page.query.filter_by(id=1).first_or_404()
     return [ 'displayMain',
            { "content": render_template("main_pages/about.html",
                                         page=page) } ]
@@ -76,7 +76,7 @@ def about():
 @partial_content
 def contribute():
     # create a real "contribute" page
-    page = Page.query.filter_by(name='contribute').first_or_404()
+    page = Page.query.filter_by(id=2).first_or_404()
     return [ 'displayMain',
              { "content": render_template("main_pages/contribute.html",
                                           page=page) } ]
