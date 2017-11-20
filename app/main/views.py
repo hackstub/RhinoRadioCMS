@@ -67,7 +67,7 @@ def index():
 @main.route('/about')
 @partial_content
 def about():
-    page = Page.query.filter_by(name='about').first_or_404()
+    page = Page.query.filter_by(id=2).first_or_404()
     return [ 'displayMain',
            { "content": render_template("main_pages/about.html",
                                         page=page) } ]
@@ -76,7 +76,7 @@ def about():
 @partial_content
 def contribute():
     # create a real "contribute" page
-    page = Page.query.filter_by(name='contribute').first_or_404()
+    page = Page.query.filter_by(id=1).first_or_404()
     return [ 'displayMain',
              { "content": render_template("main_pages/contribute.html",
                                           page=page) } ]
@@ -90,7 +90,6 @@ def contribute():
 def podcasts():
     page = request.args.get('page', 1, type=int)
     pagination = Podcast.query                         \
-        .join(Channel, Channel.id==Podcast.channel_id) \
         .order_by(Podcast.timestamp.desc())            \
         .paginate(page, per_page=10, error_out=False)
     podcasts = pagination.items
@@ -103,15 +102,17 @@ def podcasts():
 @main.route('/podcasts/<id>')
 @partial_content
 def podcast(id):
-    podcast = Podcast.query.filter_by(id = id).first()
+    podcast = Podcast.query.get(id)
     return [ 'displayMain',
              { "content": render_template("elem_pages/podcast.html",
-                                          elem=podcast) }]
+                                          elem=podcast),
+               "title": podcast.name,
+               "description" : podcast.description } ]
 
 @main.route('/podcasts/<id>/play')
 @partial_content_no_history
 def play(id):
-    podcast = Podcast.query.filter_by(id = id).first()
+    podcast = Podcast.query.get(id)
     return [ "player.load.bind(player)",
              { "link" : podcast.link,
                "title" : podcast.name } ]
@@ -127,16 +128,19 @@ def contributors():
     return [ 'displayMain',
              { "content": render_template("main_pages/contributors.html",
                                           contributors=Contributor.list(),
-                                          collectives=Collective.list(),
-                                         )}]
+                                          collectives=Collective.list()),
+               "title": podcast.name,
+               "description" : podcast.description }]
 
 @main.route('/contributors/<id>')
 @partial_content
 def contributor(id):
-    contributor = Contributor.query.filter_by(id = id).first()
+    contributor = Contributor.query.get(id)
     return [ 'displayMain',
              { "content": render_template("elem_pages/contributor.html",
-                                          elem=contributor) }]
+                                          elem=contributor),
+               "title": podcast.name,
+               "description" : podcast.description }]
 
 @main.route('/collectives/<id>')
 @partial_content
@@ -144,7 +148,9 @@ def collective(id):
     collective = Collective.query.filter_by(id = id).first()
     return [ 'displayMain',
              { "content": render_template("elem_pages/contributor.html",
-                                          elem=collective) }]
+                                          elem=collective),
+               "title": collective.name,
+               "description" : collective.description } ]
 
 #########################
 #  Blogs                #
@@ -155,13 +161,18 @@ def collective(id):
 def blogs():
     return [ 'displayMain',
              { "content": render_template("main_pages/blogs.html",
-                                          blog_posts = BlogPost.list(number=10) )} ]
+                                          blog_posts = BlogPost.list(number=10)),
+               "title": "Blogs",
+               "description": "Les articles de blog de Radio Rhino" } ]
 
 @main.route('/blogs/<id>')
 @partial_content
 def blog(id):
+
     return [ 'displayMain',
-             { "content": render_template("notimplemented.html") }]
+             { "content": render_template("main_page/blogs.html",
+                                          blog_post = BlogPost.query.list()),
+               "title": blog_post.name } ]
 
 #########################
 #  Agendas              #

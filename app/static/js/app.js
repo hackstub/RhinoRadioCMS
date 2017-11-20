@@ -69,6 +69,9 @@ function loadContent(target) {
 
 function displayMain(data) {
     document.getElementsByTagName("main")[0].innerHTML = data["content"];
+    if data["title"] { document.getElementsByTagName("title")[0].innerHTML = data["title"];}
+    if data["description"] { document.getElementsByName("description")[0].innerHTML = data["description"]; }
+
 }
 
 function checkLive() {
