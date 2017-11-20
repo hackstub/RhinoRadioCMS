@@ -69,9 +69,9 @@ function loadContent(target) {
 
 function displayMain(data) {
     document.getElementsByTagName("main")[0].innerHTML = data["content"];
-    if (data["title"]) { document.getElementsByTagName("title")[0].innerHTML = data["title"] + " | Radio Rhino";}
-    else { document.getElementsByTagName("title") = "Radio Rhino"}
-    if (data["description"] != "undefined") {
+    if (typeof data["title"] !== "undefined") { document.getElementsByTagName("title")[0].innerHTML = data["title"] + " | Radio Rhino"; }
+    else { document.getElementsByTagName("title")[0].innerHTML = "Radio Rhino"}
+    if (typeof data["description"] !== "undefined") {
       document.getElementsByName("description")[0].innerHTML = data["description"]; }
     else {
       document.getElementsByName("description")[0].innerHTML = "Radio radicale pour personnes sensibles." ; }
