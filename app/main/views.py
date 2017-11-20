@@ -67,7 +67,7 @@ def index():
 @main.route('/about')
 @partial_content
 def about():
-    page = Page.query.filter_by(id=1).first_or_404()
+    page = Page.query.get_or_404(1)
     return [ 'displayMain',
            { "content": render_template("main_pages/about.html",
                                         page=page) } ]
@@ -76,7 +76,7 @@ def about():
 @partial_content
 def contribute():
     # create a real "contribute" page
-    page = Page.query.filter_by(id=2).first_or_404()
+    page = Page.query.get_or_404(2)
     return [ 'displayMain',
              { "content": render_template("main_pages/contribute.html",
                                           page=page) } ]
@@ -102,7 +102,7 @@ def podcasts():
 @main.route('/podcasts/<id>')
 @partial_content
 def podcast(id):
-    podcast = Podcast.query.get(id)
+    podcast = Podcast.query.get_or_404(id)
     return [ 'displayMain',
              { "content": render_template("elem_pages/podcast.html",
                                           elem=podcast),
@@ -112,7 +112,7 @@ def podcast(id):
 @main.route('/podcasts/<id>/play')
 @partial_content_no_history
 def play(id):
-    podcast = Podcast.query.get(id)
+    podcast = Podcast.query.get_or_404(id)
     return [ "player.load.bind(player)",
              { "link" : podcast.link,
                "title" : podcast.name } ]
@@ -129,23 +129,23 @@ def contributors():
              { "content": render_template("main_pages/contributors.html",
                                           contributors=Contributor.list(),
                                           collectives=Collective.list()),
-               "title": podcast.name,
-               "description" : podcast.description }]
+               "title": "Contributeurs",
+               "description" : "Liste des contributeurs de Radio Rhino." }]
 
 @main.route('/contributors/<id>')
 @partial_content
 def contributor(id):
-    contributor = Contributor.query.get(id)
+    contributor = Contributor.query.get_or_404(id)
     return [ 'displayMain',
              { "content": render_template("elem_pages/contributor.html",
                                           elem=contributor),
-               "title": podcast.name,
-               "description" : podcast.description }]
+               "title": contributor.name,
+               "description" : contributor.description }]
 
 @main.route('/collectives/<id>')
 @partial_content
 def collective(id):
-    collective = Collective.query.filter_by(id = id).first()
+    collective = Collective.query.get_or_404(id)
     return [ 'displayMain',
              { "content": render_template("elem_pages/contributor.html",
                                           elem=collective),
@@ -183,13 +183,16 @@ def blog(id):
 def agendas():
     return [ 'displayMain',
              { "content": render_template("main_pages/agendas.html",
-                                          events = Event.list(number=10)) } ]
+                                          events = Event.list(number=10)),
+               "title": "Agendas" } ]
 
 @main.route('/agendas/<id>')
 @partial_content
 def agenda(id):
+    event = Event.query.get_or_404(id)
     return [ 'displayMain',
-             { "content": render_template("notimplemented.html") }]
+             { "content": render_template("notimplemented.html"),
+               "title": ""} ]
 
 #########################
 #  Static stuff         #
