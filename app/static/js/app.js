@@ -35,19 +35,18 @@ function loadContent(target) {
     req.onload = function() {
         if (req.status >= 200 && req.status < 400) {
             // Parse the response
-            var response_data = JSON.parse(req.responseText);
+            var resp = JSON.parse(req.responseText);
 
             // Load the content we got, using the function specified by the server
-            var f = eval(response_data[0]);
-            var data = response_data[1];
-            // It is very clear
-            var nohistory = response_data[2] == "nohistory";
+            var f = eval(resp.function);
+            var data = resp.content;
+            var hist = resp.history;
             f(data);
 
             // Push this content in the history
             // N.B : in the future, we might want to have a mechanism to do this only
             // for specific contents...
-            if (window.location.pathname != target && !nohistory) {
+            if (window.location.pathname != target && hist) {
                 history.pushState({}, '', target);
             }
 
@@ -68,7 +67,7 @@ function loadContent(target) {
 // ###########################################################################
 
 function displayMain(data) {
-    document.getElementsByTagName("main")[0].innerHTML = data["content"];
+    document.getElementsByTagName("main")[0].innerHTML = data.template;
     if (typeof data["title"] !== "undefined") { document.getElementsByTagName("title")[0].innerHTML = data["title"] + " | Radio Rhino"; }
     else { document.getElementsByTagName("title")[0].innerHTML = "Radio Rhino"}
     if (typeof data["description"] !== "undefined") {

@@ -53,11 +53,18 @@ partial_content_no_history = partial_content_no_history_decorator(base)
 @main.route('/')
 @partial_content
 def index():
-    return [ 'displayMain',
-           { "content": render_template("index.html",
-                                        podcasts = Podcast.list(number=3),
-                                        blog_posts = BlogPost.list(number=3),
-                                        events = Event.list(number=3)) } ]
+    return {
+        'function': 'displayMain',
+        'content': {
+            'template': render_template(
+                "index.html",
+                podcasts=Podcast.list(number=3),
+                blog_posts = BlogPost.list(number=3),
+                events = Event.list(number=3)
+            ),
+            'title': 'home page'
+        }
+    }
 
 
 #########################
@@ -68,10 +75,16 @@ def index():
 @partial_content
 def about():
     page = Page.query.get_or_404(1)
-    return [ 'displayMain',
-           { "content": render_template("main_pages/about.html",
-                                        page=page),
-             "title": "À propos"} ]
+    return {
+        'function': 'displayMain',
+        'content': {
+            'template': render_template(
+                "main_pages/about.html",
+                page=page
+            ),
+            'title': "À propos"
+        }
+    }
 
 @main.route('/contrib')
 @partial_content

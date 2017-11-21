@@ -9,24 +9,22 @@ from functools import partial
 def partial_content(f, base, history=True):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        assert isinstance(history, bool)
         # We make sure to come from an 'already loaded site' ...
-        # Otherwise, load the base with a small javascript snippet that tells
-        # to re-request the loading of the content
-        if not 'X-Partial-Content' in request.headers:
-            return base()
-
+        # Otherwise, load the base and include the given template
         data = f(*args, **kwargs)
+        if not 'X-Partial-Content' in request.headers:
+            return render_template('base.html', **data['content'])
 
-        # Data should be a list [ ] with 2 elements :
+        # Data should be a dict with 2 keys:
         # - name of a js function
         # - data for the js function
-        assert isinstance(data, list)
+        assert isinstance(history, bool)
+        assert isinstance(data, dict)
         assert len(data) == 2
-        assert isinstance(data[0], str)
-        assert isinstance(data[1], dict)
-        # FIXME refactorize this shit with a dict
-        data.append("pushhistory" if history else "nohistory")
+        assert isinstance(data['function'], str)
+        assert isinstance(data['content'], dict)
+        # if true, the js will change the url (history.pushState())
+        data['history'] = history
 
         response = jsonify(data)
         response.status_code = 200
