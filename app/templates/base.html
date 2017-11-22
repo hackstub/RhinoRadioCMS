@@ -9,7 +9,10 @@
         <title>Radio Rhino{% if title %} | {{ title }} {% endif %}</title>
         <!-- FIXME add favicon -->
         <!-- FIXME add canonical links -->
-		<meta name="description" content="Radio radicale pour personnes sensibles, le Rhino déboule sur Strasbourg pour tout retourner sur sa route !">
+		<meta name="description" content="
+            {%- if description %}{{ description }}
+            {%- else %}Radio radicale pour personnes sensibles, le Rhino déboule sur Strasbourg pour tout retourner sur sa route !
+            {%- endif %}">
 		<meta property="og:image" content="http://podcast.radiorhino.eu/bannière-Rhino-blanche.png">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/player.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">

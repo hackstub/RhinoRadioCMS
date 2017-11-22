@@ -6,7 +6,7 @@ from functools import partial
 #  Wrapper for partial content loading  #
 #########################################
 
-def partial_content(f, base, history=True):
+def partial_content(f, history=True):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         # We make sure to come from an 'already loaded site' ...
@@ -32,8 +32,8 @@ def partial_content(f, base, history=True):
 
     return decorated_function
 
-def partial_content_decorator(base):
-    return partial(partial_content, base=base)
+def partial_content_decorator():
+    return partial(partial_content)
 
-def partial_content_no_history_decorator(base):
-    return partial(partial_content, base=base, history=False)
+def partial_content_no_history_decorator():
+    return partial(partial_content, history=False)

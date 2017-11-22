@@ -6,7 +6,10 @@
 
     {% for elem in blog_posts %}
     <article class="widgetBis">
-        <h3>{{ elem.name }}</h3>
+        <h3><a class="content-link"
+            href="{{ url_for('main.blog', id=elem.id) }}">
+        {{ elem.name -}}
+        </a></h3>
         <span class="license">{{ elem.timestamp|format_date }}</span>
 
         {% if elem.contributors|length > 0 %}

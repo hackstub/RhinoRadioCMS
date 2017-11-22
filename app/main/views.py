@@ -39,16 +39,8 @@ app = Flask(__name__)
 #  Main pages           #
 #########################
 
-def base():
-    return render_template( 'base.html',
-                            podcasts = Podcast.list(),
-                            blog_posts = BlogPost.list(),
-                            events = Event.list(),
-                            content = request.path
-                          )
-
-partial_content = partial_content_decorator(base)
-partial_content_no_history = partial_content_no_history_decorator(base)
+partial_content = partial_content_decorator()
+partial_content_no_history = partial_content_no_history_decorator()
 
 @main.route('/')
 @partial_content
@@ -234,7 +226,8 @@ def blog(id):
         'function': 'displayMain',
         'content': {
             'template': render_template(
-                "notimplemented.html"
+                "elem_pages/blog.html",
+                elem=blog_post
             ),
             'title': blog_post.name
         }
