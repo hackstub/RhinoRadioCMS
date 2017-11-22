@@ -1,0 +1,12 @@
+<section class="second">
+    <h3>{{ elem.name }}</h3>
+    <span>Du {{ elem.begin|format_date  }} au {{ elem.end|format_date }}</span>
+
+    {% if elem.place %}
+    <p>Lieu : {{ elem.place }}</p>
+    {% endif %}
+
+    <div class="marg description">
+        {{ elem.description|safe }}
+    </div>
+</section>

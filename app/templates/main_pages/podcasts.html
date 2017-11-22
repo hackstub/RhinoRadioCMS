@@ -15,7 +15,7 @@
         <div class="bloc name">
             <h3> {{ elem.name }} </h3>
             {% if elem.channel.name %}
-            <h3><a class="content-link" href="">{{ elem.channel.name|upper }}</a></h3>
+            <h3><a class="content-link" href="{{ url_for('main.channel', id=elem.channel.id) }}">{{ elem.channel.name|upper }}</a></h3>
             {% endif %}
         </div>
     </div>

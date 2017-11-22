@@ -199,6 +199,41 @@ def collective(id):
     }
 
 #########################
+#  Channels             #
+#########################
+
+@main.route('/channels')
+@partial_content
+def channels():
+    return {
+        'function': 'displayMain',
+        'content': {
+            'template': render_template(
+                "main_pages/channels.html",
+                channels=Channel.list()
+            ),
+            'title': "Chaînes",
+            'description': "Les Chaînes de Radio Rhino"
+        }
+    }
+
+
+@main.route('/channels/<id>')
+@partial_content
+def channel(id):
+    channel = Channel.query.get_or_404(id)
+    return {
+        'function': 'displayMain',
+        'content': {
+            'template': render_template(
+                "elem_pages/contributor.html",
+                elem=channel
+            ),
+            'title': channel.name
+        }
+    }
+
+#########################
 #  Blogs                #
 #########################
 
@@ -260,7 +295,8 @@ def agenda(id):
         'function': 'displayMain',
         'content': {
             'template': render_template(
-                "notimplemented.html"
+                "elem_pages/agenda.html",
+                elem=event
             ),
             'title': event.name
         }
