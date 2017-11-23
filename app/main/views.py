@@ -51,8 +51,8 @@ def index():
             'template': render_template(
                 "index.html",
                 podcasts=Podcast.list(number=3),
-                blog_posts = BlogPost.list(number=3),
-                events = Event.list(number=3)
+                blog_posts=BlogPost.list(number=3),
+                events=Event.list(number=3)
             )
         }
     }

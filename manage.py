@@ -9,6 +9,9 @@ app = create_app(os.getenv('FLASK_CONFIG') or 'development')
 manager = Manager(app)
 alchemydumps = AlchemyDumps(app,db)
 
+# allow jinja statements to be wrote without '{% %}' syntax
+app.jinja_env.line_statement_prefix = '#'
+
 def make_shell_context():
     return dict(app=app, db=db)
 
