@@ -292,11 +292,7 @@ def agendas():
         'content': {
             'template': render_template(
                 "main_pages/agendas.html",
-<<<<<<< HEAD
                 events = events,
-=======
-                events=Event.list(number=10),
->>>>>>> e9fd0a020737f61fbcb5a3e98079b9d4eddeac37
                 pagination = pagination),
             'title': "Agendas"
         }
