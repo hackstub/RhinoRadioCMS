@@ -1,12 +1,11 @@
+% from "_macros.html" import description
 <section class="second">
     <h3>{{ elem.name }}</h3>
-    <span>Du {{ elem.begin|format_date  }} au {{ elem.end|format_date }}</span>
+    <p class="marg">Du {{ elem.begin|format_date  }} au {{ elem.end|format_date }}</p>
 
-    {% if elem.place %}
+    % if elem.place
     <p>Lieu : {{ elem.place }}</p>
-    {% endif %}
+    % endif
 
-    <div class="marg description">
-        {{ elem.description|safe }}
-    </div>
+    {{ description(elem.description) -}}
 </section>

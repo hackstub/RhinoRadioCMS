@@ -1,4 +1,4 @@
-% from "_macros.html" import description, title, more_button
+% from "_macros.html" import description, title, more_button, pagination_widget
 
 <section class="second">
     <div class="title marg2">
@@ -19,4 +19,6 @@
     </article>
     {{ more_button('main.agenda', elem.id) }}
     % endfor
+
+{{ pagination_widget(pagination, 'main.agendas') }}
 </section>
