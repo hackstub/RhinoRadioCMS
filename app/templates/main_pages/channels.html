@@ -1,4 +1,4 @@
-% from "_macros.html" import link_list, description
+% from "_macros.html" import link_list, description, more_button, title
 
 <section class="second">
     <div class="title">
@@ -7,15 +7,15 @@
 
     % for elem in channels
     <article class="widgetBis">
-        <h3><a class="content-link" href="{{ url_for('main.channel',
-            id=elem.id) }}">{{ elem.name }}</a></h3>
+        {{ title('main.channel', elem.id, elem.name) -}}
 
-        {{ link_list(link_list(elem.collectives, 'main.collective', 'Animée par')) -}}
+        {{ link_list(elem.collectives, 'main.collective', 'Animée par') -}}
 
         {{ link_list(elem.contributors, 'main.contributor', '') -}}
 
-        {{ description(elem.description) -}}
+        {{ description(elem.description, 100) -}}
     </article>
+    {{ more_button('main.channel', elem.id) }}
     % endfor
 
 </section>

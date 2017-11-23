@@ -1,10 +1,10 @@
+% from "_macros.html" import description
+
 <section class="second">
     <div class="title marg2">
         {% include 'svg/title_about.svg' %}
     </div>
-    <div class="marg description">
-        {{ page.description|safe }}
-    </div>
+    {{ description(page.description) -}}
 </section>
 
 <section id="subscribe" class="principal">

@@ -80,7 +80,7 @@
 
 % macro description(desc, truncate_value, cssClass)
 % if desc
-<div class="marg2 {% if cssClass %}{{ cssClass }}{% endif %}">
+<div class="marg2 description {% if cssClass %}{{ cssClass }}{% endif %}">
 % if truncate_value
 {{ desc|safe|truncate(truncate_value, False) -}}
 % else
