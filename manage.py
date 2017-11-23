@@ -10,7 +10,7 @@ manager = Manager(app)
 alchemydumps = AlchemyDumps(app,db)
 
 # allow jinja statements to be wrote without '{% %}' syntax
-app.jinja_env.line_statement_prefix = '#'
+app.jinja_env.line_statement_prefix = '%'
 # remove some whitespaces and new lines
 app.jinja_env.trim_blocks = True
 app.jinja_env.lstrip_blocks = True

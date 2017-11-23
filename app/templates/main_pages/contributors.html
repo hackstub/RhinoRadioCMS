@@ -1,36 +1,17 @@
+% from "_macros.html" import contributors_list
+
 <section class="solo">
     <div class="title">
         {% include 'svg/title_contributors.svg' %}
     </div>
 
-{% for elem in contributors %}
-    <article class="widget">
-        <p>
-            <a class="content-link"
-               href="{{ url_for('main.contributor', id=elem.id) }}">
-            {{ elem.name }}</a>
-            =>
-            <a class="pabo" href="{{ elem.website }}">{{ elem.website }}</a>
-        </p>
-        <p class="marg">------> {{ elem.status }}</p>
-    </article>
-{% endfor %}
+    {{ contributors_list(contributors, 'main.contributor') }}
 </section>
 
 <section class="solo">
     <div class="title">
         {% include 'svg/title_collectives.svg' %}
     </div>
-    {% for elem in collectives %}
-        <article class="widget">
-            <p>
-                <a class="content-link"
-                   href="{{ url_for('main.collective', id=elem.id) }}">
-                {{ elem.name }}</a>
-                =>
-                <a class="pabo" href="{{ elem.website }}">{{ elem.website }}</a>
-            </p>
-            <p class="marg">------> {{ elem.status }}</p>
-        </article>
-    {% endfor %}
+
+    {{ contributors_list(collectives, 'main.collective') }}
 </section>

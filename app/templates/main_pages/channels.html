@@ -1,48 +1,21 @@
+% from "_macros.html" import link_list, description
+
 <section class="second">
-    {% if channels %}
     <div class="title">
         <h3>Chaînes</h3>
     </div>
 
-    {% for elem in channels %}
+    % for elem in channels
     <article class="widgetBis">
-        <h3><a class="content-link"
-            href="{{ url_for('main.channel', id=elem.id) }}">
-        {{ elem.name -}}
-        </a></h3>
+        <h3><a class="content-link" href="{{ url_for('main.channel',
+            id=elem.id) }}">{{ elem.name }}</a></h3>
 
-        {% if elem.collectives|length > 0 %}
-        <p class="marg">Animé par
-        {% for collective in elem.collectives %}
-            <a class="content-link"
-                href="{{ url_for('main.collective', id=collective.id) }}">
-            {{ collective.name -}}
-            </a>
-            {%- if not loop.last %}, {% endif %}
-        {% endfor %}
-        </p>
-        {% endif %}
+        {{ link_list(link_list(elem.collectives, 'main.collective', 'Animée par')) -}}
 
-        {% if elem.contributors|length > 0 %}
-        <p class="marg">
-        {% for contributor in elem.contributors %}
-            <a class="content-link"
-                href="{{ url_for('main.contributor', id=contributor.id) }}">
-            {{ contributor.name -}}
-            </a>
-            {%- if not loop.last %}, {% endif %}
-        {% endfor %}
-        </p>
-        {% endif %}
+        {{ link_list(elem.contributors, 'main.contributor', '') -}}
 
-
-
-        <div class="marg2 description">
-            {{ elem.description|safe }}
-        </div>
-
+        {{ description(elem.description) -}}
     </article>
-    {% endfor %}
-    {% endif %}
+    % endfor
 
 </section>

@@ -1,10 +1,10 @@
-{% import "_macros.html" as gen %}
+% import "_macros.html" as gen
 
 <section class="solo">
     <div class="title">
         {% include 'svg/title_podcasts.svg' %}
     </div>
-    # for elem in podcasts
+    % for elem in podcasts
     <article class="widgetBis">
         {{ gen.podcast_box(elem) }}
         <span class="license">{{ elem.date|format_date }}</span>
@@ -12,10 +12,10 @@
 
         {{ gen.link_list(elem.contributors, 'main.contributor', 'Avec', 'decal') -}}
 
-        {{ gen.description(elem.description, 100) -}}
+        {{ gen.description(elem.description, 100, 'decal') -}}
     </article>
     {{ gen.more_button('main.podcast', elem.id) }}
-    # endfor
+    % endfor
 
 {{ gen.pagination_widget(pagination, 'main.podcasts') }}
 </section>
