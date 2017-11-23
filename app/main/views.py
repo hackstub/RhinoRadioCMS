@@ -57,7 +57,8 @@ def index():
            { "content": render_template("index.html",
                                         podcasts = Podcast.list(number=3),
                                         blog_posts = BlogPost.list(number=3),
-                                        events = Event.list(number=3)) } ]
+                                        events = Event.query.order_by(Event.begin.asc())\
+                                          .limit(5).all()) } ]
 
 
 #########################
@@ -163,9 +164,15 @@ def collective(id):
 @main.route('/blogs')
 @partial_content
 def blogs():
+    page = request.args.get('page', 1, type=int)
+    pagination = BlogPost.query                         \
+        .order_by(BlogPost.timestamp.desc())            \
+        .paginate(page, per_page=10, error_out=False)
+    blog_posts = pagination.items
     return [ 'displayMain',
              { "content": render_template("main_pages/blogs.html",
-                                          blog_posts = BlogPost.list(number=10)),
+                                          blog_posts = blog_posts,
+                                          pagination = pagination),
                "title": "Blogs",
                "description": "Les articles de blog de Radio Rhino" } ]
 
@@ -185,9 +192,15 @@ def blog(id):
 @main.route('/agendas')
 @partial_content
 def agendas():
+    page = request.args.get('page', 1, type=int)
+    pagination = Event.query                         \
+        .order_by(Event.begin.asc())            \
+        .paginate(page, per_page=10, error_out=False)
+    events = pagination.items
     return [ 'displayMain',
              { "content": render_template("main_pages/agendas.html",
-                                          events = Event.list(number=10)),
+                                          events = events,
+                                          pagination = pagination),
                "title": "Agendas" } ]
 
 @main.route('/agendas/<id>')
