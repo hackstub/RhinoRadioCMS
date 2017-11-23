@@ -45,16 +45,37 @@
 </div>
 % endmacro
 
-% macro link_list(group, route, word, cssClass)
+% macro title(route, route_id, name)
+<h3><a class="content-link" href="{{ url_for(route, id=route_id) }}">{{ name }}</a></h3>
+% endmacro
+
+% macro link_list(group, route, word, cssClass, open=True, close=True)
 % if group|length > 0
+% if open
 <p class="marg {% if cssClass %}{{ cssClass }}{% endif %}">{{ word }}
+% else
+{{ word }}
+% endif
 % for elem in group
     <a class="content-link" href="{{ url_for(route, id=elem.id)
         }}">{{ elem.name }}</a>
     {%- if not loop.last %}, {% endif %}
 % endfor
+% if close
 </p>
 % endif
+% endif
+% endmacro
+
+% macro contributors_list(group, route)
+% for elem in group
+<article class="widget">
+    <p><a class="content-link" href="{{ url_for(route, id=elem.id)
+        }}">{{ elem.name }}</a> => <a class="pabo" href="{{ elem.website
+        }}">{{ elem.website }}</a></p>
+    <p class="marg">------> {{ elem.status }}</p>
+</article>
+% endfor
 % endmacro
 
 % macro description(desc, truncate_value, cssClass)
@@ -72,15 +93,4 @@
 % macro more_button(route, route_id)
 <p class="more"><a class="content-link" href="{{ url_for(route, id=route_id)
     }}">more</a></p>
-% endmacro
-
-% macro contributors_list(group, route)
-% for elem in group
-<article class="widget">
-    <p><a class="content-link" href="{{ url_for(route, id=elem.id)
-        }}">{{ elem.name }}</a> => <a class="pabo" href="{{ elem.website
-        }}">{{ elem.website }}</a></p>
-    <p class="marg">------> {{ elem.status }}</p>
-</article>
-% endfor
 % endmacro
