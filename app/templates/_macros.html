@@ -49,10 +49,10 @@
 <h3><a class="content-link" href="{{ url_for(route, id=route_id) }}">{{ name }}</a></h3>
 % endmacro
 
-% macro link_list(group, route, word, cssClass, open=True, close=True)
+% macro link_list(group, route, word, css, open=True, close=True)
 % if group|length > 0
 % if open
-<p class="marg {% if cssClass %}{{ cssClass }}{% endif %}">{{ word }}
+<p class="marg {% if css %}{{ css }}{% endif %}">{{ word }}
 % else
 {{ word }}
 % endif
@@ -78,9 +78,9 @@
 % endfor
 % endmacro
 
-% macro description(desc, truncate_value, cssClass)
+% macro description(desc, truncate_value, css)
 % if desc
-<div class="marg2 description {% if cssClass %}{{ cssClass }}{% endif %}">
+<div class="marg2 description {% if css %}{{ css }}{% endif %}">
 % if truncate_value
 {{ desc|safe|truncate(truncate_value, False) -}}
 % else
@@ -93,4 +93,26 @@
 % macro more_button(route, route_id)
 <p class="more"><a class="content-link" href="{{ url_for(route, id=route_id)
     }}">more</a></p>
+% endmacro
+
+% macro podcasts_list(group)
+% if group|length > 0
+% for elem in group
+<article class="widget">
+    {{ podcast_box(elem) }}
+    <span class="license">{{ elem.timestamp|format_date }}</span>
+</article>
+% endfor
+% endif
+% endmacro
+
+% macro tag_list(group, css)
+% if group|length > 0
+<p class="tags marg2 {% if css %}{{ css }}{% endif %}">Tags :
+% for elem in group
+    <a>{{ elem.name }}</a>
+    {%- if not loop.last %}, {% endif %}
+% endfor
+</p>
+% endif
 % endmacro
