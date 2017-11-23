@@ -1,33 +1,21 @@
-{% import "_macros.html" as macros %}
+{% import "_macros.html" as gen %}
+
 <section class="solo">
     <div class="title">
         {% include 'svg/title_podcasts.svg' %}
     </div>
+    # for elem in podcasts
+    <article class="widgetBis">
+        {{ gen.podcast_box(elem) }}
+        <span class="license">{{ elem.date|format_date }}</span>
+        {{ gen.link_list(elem.collectives, 'main.collective', 'Par', 'decal') -}}
 
-{% for elem in podcasts %}
-<article class="widgetBis">
-    <div class="flex">
-        <a class="picto content-link" href="{{ url_for('main.play', id=elem.id) }}">
-            {% include 'svg/small_play.svg' -%}
-        </a>
-        <div class="bloc name">
-            <h3> {{ elem.name }} </h3>
-            {% if elem.channel.name %}
-            <h3><a class="content-link" href="{{ url_for('main.channel', id=elem.channel.id) }}">{{ elem.channel.name|upper }}</a></h3>
-            {% endif %}
-        </div>
-    </div>
-    <span class="license">{{ elem.date|format_date }}</span>
-    {{ macros.link_list(elem.collectives, 'main.collective', 'Par', 'decal') -}}
-    {{ macros.link_list(elem.contributors, 'main.contributor', 'Avec', 'decal') }}
-    {{ macros.description(elem.description, 100) }}
-</article>
-<p class="more"><a class="content-link" href="{{ url_for('main.podcast', id=elem.id) }}">more</a></p>
-{% endfor %}
+        {{ gen.link_list(elem.contributors, 'main.contributor', 'Avec', 'decal') -}}
 
+        {{ gen.description(elem.description, 100) -}}
+    </article>
+    {{ gen.more_button('main.podcast', elem.id) }}
+    # endfor
 
-<div class="pagination">
-{{ macros.pagination_widget(pagination, 'main.podcasts') }}
-</div>
-
+{{ gen.pagination_widget(pagination, 'main.podcasts') }}
 </section>

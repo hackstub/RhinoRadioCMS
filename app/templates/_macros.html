@@ -1,4 +1,5 @@
 # macro pagination_widget(pagination, endpoint)
+<div class="pagination">
 <ul class="pagination">
     <li{% if not pagination.has_prev %} class="disabled"{% endif %}>
         <a class="content-link" href="{% if pagination.has_prev %}{{ url_for(endpoint,
@@ -27,15 +28,30 @@
     </a>
     </li>
 </ul>
+</div>
+# endmacro
+
+# macro podcast_box(elem)
+<div class="flex">
+    <a class="picto content-link" href="{{ url_for('main.play', id=elem.id) }}">
+        {%- include 'svg/small_play.svg' -%}
+    </a>
+    <div class="bloc name">
+        <h3>{{ elem.name }}</h3>
+        # if elem.channel.name
+        <h3><a class="content-link" href="{{ url_for('main.channel', id=elem.channel.id) }}">{{ elem.channel.name|upper }}</a></h3>
+        # endif
+    </div>
+</div>
 # endmacro
 
 # macro link_list(group, route, word, cssClass)
 # if group|length > 0
 <p class="marg {% if cssClass %}{{ cssClass }}{% endif %}">{{ word }}
 # for elem in group
-<a class="content-link" href="{{ url_for(route, id=elem.id)
-    }}">{{ elem.name }}</a>
-{%- if not loop.last %}, {% endif %}
+    <a class="content-link" href="{{ url_for(route, id=elem.id)
+        }}">{{ elem.name }}</a>
+    {%- if not loop.last %}, {% endif %}
 # endfor
 </p>
 # endif
@@ -45,10 +61,15 @@
 # if desc
 <div class="marg2 decal">
 # if truncate_value
-{{ desc|safe|truncate(truncate_value, False) }}
+{{ desc|safe|truncate(truncate_value, False) -}}
 # else
-{{ desc.description|safe|truncate(100, False) }}
+{{ desc.description|safe|truncate(100, False) -}}
 # endif
 </div>
 # endif
+# endmacro
+
+# macro more_button(route, route_id)
+<p class="more"><a class="content-link" href="{{ url_for(route, id=route_id)
+    }}">more</a></p>
 # endmacro
