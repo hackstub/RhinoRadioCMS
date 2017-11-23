@@ -40,7 +40,7 @@
         <p class="marg">Anime
         {% for elem in elem.channels %}
             <a class="content-link"
-                href="{{ url_for('main.collective', id=elem.id) }}">
+                href="{{ url_for('main.channel', id=elem.id) }}">
             {{ elem.name -}}
             </a>
             {%- if not loop.last %}, {% endif %}
