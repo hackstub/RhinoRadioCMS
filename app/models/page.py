@@ -25,9 +25,11 @@ class Page(db.Model):
         seed()
         about = Page(
             name="À propos",
+            id=1,
             description=forgery_py.lorem_ipsum.paragraphs(quantity=20)
         )
         contribute = Page(
+            id=2,
             name='Contribuer',
             description=forgery_py.lorem_ipsum.paragraphs(quantity=10)
         )

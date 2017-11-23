@@ -6,7 +6,10 @@
         <div>
             {% for elem in events %}
             <article class="widgetBis">
-                <h3>{{ elem.name }}</h3>
+                <h3><a class="content-link"
+                    href="{{ url_for('main.agenda', id=elem.id) }}">
+                {{ elem.name -}}
+                </a></h3>
                 <span>Du {{ elem.begin|format_date  }} au {{ elem.end|format_date }}</span>
 
                 {% if elem.place %}
