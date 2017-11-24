@@ -1,25 +1,24 @@
+% from "_macros.html" import description, title, more_button, pagination_widget
+
 <section class="second">
-    {% if events %}
-        <div class="title marg2">
-            {% include 'svg/title_agenda.svg' %}
-        </div>
-        <div>
-            {% for elem in events %}
-            <article class="widgetBis">
-                <h3>{{ elem.name }}</h3>
-                <span>Du {{ elem.begin|format_date  }} au {{ elem.end|format_date }}</span>
+    <div class="title marg2">
+        {% include 'svg/title_agenda.svg' %}
+    </div>
 
-                {% if elem.place %}
-                <p>Lieu : {{ elem.place }}</p>
-                {% endif %}
+    % for elem in events
+    <article class="widgetBis">
+        {{ title('main.agenda', elem.id, elem.name) -}}
 
-                <div class="marg description">
-                    {{ elem.description|safe }}
-                </div>
-            </article>
-            {% endfor %}
-        </div>
+        <p class="marg">Du {{ elem.begin|format_date  }} au {{ elem.end|format_date }}</p>
 
+        % if elem.place
+        <p>Lieu : {{ elem.place }}</p>
+        % endif
 
-    {% endif %}
+        {{ description(elem.description) -}}
+    </article>
+    {{ more_button('main.agenda', elem.id) }}
+    % endfor
+
+{{ pagination_widget(pagination, 'main.agendas') }}
 </section>

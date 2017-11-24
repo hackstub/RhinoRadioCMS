@@ -1,30 +1,118 @@
-{% macro pagination_widget(pagination, endpoint) %}
+% macro pagination_widget(pagination, endpoint)
+<div class="pagination">
 <ul class="pagination">
     <li{% if not pagination.has_prev %} class="disabled"{% endif %}>
         <a class="content-link" href="{% if pagination.has_prev %}{{ url_for(endpoint,
         page = pagination.page - 1, **kwargs) }}{% else %}#{% endif %}">
         &laquo;</a>
     </li>
-        {% for p in pagination.iter_pages() %}
-        {% if p %}
-        {% if p == pagination.page %}
-        <li class="active">
-        <a class="content-link" href="{{ url_for(endpoint, page = p, **kwargs) }}">{{- p -}}</a>
-        </li>
-        {% else %}
-        <li>
-        <a class="content-link" href="{{ url_for(endpoint, page = p, **kwargs) }}">{{- p -}}</a>
-        </li>
-        {% endif %}
-        {% else %}
-        <li class="disabled"><a href="#">&hellip;</a></li>
-        {% endif %}
-        {% endfor %}
-        <li{% if not pagination.has_next %} class="disabled"{% endif %}>
-        <a class="content-link" href="{% if pagination.has_next %}{{ url_for(endpoint,
-        page = pagination.page + 1, **kwargs) }}{% else %}#{% endif %}">
-        &raquo;
-        </a>
+    % for p in pagination.iter_pages()
+    % if p
+    % if p == pagination.page
+    <li class="active">
+    <a class="content-link" href="{{ url_for(endpoint, page = p, **kwargs) }}">{{- p -}}</a>
+    </li>
+    % else
+    <li>
+    <a class="content-link" href="{{ url_for(endpoint, page = p, **kwargs) }}">{{- p -}}</a>
+    </li>
+    % endif
+    % else
+    <li class="disabled"><a href="#">&hellip;</a></li>
+    % endif
+    % endfor
+    <li{% if not pagination.has_next %} class="disabled"{% endif %}>
+    <a class="content-link" href="{% if pagination.has_next %}{{ url_for(endpoint,
+    page = pagination.page + 1, **kwargs) }}{% else %}#{% endif %}">
+    &raquo;
+    </a>
     </li>
 </ul>
-{% endmacro %}
+</div>
+% endmacro
+
+% macro podcast_box(elem)
+<div class="flex">
+    <a class="picto content-link" href="{{ url_for('main.play', id=elem.id) }}">
+        {%- include 'svg/small_play.svg' -%}
+    </a>
+    <div class="bloc name">
+        <h3>{{ elem.name }}</h3>
+        % if elem.channel.name
+        <h3><a class="content-link" href="{{ url_for('main.channel', id=elem.channel.id) }}">{{ elem.channel.name|upper }}</a></h3>
+        % endif
+    </div>
+</div>
+% endmacro
+
+% macro title(route, route_id, name)
+<h3><a class="content-link" href="{{ url_for(route, id=route_id) }}">{{ name }}</a></h3>
+% endmacro
+
+% macro link_list(group, route, word, css, open=True, close=True)
+% if group|length > 0
+% if open
+<p class="marg {% if css %}{{ css }}{% endif %}">{{ word }}
+% else
+{{ word }}
+% endif
+% for elem in group
+    <a class="content-link" href="{{ url_for(route, id=elem.id)
+        }}">{{ elem.name }}</a>
+    {%- if not loop.last %}, {% endif %}
+% endfor
+% if close
+</p>
+% endif
+% endif
+% endmacro
+
+% macro contributors_list(group, route)
+% for elem in group
+<article class="widget">
+    <p><a class="content-link" href="{{ url_for(route, id=elem.id)
+        }}">{{ elem.name }}</a> => <a class="pabo" href="{{ elem.website
+        }}">{{ elem.website }}</a></p>
+    <p class="marg">------> {{ elem.status }}</p>
+</article>
+% endfor
+% endmacro
+
+% macro description(desc, truncate_value, css)
+% if desc
+<div class="marg2 description {% if css %}{{ css }}{% endif %}">
+% if truncate_value
+{{ desc|safe|truncate(truncate_value, False) -}}
+% else
+{{ desc|safe -}}
+% endif
+</div>
+% endif
+% endmacro
+
+% macro more_button(route, route_id)
+<p class="more"><a class="content-link" href="{{ url_for(route, id=route_id)
+    }}">more</a></p>
+% endmacro
+
+% macro podcasts_list(group)
+% if group|length > 0
+% for elem in group
+<article class="widget">
+    {{ podcast_box(elem) }}
+    <span class="license">{{ elem.timestamp|format_date }}</span>
+</article>
+% endfor
+% endif
+% endmacro
+
+% macro tag_list(group, css)
+% if group|length > 0
+<p class="tags marg2 {% if css %}{{ css }}{% endif %}">Tags :
+% for elem in group
+    <a>{{ elem.name }}</a>
+    {%- if not loop.last %}, {% endif %}
+% endfor
+</p>
+% endif
+% endmacro
