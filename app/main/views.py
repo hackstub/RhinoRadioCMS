@@ -1,26 +1,21 @@
 # "Standard libs" imports
-import os
-import json
-from glob import glob
-from config import config, LIQUIDSOAP_TOKEN
-from uuid import uuid4                 # FIXME no longer needed i think
+import os                              # FIXME no longer needed i think
+import json                            # same
+from glob import glob                  # same
+from config import config, LIQUIDSOAP_TOKEN # same
+from uuid import uuid4                 # same
 from datetime import date              # same
 
 # Flask stuff
-from flask import (Flask,
-                   render_template,
-                   url_for,
-                   jsonify,
-                   request,
-                   redirect,
-                   flash)
+from flask import (Flask, render_template, request,
+                   url_for, jsonify, redirect, flash) # same
 
 # Specific app stuff
 from . import main
-from .forms import SubscribeForm
+from .forms import SubscribeForm       # same
 from .partial_content import *
 from .jinja_custom_filters import *
-from .. import db                      # FIXME no longer needed i think
+from .. import db                      # same
 from app.models.admin import *
 from app.models.event import Event
 from app.models.podcast import Podcast

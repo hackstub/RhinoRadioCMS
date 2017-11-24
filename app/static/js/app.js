@@ -4,7 +4,7 @@
 // ###########################################################################
 
 // When going back in the history, reload the content that was there
-window.addEventListener("popstate", function(e) {
+window.addEventListener('popstate', function(e) {
     loadContent(e.target.location.pathname);
 }, false);
 
@@ -12,7 +12,7 @@ window.addEventListener("popstate", function(e) {
 function captureContentLinks() {
     // Getting the class name 'content-link' is specific to Radio Rhino
     // Could be factorized in the future ;)
-    var links = document.getElementsByClassName("content-link");
+    var links = document.getElementsByClassName('content-link');
     var linksLen = links.length;
 
     function load(e) {
@@ -31,7 +31,7 @@ function loadContent(target) {
     var req = new XMLHttpRequest();
     req.open('GET', target, true);
     req.setRequestHeader('X-Partial-Content', 'yes');
-    req.overrideMimeType("application/json");
+    req.overrideMimeType('application/json');
     req.onload = function() {
         if (req.status >= 200 && req.status < 400) {
             // Parse the response
@@ -67,17 +67,22 @@ function loadContent(target) {
 // ###########################################################################
 
 function displayMain(data) {
-    document.getElementsByTagName("main")[0].innerHTML = data.template;
-    if (typeof data["title"] !== "undefined") { document.getElementsByTagName("title")[0].innerHTML = data["title"] + " | Radio Rhino"; }
-    else { document.getElementsByTagName("title")[0].innerHTML = "Radio Rhino"}
-    if (typeof data["description"] !== "undefined") {
-      document.getElementsByName("description")[0].setAttribute("content", data["description"]); }
-    else {
-      document.getElementsByName("description")[0].setAttribute("content", "Radio radicale pour personnes sensibles."); }
+    document.getElementsByTagName('main')[0].innerHTML = data.template;
+
+    var title = document.getElementsByTagName('title')[0];
+    var desc = document.getElementsByName('description')[0];
+
+    if (data.hasOwnProperty('title'))
+        title.textContent = 'Radio Rhino | ' + data.title;
+    else title.textContent = 'Radio Rhino';
+
+    if (data.hasOwnProperty('description'))
+        desc.setAttribute('content', data.description);
+    else desc.setAttribute('content', "Radio radicale pour personnes sensibles.");
 }
 
 function checkLive() {
-    loadContent(document.getElementById("live_autocheck").getAttribute("href"));
+    loadContent(document.getElementById('live_autocheck').getAttribute('href'));
 }
 
 //checkLive();
@@ -85,16 +90,14 @@ function checkLive() {
 
 function updateLive(data) {
     // If live started / is ongoing
-    if (data["next_live_in"] < 0)
-    {
-        document.getElementById("live_autocheck").style.display = '';
-        document.getElementById("live_play").setAttribute("href", data["stream_url_play"]);
+    if (data.next_live_in < 0) {
+        document.getElementById('live_autocheck').style.display = '';
+        document.getElementById('live_play').setAttribute('href', data.stream_url_play);
     }
     // If live is not ongoing
-    else
-    {
-        document.getElementById("live_autocheck").style.display = 'none';
-        document.getElementById("live_play").setAttribute("href", '');
+    else {
+        document.getElementById('live_autocheck').style.display = 'none';
+        document.getElementById('live_play').setAttribute('href', '');
     }
 }
 

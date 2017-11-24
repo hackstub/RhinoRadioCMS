@@ -1,51 +1,17 @@
-<section class="solo">
+% from "_macros.html" import podcast_box, link_list, description, more_button, title, tag_list
 
-    <div class="flex">
-        <a class="picto content-link" href="{{ url_for('main.play', id=elem.id) }}">
-            {% include 'svg/small_play.svg' -%}
-        </a>
-        <div class="bloc name">
-            <h3> {{ elem.name }} </h3>
-            {% if elem.channel.name %}
-            <h3><a class="content-link" href="{{ url_for('main.channel', id=elem.channel.id) }}">{{ elem.channel.name|upper }}</a></h3>
-            {% endif %}
-        </div>
-    </div>
+<section class="solo">
+    {{ podcast_box(elem) }}
+
     <span class="license">{{ elem.timestamp|format_date }}
         {% if elem.license %}
         / {{ elem.license }}
         {% endif %}
     </span>
+    {{ link_list(elem.collectives, 'main.collective', 'Par', 'decal') -}}
+    {{ link_list(elem.contributors, 'main.contributor', 'Avec', 'decal') -}}
 
-    {% if elem.collectives|length > 0 %}
-    <p class="marg decal">Par
-    {% for collective in elem.collectives %}
-        <a class="content-link"
-            href="{{ url_for('main.collective', id=collective.id) }}">
-        {{ collective.name -}}
-        </a>
-        {%- if not loop.last %}, {% endif %}
-    {% endfor %}
-    </p>
-    {% endif %}
-
-    {% if elem.contributors|length > 0 %}
-    <p class="marg decal">Avec
-    {% for contributor in elem.contributors %}
-        <a class="content-link"
-            href="{{ url_for('main.contributor', id=contributor.id) }}">
-        {{ contributor.name -}}
-        </a>
-        {%- if not loop.last %}, {% endif %}
-    {% endfor %}
-    </p>
-    {% endif %}
-
-    {% if elem.description %}
-    <div class="marg2 decal description">
-        {{ elem.description|safe }}
-    </div>
-    {% endif %}
+    {{ description(elem.description, css='decal') -}}
 
     {% if elem.sections|length > 0 %}
     <div class="marg2">
@@ -79,13 +45,5 @@
     </div>
     {% endif %}
 
-    {% if elem.tags|length > 0 %}
-    <p class="tags decal marg2">Tags :
-    {% for tag in elem.tags %}
-        <a>{{ tag.name }}</a>
-        {% if not loop.last %}, {% endif %}
-    {% endfor %}
-    </p>
-    {% endif %}
-
+    {{ tag_list(elem.tags, 'decal') -}}
 </section>
