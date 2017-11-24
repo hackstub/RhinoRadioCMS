@@ -4,11 +4,12 @@ import json                            # same
 from glob import glob                  # same
 from config import config, LIQUIDSOAP_TOKEN # same
 from uuid import uuid4                 # same
-from datetime import date              # same
+from datetime import date
 
 # Flask stuff
 from flask import (Flask, render_template, request,
                    url_for, jsonify, redirect, flash) # same
+from sqlalchemy import cast, Date
 
 # Specific app stuff
 from . import main
@@ -47,7 +48,9 @@ def index():
                 "index.html",
                 podcasts=Podcast.list(number=3),
                 blog_posts = BlogPost.list(number=3),
-                events = Event.query.order_by(Event.begin.asc())\
+                events = Event.query\
+                .filter(cast(Event.begin, Date) >= date.today())\
+                .order_by(Event.begin.asc())\
                   .limit(5).all()
             )
         }
