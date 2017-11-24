@@ -1,0 +1,7 @@
+<svg class="disabled">
+ <defs>
+    <symbol width="40px" height="40px" viewBox="0 0 40 40" id="small-play">
+       <polygon class="line main-width black" points="15.778,8.889 15.778,31.111 26.889,20 "/>
+    </symbol>
+ </defs>
+</svg>

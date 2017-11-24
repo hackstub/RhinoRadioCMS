@@ -1,12 +1,14 @@
+{% include 'svg/pictos/small_play.svg' %}
+
 <section class="principal">
     <div class="title">
-        {% include 'svg/title_podcasts.svg' %}
+        {% include 'svg/titles/title_podcasts.svg' %}
     </div>
     {% for elem in podcasts %}
     <article class="widget">
         <div class="flex">
             <a class="picto content-link" href="{{ url_for('main.play', id=elem.id) }}">
-                {% include 'svg/small_play.svg' -%}
+                <svg><use href="#small-play"></use></svg>
             </a>
             <div class="bloc name">
                 <h3><a class="content-link" href="{{ url_for('main.podcast', id=elem.id) }}">{{ elem.name }}</a></h3>
@@ -18,7 +20,7 @@
 
     {% if events %}
         <div class="title marg2">
-            {% include 'svg/title_agenda.svg' %}
+            {% include 'svg/titles/title_agenda.svg' %}
         </div>
         <div>
             {% for elem in events %}
@@ -42,7 +44,7 @@
 <section class="second">
     {% if blog_posts %}
     <div class="title">
-        {% include 'svg/title_blog.svg' %}
+        {% include 'svg/titles/title_blog.svg' %}
     </div>
 
     {% for elem in blog_posts %}

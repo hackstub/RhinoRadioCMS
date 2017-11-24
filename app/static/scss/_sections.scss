@@ -78,6 +78,9 @@ section {
 
     a.picto {
         // FIXME try to merge with the section time
+        svg {
+            width: 50px;
+        }
         box-sizing: content-box;
         display: inline-block;
         width: 40px;

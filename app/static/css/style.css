@@ -153,6 +153,8 @@ section {
     border-bottom: 5px solid black;
     border-top-left-radius: 2.5px;
     border-bottom-left-radius: 2.5px; }
+    section a.picto svg {
+      width: 50px; }
   section .tags a {
     border: none;
     text-decoration: underline; }

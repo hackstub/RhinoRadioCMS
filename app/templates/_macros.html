@@ -31,10 +31,11 @@
 </div>
 % endmacro
 
+{# dont forget to import the pictos before using this #}
 % macro podcast_box(elem)
 <div class="flex">
     <a class="picto content-link" href="{{ url_for('main.play', id=elem.id) }}">
-        {%- include 'svg/small_play.svg' -%}
+    <svg><use href="#small-play"></use></svg>
     </a>
     <div class="bloc name">
         <h3>{{ elem.name }}</h3>
@@ -95,7 +96,7 @@
     }}">more</a></p>
 % endmacro
 
-% macro podcasts_list(group)
+% macro podcast_list(group)
 % if group|length > 0
 % for elem in group
 <article class="widget">
