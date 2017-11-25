@@ -13,7 +13,7 @@ def partial_content(f, history=True):
         # Otherwise, load the base and include the given template
         data = f(*args, **kwargs)
         if not 'X-Partial-Content' in request.headers:
-            return render_template('base.html', **data['content'])
+            return render_template('base.haml', **data['content'])
 
         # Data should be a dict with 2 keys:
         # - name of a js function

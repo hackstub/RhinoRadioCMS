@@ -45,7 +45,7 @@ def index():
         'function': 'displayMain',
         'content': {
             'template': render_template(
-                "index.html",
+                "index.haml",
                 podcasts=Podcast.list(number=3),
                 blog_posts = BlogPost.list(number=3),
                 events = Event.query\

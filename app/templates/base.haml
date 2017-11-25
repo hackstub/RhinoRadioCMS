@@ -1,39 +1,29 @@
 <!DOCTYPE html>
-<html lang="fr" dir="ltr">
-    <head>
-        {% block head %}
+%html(lang='fr' dir='ltghfhfgdfghfghfghfghfghfghr')
+    %head
+        %meta(charset='utf-8')
         <!-- Instruct Internet Explorer to use its latest rendering engine -->
-        <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <!-- Viewport for responsive web design -->
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Radio Rhino{% if title %} | {{ title }} {% endif %}</title>
+        %meta(http-equiv='x-ua-compatible' content='ie=edge')
+        %meta(name='viewport' content='width=device-width, initial-scale=1')
+        %title << Radio Rhino {% if title %} | {{title}} {% endif %}
         <!-- FIXME add favicon -->
         <!-- FIXME add canonical links -->
-		<meta name="description" content="
-            {%- if description %}{{ description }}
-            {%- else %}Radio radicale pour personnes sensibles, le Rhino déboule sur Strasbourg pour tout retourner sur sa route !
-            {%- endif %}">
-		<meta property="og:image" content="http://podcast.radiorhino.eu/bannière-Rhino-blanche.png">
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/player.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-        {% endblock %}
-    </head>
+        %meta(name='description'\
+              content='{% if description %}{{ description }}\
+              {% else %}Radio radicale pour personnes sensibles, le Rhino déboule \
+              sur Strasbourg pour tout retourner sur sa route !{% endif %}')
+        %meta(property='og:image' \
+              content="http://podcast.radiorhino.eu/bannière-Rhino-blanche.png")
+        %link(rel='stylesheet' href={{ url_for('static', filename='css/style.css') }})
+        %link(rel='stylesheet' href={{ url_for('static', filename='css/player.css') }})
 
-    <body>
-        {% block body %}
+    %body
+        -include 'menu.html'
+        %main
+            =template|safe
+        -include 'player.html'
 
-        {% include 'menu.html' %}
-
-        <main>
-            {{ template|safe }}
-        </main>
-
-        {% include 'player.html' %}
-
-        {% endblock %}
-    </body>
-
-    <script type="text/javascript" src={{ url_for('static', filename='js/player.js') }}></script>
-    <script type="text/javascript" src={{ url_for('static', filename='js/app.js') }}></script>
-
-</html>
+    %script(type='text/javascript'\
+            src={{ url_for('static', filename='js/player.js') }})
+    %script(type='text/javascript'\
+            src={{ url_for('static', filename='js/app.js') }})
