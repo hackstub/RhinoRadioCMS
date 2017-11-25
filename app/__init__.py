@@ -15,8 +15,11 @@ moment = Moment()
 admin = Admin(name = __APP_NAME__ + ' Admin', template_mode="bootstrap3", url="/site/admin")
 base_path = op.dirname(__file__)
 
+
 def create_app(config_name):
     app = Flask(__name__, static_url_path='/staticsite')
+    # add haml-like template syntax to jinja_env
+    app.jinja_env.add_extension('hamlish_jinja.HamlishExtension')
     app.config.from_object(config[config_name])
     app.config['SECRET_KEY'] = 'Thatdumkey'
     config[config_name].init_app(app)

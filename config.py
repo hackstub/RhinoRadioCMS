@@ -14,6 +14,8 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
+    TEMPLATES_AUTO_RELOAD = True
+    EXPLAIN_TEMPLATE_LOADING = True
     MAIL_SERVER = 'radiorhino.eu'
     MAIL_PORT = 465
     MAIL_USE_TLS = True
