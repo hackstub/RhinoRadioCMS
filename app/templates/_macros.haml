@@ -63,11 +63,11 @@
 -macro tag_list(group, css):
     -if group|length > 0:
         %p class='tags marg2 {% if css %}{{ css }}{% endif %}'
-            Tags :
-        -for elem in group:
-            %a << {{ elem.name }}
-            -if not loop.last:
-                ,
+            Tags :&nbsp;
+            -for elem in group:
+                %a << {{ elem.name }}
+                -if not loop.last:
+                    ,&nbsp;
 
 -macro add_pages(pag, endpoint):
     %div.pagination -> %ul.pagination

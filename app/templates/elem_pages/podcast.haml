@@ -1,50 +1,37 @@
-% from "_macros.html" import podcast_box, link_list, description, more_button, title, tag_list
-{% include 'svg/pictos/small_play.svg' %}
+-from '_macros.haml' import podcast_box, link_list, description, more_button, title, tag_list
+-include 'svg/pictos/small_play.svg'
 
-<section class="solo">
-    {{ podcast_box(elem) }}
+%section.solo
+    =podcast_box(elem)
 
-    <span class="license">{{ elem.timestamp|format_date }}
-        {% if elem.license %}
-        / {{ elem.license }}
-        {% endif %}
-    </span>
-    {{ link_list(elem.collectives, 'main.collective', 'Par', 'decal') -}}
-    {{ link_list(elem.contributors, 'main.contributor', 'Avec', 'decal') -}}
+    %span.license
+        =elem.timestamp|format_date
+        -if elem.license:
+            \ / {{ elem.license }}
+    =link_list(elem.collectives, 'main.collective', 'Par ', 'decal')
+    =link_list(elem.contributors, 'main.contributor', 'Avec ', 'decal')
 
-    {{ description(elem.description, css='decal') -}}
+    =description(elem.description, css='decal')
 
-    {% if elem.sections|length > 0 %}
-    <div class="marg2">
-        {% for section in elem.sections %}
-        <div class="section">
-            <div class="flex">
-                <div>
-                    <p class="bloc">{{ section.begin|format_date('%-M') }}'</p>
-                </div>
-                <div class="">
-                    <h4>{{ section.name }}</h4>
-                </div>
+    -if elem.sections|length > 0:
+        %div.marg2
+            -for section in elem.sections:
+                %div.section
+                    %div.flex
+                        %div
+                            %p.bloc
+                                =section.begin|format_date('%-M')
+                        %div
+                            %h4 -> =section.name
 
-            </div>
-            <p class="decal">
-                {% if section.contributors|length > 0 %}
-                Par
-                <a href="#">
-                {% for contributor in section.contributors %}
-                    <a class="content-link"
-                        href="{{ url_for('main.contributor', id=contributor.id) }}">
-                    {{ contributor.name }}
-                    </a>
-                    {% if not loop.last %}, {% endif %}
-                {% endfor %}
-                </a>
-                {% endif %}
-            </p>
-        </div>
-        {% endfor %}
-    </div>
-    {% endif %}
+                    %p.decal
+                        -if section.contributors|length > 0:
+                            Par&nbsp;
+                        -for contributor in section.contributors:
+                            %a.content-link \
+                            href={{ url_for('main.contributor', id=contributor.id) }}
+                                =contributor.name
+                            -if not loop.last:
+                                ,&nbsp;
 
-    {{ tag_list(elem.tags, 'decal') -}}
-</section>
+    =tag_list(elem.tags, 'decal')

@@ -1,11 +1,10 @@
-% from "_macros.html" import description
-<section class="second">
-    <h3>{{ elem.name }}</h3>
-    <p class="marg">Du {{ elem.begin|format_date  }} au {{ elem.end|format_date }}</p>
+-from '_macros.haml' import description
 
-    % if elem.place
-    <p>Lieu : {{ elem.place }}</p>
-    % endif
-
-    {{ description(elem.description) -}}
-</section>
+%section.second
+    %h3
+        =elem.name
+    %p.marg
+        Du {{ elem.begin|format_date }} au {{ elem.end|format_date }}
+    -if elem.place:
+        %p << Lieu : {{ elem.place }}
+    =description(elem.description)

@@ -1,11 +1,10 @@
-% from "_macros.html" import link_list, description
+-from '_macros.haml' import link_list, description
 
-<section class="second">
-    <h3>{{ elem.name }}</h3>
-    <span class="license">{{ elem.timestamp|format_date }}</span>
-
-    {{ link_list(elem.contributors, 'main.contributor', 'Par', close=False) -}}
-    {{ link_list(elem.collectives, 'main.collective', ' @', open=False) -}}
-
-    {{ description(elem.description) -}}
-</section>
+%section.second
+    %h3
+        =elem.name
+    %span.license
+        =elem.timestamp|format_date
+    =link_list(elem.contributors, 'main.contributor', 'Par ', close=False)
+    =link_list(elem.collectives, 'main.collective', ' @ ', open=False)
+    =description(elem.description)

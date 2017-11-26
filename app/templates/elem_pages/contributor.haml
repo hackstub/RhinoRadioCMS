@@ -1,29 +1,21 @@
-% from "_macros.html" import link_list, description, podcast_list
-{% include 'svg/pictos/small_play.svg' %}
+-from '_macros.haml' import link_list, description, podcast_list
+-include 'svg/pictos/small_play.svg'
 
-<section class="second">
-    <article class="">
-        <h3>{{ elem.name }}</h3>
+%section.second
+    %article
+        %h3
+            =elem.name
+        -if elem.website:
+            %p.marg -> %a href='{{ elem.website }}'
+                =elem.website
+        -if elem.status:
+            %p.marg
+                \----> {{ elem.status }}
+        =link_list(elem.collectives, 'main.collective', 'Membre de')
+        =link_list(elem.channels, 'main.channel', 'Anime')
+        ;FIXME format mail adress [AT]
+        ;%p -> =elem.email
+        =description(elem.description)
 
-        % if elem.website
-        <p class="marg"><a href="{{ elem.website }}">{{ elem.website }}</a></p>
-        % endif
-
-        % if elem.status
-        <p class="marg">----> {{ elem.status }}</p>
-        % endif
-
-        {{ link_list(elem.collectives, 'main.collective', 'Membre de') -}}
-        {{ link_list(elem.channels, 'main.channel', 'Anime') -}}
-
-        <!-- FIXME format mail adress [AT] -->
-        {#<p>{{ elem.email }}</p>#}
-
-        {{ description(elem.description) -}}
-    </article>
-
-    <div class="marg2">
-    {{ podcast_list(elem.podcasts) -}}
-    </div>
-
-</section>
+    %div.marg2
+        =podcast_list(elem.podcasts)
