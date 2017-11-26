@@ -1,0 +1,17 @@
+-import '_macros.haml' as gen
+-include 'svg/pictos/small_play.svg'
+
+%section.solo
+    %div.title
+        -include 'svg/titles/title_podcasts.svg'
+    -for elem in podcasts:
+        %article.widgetBis
+            =gen.podcast_box(elem)
+            %span.license
+                =elem.date|format_date
+            =gen.link_list(elem.collectives, 'main.collective', 'Par', 'decal')
+            =gen.link_list(elem.contributors, 'main.contributor', 'Avec', 'decal')
+            =gen.description(elem.description, 100, 'decal')
+            =gen.more_button('main.podcast', elem.id)
+
+    =gen.add_pages(pagination, 'main.podcasts')

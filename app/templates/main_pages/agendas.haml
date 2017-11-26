@@ -1,0 +1,17 @@
+-from '_macros.haml' import description, title, more_button, add_pages
+
+%section.second
+    %div.title.marg2
+        -include 'svg/titles/title_agenda.svg'
+
+    -for elem in events:
+        %article.widgetBis
+            =title('main.agenda', elem.id, elem.name)
+            %p.marg
+                Du {{ elem.begin|format_date }} au {{ elem.end|format_date }}
+            -if elem.place:
+                %p << Lieu : {{ elem.place }}
+            =description(elem.description)
+            =more_button('main.agenda', elem.id)
+
+    =add_pages(pagination, 'main.agendas')

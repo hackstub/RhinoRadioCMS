@@ -1,0 +1,11 @@
+-from '_macros.haml' import contributors_list
+
+%section.solo
+    %div.title
+        -include 'svg/titles/title_contributors.svg'
+    =contributors_list(contributors, 'main.contributor')
+
+%section.solo
+    %div.title
+        -include 'svg/titles/title_collectives.svg'
+    =contributors_list(collectives, 'main.collective')

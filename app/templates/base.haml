@@ -23,7 +23,7 @@
             =template|safe
         -include 'player.haml'
 
-    %script(type='text/javascript'\
-            src={{ url_for('static', filename='js/player.js') }})
-    %script(type='text/javascript'\
-            src={{ url_for('static', filename='js/app.js') }})
+    %script(type='text/javascript' \
+            src='{{ url_for('static', filename='js/player.js') }}')
+    %script(type='text/javascript' \
+            src='{{ url_for('static', filename='js/app.js') }}')

@@ -1,7 +1,7 @@
 -macro podcast_box(elem):
     %div.flex
         %a.picto.content-link href='{{ url_for('main.play', id=elem.id) }}'
-            %svg -> %use href='#small_play'
+            %svg -> %use href='#small-play'
         %div.bloc.name
             %h3 -> =elem.name
             -if elem.channel.name:
@@ -16,14 +16,14 @@
 -macro link_list(group, route, word, css, open=True, close=True):
     -if group|length > 0:
         -if open:
-            <p class="marg {% if css %}{{ css }}{% endif %}">{{ word }}
+            <p class='marg {% if css %}{{ css }}{% endif %}'>{{ word }}
         -else:
             =word
         -for elem in group:
             %a.content-link href='{{ url_for(route, id=elem.id)}}'
                 =elem.name
             -if not loop.last:
-                ,
+                ,&nbsp;
         -if close:
             </p>
 
@@ -33,11 +33,11 @@
             %p
                 %a.content-link href='{{ url_for(route, id=elem.id) }}'
                     =elem.name
-                =>
+                \ =>&nbsp;
                 %a.pabo href='{{ elem.website }}'
                     =elem.website
             %p.marg
-                ------> {{ elem.status }}
+                \------> {{ elem.status }}
 
 -macro description(desc, truncate_value, css):
     -if desc:
@@ -69,25 +69,27 @@
             -if not loop.last:
                 ,
 
--macro pagination(pag, endpoint):
+-macro add_pages(pag, endpoint):
     %div.pagination -> %ul.pagination
-        %li class="{% if not pag.has_prev %}disabled{% endif %}"
+        %li class='{% if not pag.has_prev %}disabled{% endif %}'
             %a.content-link href='{% if pag.has_prev %}\
             {{ url_for(endpoint, page = pag.page - 1, **kwargs) }}\
-            {% else %}#{% endif %}')
+            {% else %}#{% endif %}'
                 &laquo;
         -for p in pag.iter_pages():
+            &nbsp;
             -if p:
                 %li class='{% if p == pag.page %}active{% endif %}'
                     %a.content-link \
                     href='{{ url_for(endpoint, page = p, **kwargs) }}'
-                        =p
+                        {{p}}
             -else:
                 %li.disabled
                     %a href='#'
                         &hellip;
         %li class='{% if not pag.has_next %}disabled{% endif %}'
+            &nbsp;
             %a.content-link href='{% if pag.has_next %}\
-            {{ url_for(endpoint, page = pagination.page + 1, **kwargs) }}\
+            {{ url_for(endpoint, page = pag.page + 1, **kwargs) }}\
             {% else %}#{% endif %}'
                 &raquo;

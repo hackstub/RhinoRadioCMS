@@ -1,0 +1,13 @@
+-from '_macros.haml' import link_list, description, more_button, title
+
+%section.second
+    %div.title
+        %h3 << Chaînes
+
+    -for elem in channels:
+        %article.widgetBis
+            =title('main.channel', elem.id, elem.name)
+            =link_list(elem.collectives, 'main.collective', 'Animée par ')
+            =link_list(elem.contributors, 'main.contributor', '')
+            =description(elem.description, 100)
+            =more_button('main.channel', elem.id)

@@ -1,0 +1,14 @@
+-from '_macros.haml' import description
+
+%section.second
+    %div.title.marg2
+        -include 'svg/titles/title_about.svg'
+    =description(page.description)
+
+%section#subscribe.principal
+    %h3.iconbox-title.marg << Newsletter
+    %div.iconbox-desc.marg
+        %form#ml-subscribe method='POST' \
+        action='https://radiorhino.eu/mailman/subscribe/news'
+            %input(type='text' name='email' maxlength='80' size='20' placeholder='Votre adresse email' required).
+            %input.marg(type='submit' value="S'inscrire" href='javascript:{}' onclick='document.getElementById("ml-subscribe").submit(); return false;').

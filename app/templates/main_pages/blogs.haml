@@ -1,0 +1,17 @@
+-from '_macros.haml' import link_list, description, more_button, title, add_pages
+
+%section.second
+    %div.title
+        -include 'svg/titles/title_blog.svg'
+
+    -for elem in blog_posts:
+        %article.widgetBis
+            =title('main.blog', elem.id, elem.name)
+            %span.license
+                =elem.timestamp|format_date
+            =link_list(elem.contributors, 'main.contributor', 'Par ', close=False)
+            =link_list(elem.collectives, 'main.collective', ' @ ', open=False)
+            =description(elem.description, 200)
+            =more_button('main.blog', elem.id)
+
+    =add_pages(pagination, 'main.blogs')
