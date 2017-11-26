@@ -1,0 +1,9 @@
+<svg width="36.48" height="40" viewBox="0 0 36.48 40">
+    <g class="line main-width black" id="playBtn" display="">
+        <polygon points="7.745,2.5 28.735,20 7.745,37.5"/>
+    </g>
+    <g class="line main-width black" id="pauseBtn" display="none">
+        <line x1="12.993" y1="2.5" x2="12.993" y2="37.5"/>
+        <line x1="23.487" y1="2.5" x2="23.487" y2="37.5"/>
+    </g>
+</svg>
