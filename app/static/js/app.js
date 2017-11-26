@@ -82,7 +82,7 @@ function displayMain(data) {
 }
 
 function checkLive() {
-    loadContent(document.getElementById('live_autocheck').getAttribute('href'));
+    loadContent(document.getElementById('live-autocheck').getAttribute('href'));
 }
 
 //checkLive();
@@ -91,13 +91,13 @@ function checkLive() {
 function updateLive(data) {
     // If live started / is ongoing
     if (data.next_live_in < 0) {
-        document.getElementById('live_autocheck').style.display = '';
-        document.getElementById('live_play').setAttribute('href', data.stream_url_play);
+        document.getElementById('live-autocheck').style.display = '';
+        document.getElementById('live-play').setAttribute('href', data.stream_url_play);
     }
     // If live is not ongoing
     else {
-        document.getElementById('live_autocheck').style.display = 'none';
-        document.getElementById('live_play').setAttribute('href', '');
+        document.getElementById('live-autocheck').style.display = 'none';
+        document.getElementById('live-play').setAttribute('href', '');
     }
 }
 

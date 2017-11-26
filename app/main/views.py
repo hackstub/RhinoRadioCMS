@@ -15,7 +15,7 @@ from sqlalchemy import cast, Date
 from . import main
 from .forms import SubscribeForm       # same
 from .partial_content import *
-from .jinja_custom_filters import *
+# from .jinja_custom_filters import *
 from .. import db                      # same
 from app.models.admin import *
 from app.models.event import Event
@@ -69,7 +69,7 @@ def about():
         'function': 'displayMain',
         'content': {
             'template': render_template(
-                "main_pages/about.html",
+                "main_pages/about.haml",
                 page=page
             ),
             'title': "À propos"
@@ -84,7 +84,7 @@ def contribute():
         'function': 'displayMain',
         'content': {
             'template': render_template(
-                "main_pages/contribute.html",
+                "main_pages/contribute.haml",
                 page=page
             ),
             'title': "Contribuer"
@@ -107,7 +107,7 @@ def podcasts():
         'function': 'displayMain',
         'content': {
             'template': render_template(
-                "main_pages/podcasts.html",
+                "main_pages/podcasts.haml",
                 podcasts=podcasts,
                 pagination=pagination
             ),
@@ -123,7 +123,7 @@ def podcast(id):
         'function': 'displayMain',
         'content': {
             'template': render_template(
-                "elem_pages/podcast.html",
+                "elem_pages/podcast.haml",
                 elem=podcast
             ),
             'title': podcast.name,
@@ -156,7 +156,7 @@ def contributors():
         'function': 'displayMain',
         'content': {
             'template': render_template(
-                "main_pages/contributors.html",
+                "main_pages/contributors.haml",
                 contributors=Contributor.list(),
                 collectives=Collective.list()
             ),
@@ -173,7 +173,7 @@ def contributor(id):
         'function': 'displayMain',
         'content': {
             'template': render_template(
-                "elem_pages/contributor.html",
+                "elem_pages/contributor.haml",
                 elem=contributor
             ),
             'title': contributor.name,
@@ -189,7 +189,7 @@ def collective(id):
         'function': 'displayMain',
         'content': {
             'template': render_template(
-                "elem_pages/contributor.html",
+                "elem_pages/contributor.haml",
                 elem=collective
             ),
             'title': collective.name,
@@ -208,7 +208,7 @@ def channels():
         'function': 'displayMain',
         'content': {
             'template': render_template(
-                "main_pages/channels.html",
+                "main_pages/channels.haml",
                 channels=Channel.list()
             ),
             'title': "Chaînes",
@@ -225,7 +225,7 @@ def channel(id):
         'function': 'displayMain',
         'content': {
             'template': render_template(
-                "elem_pages/contributor.html",
+                "elem_pages/contributor.haml",
                 elem=channel
             ),
             'title': channel.name
@@ -248,7 +248,7 @@ def blogs():
         'function': 'displayMain',
         'content': {
             'template': render_template(
-                "main_pages/blogs.html",
+                "main_pages/blogs.haml",
                 blog_posts=BlogPost.list(number=10),
                 pagination = pagination
             ),
@@ -265,7 +265,7 @@ def blog(id):
         'function': 'displayMain',
         'content': {
             'template': render_template(
-                "elem_pages/blog.html",
+                "elem_pages/blog.haml",
                 elem=blog_post
             ),
             'title': blog_post.name
@@ -289,7 +289,7 @@ def agendas():
         'function': 'displayMain',
         'content': {
             'template': render_template(
-                "main_pages/agendas.html",
+                "main_pages/agendas.haml",
                 events = events,
                 pagination = pagination),
             'title': "Agendas"
@@ -304,7 +304,7 @@ def agenda(id):
         'function': 'displayMain',
         'content': {
             'template': render_template(
-                "elem_pages/agenda.html",
+                "elem_pages/agenda.haml",
                 elem=event
             ),
             'title': event.name
