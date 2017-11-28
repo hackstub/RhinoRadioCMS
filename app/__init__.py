@@ -18,7 +18,7 @@ base_path = op.dirname(__file__)
 
 def create_app(config_name):
     app = Flask(__name__, static_url_path='/staticsite')
-    app.debug = True
+
     # add haml-like template syntax to jinja_env
     app.jinja_env.add_extension('hamlish_jinja.HamlishExtension')
     app.config.from_object(config[config_name])
