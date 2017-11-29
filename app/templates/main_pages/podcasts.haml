@@ -9,8 +9,8 @@
             =gen.podcast_box(elem)
             %span.license
                 =elem.date|format_date
-            =gen.link_list(elem.collectives, 'main.collective', 'Par', 'decal')
-            =gen.link_list(elem.contributors, 'main.contributor', 'Avec', 'decal')
+            =gen.link_list(elem.collectives, 'main.collective', 'Par ', 'decal')
+            =gen.link_list(elem.contributors, 'main.contributor', 'Avec ', 'decal')
             =gen.description(elem.description, 100, 'decal')
             =gen.more_button('main.podcast', elem.id)
 

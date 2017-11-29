@@ -1,11 +1,9 @@
 @import 'rules';
 @import 'mixins';
+@import 'reset';
+@import 'svgs';
+@import 'player';
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
 
 html {
     font-family: $font-text;
@@ -21,11 +19,12 @@ body {
     padding-bottom: 3em;
 }
 
-p, h1, h2, h3, h4, h5, h6 {
-    color: $black;
-}
 a {
     outline: 0;
+}
+
+.disabled {
+    display: none;
 }
 
 nav {
@@ -79,9 +78,7 @@ main {
 
 // PAGES
 
-.disabled {
-    display: none;
-}
+
 
 .pagination {
     margin-top: 3em;
@@ -97,5 +94,4 @@ main {
 
 
 @import 'sections';
-@import 'svgs';
 @import 'fonts';
