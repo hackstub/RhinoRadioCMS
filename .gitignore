@@ -7,3 +7,4 @@ venv/*
 doc/_build/
 .sass-cache
 alchemydumps/*
+app/static/css/*.css*

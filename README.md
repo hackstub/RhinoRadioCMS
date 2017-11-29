@@ -11,8 +11,9 @@ sudo apt-get install python-virtualenv
 virtualenv -p python3 venv
 source venv/bin/activate
 
-# PostgreSQL and GIS (geographic db)
+# PostgreSQL and GIS (geographic db) + SASS
 sudo apt install python3-dev postgresql-9.4 postgresql-server-dev-9.4 postgis
+gem install sass
 
 pip3 install -r requirements.txt
 
@@ -84,6 +85,7 @@ sshfs user@distant-ip:/podcasts/dir/
 ```bash
 git pull
 git merge origin master
+sass app/static/scss/style.scss:app/static/css/style.css --style compressed
 service rhinosite restart
 ```
 
