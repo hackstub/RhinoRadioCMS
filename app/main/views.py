@@ -46,7 +46,7 @@ def index():
         'content': {
             'template': render_template(
                 "index.haml",
-                podcasts=Podcast.list(number=3),
+                podcasts=Podcast.list(number=5),
                 blog_posts = BlogPost.list(number=3),
                 events = Event.query\
                 .filter(cast(Event.begin, Date) >= date.today())\
