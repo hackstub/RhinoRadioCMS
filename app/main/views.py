@@ -51,7 +51,7 @@ def index():
         'content': {
             'template': render_template(
                 "index.html",
-                podcasts=Podcast.list(number=3),
+                podcasts=Podcast.list(number=5),
                 blog_posts = BlogPost.query\
                     .order_by(BlogPost.timestamp.desc()),
                 events = Event.query.order_by(Event.begin.desc())\
