@@ -1,3 +1,4 @@
+-from '_macros.haml' import link_list, description, more_button, title, add_pages
 -include 'svg/pictos/small_play.svg'
 
 %section.principal
@@ -30,15 +31,15 @@
                 -else:
                     Le {{ elem.begin|format_date }} \
                     de {{ elem.begin|format_date('%H h %M') }} \
-                    à {{ elem.begin|fomat_date('%H h %M') }}
+                    à {{ elem.begin|format_date('%H h %M') }}
             %div.marg.description
                 =elem.description|safe|truncate(200, False)
 %section.second
     -for elem in blog_posts:
         %article.widgetBis
-            %a href={{ url_for('main.blog_post', id=elem.id) }}
+            %a href={{ url_for('main.blogs', id=elem.id) }}
                 %h3 -> =elem.name
-            %span {{ elem.date|format_date }}
+            %span {{ elem.timestamp|format_date }}
                 =link_list(elem.contributors, 'main.contributor', 'Par ', close=False)
                 =link_list(elem.collectives, 'main.collective', ' @ ', open=False)
             =description(elem.description, 15)
