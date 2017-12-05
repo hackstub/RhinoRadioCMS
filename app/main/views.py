@@ -4,7 +4,8 @@ import json
 from glob import glob
 from config import config, LIQUIDSOAP_TOKEN
 from uuid import uuid4                 # FIXME no longer needed i think
-from datetime import date              # same
+from datetime import date, datetime              # same
+from sqlalchemy import cast, Date
 
 # Flask stuff
 from flask import (Flask,
@@ -51,9 +52,12 @@ def index():
             'template': render_template(
                 "index.html",
                 podcasts=Podcast.list(number=3),
-                blog_posts = BlogPost.list(number=3),
-                events = Event.query.order_by(Event.begin.asc())\
-                  .limit(5).all()
+                blog_posts = BlogPost.query\
+                    .order_by(BlogPost.timestamp.desc()),
+                events = Event.query.order_by(Event.begin.desc())\
+                    .filter(cast(Event.begin, Date) >= date.today())\
+                    .order_by(Event.begin.asc())\
+                    .limit(5).all()
             )
         }
     }
@@ -284,7 +288,7 @@ def blog(id):
 def agendas():
     page = request.args.get('page', 1, type=int)
     pagination = Event.query                         \
-        .order_by(Event.begin.asc())            \
+        .order_by(Event.begin.desc())            \
         .paginate(page, per_page=10, error_out=False)
     events = pagination.items
     return {
